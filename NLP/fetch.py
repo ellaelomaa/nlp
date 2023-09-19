@@ -1,3 +1,4 @@
+
 import os
 
 # Define the path to the "tekstit" folder in your working directory
@@ -22,8 +23,6 @@ for corpus_name in corpora:
         with open(file_path, 'r', encoding='utf-8') as file:
             file_content = file.read()
             corpus_content.append(file_content)
-    
-    # Now, you have the name of the corpus (corpus_name) and its content (corpus_content)
-    # You can process or analyze the content of each corpus as needed
-    print(f"Corpus Name: {corpus_name}")
 
+return corpus_content
+return corpus_name # TARTTEEKS TÄTÄ EMMÄÄ TIIÄ JA JOS TARVII NII MITEN TÄÄ LAITETAA
