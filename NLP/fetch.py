@@ -25,4 +25,3 @@ for corpus_name in corpora:
             corpus_content.append(file_content)
 
 return corpus_content
-return corpus_name # TARTTEEKS TÄTÄ EMMÄÄ TIIÄ JA JOS TARVII NII MITEN TÄÄ LAITETAA
