@@ -2,7 +2,6 @@
 
 # listayksköiden määrä (sanasto)
 def sanamäärä():
-    #lemmatisointi
     #count
 
 def sanapituus():
