@@ -1,5 +1,5 @@
 def hae_tiedosto(polku):
-    tiedosto = open(polku, "r")
+    tiedosto = open(polku, "r", encoding="utf-8")
     teksti = tiedosto.read()
     return teksti
 

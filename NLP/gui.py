@@ -5,7 +5,7 @@ import fetch
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
     korpus = fetch.hae_korpus(asetukset["avattavat_tiedostot"])
-    print(korpus)
+
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
 # Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja hukkasanat,
