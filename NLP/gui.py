@@ -1,5 +1,11 @@
 import PySimpleGUI as sg
 import os
+import fetch
+
+# Tässä ajetaan itse ohjelma asetusten mukaan läpi
+def kaynnista():
+    korpus = fetch.hae_korpus(asetukset["avattavat_tiedostot"])
+    print(korpus)
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
 # Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja hukkasanat,
@@ -70,6 +76,9 @@ while True:
     if event == "Sulje" or event == sg.WIN_CLOSED:
         break
 
+    if event == "Käynnistä ohjelma":
+        kaynnista()
+
     # Päivitetään laatikkoon valittujen tiedostojen polut
     if event == "tiedostot":
         window["lista"].Update(values["tiedostot"].split(";"))
@@ -91,6 +100,5 @@ while True:
     asetukset["hukkasanapolku"] = values["hukkasanapolku"]
     asetukset["sisaltosanapolku"] = values["sisaltosanapolku"]
     asetukset["avattavat_tiedostot"] = values["tiedostot"]
-    print(asetukset["avattavat_tiedostot"])
 
 window.close()

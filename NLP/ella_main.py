@@ -3,4 +3,6 @@ import fetch
 
 asetukset = gui.asetukset
 
-fetch.hae_korpus(asetukset["avattavat_tiedostot"])
+def kaynnista():
+    korpus = fetch.hae_korpus(asetukset["avattavat_tiedostot"])
+    print(korpus)

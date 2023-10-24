@@ -11,5 +11,4 @@ def hae_korpus(polut):
         teksti += hae_tiedosto(polku)
         teksti += " "
 
-    print(teksti)
     return teksti
