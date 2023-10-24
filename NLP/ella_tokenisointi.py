@@ -26,7 +26,7 @@ def tokenisoi_virkkeet(teksti):
 # : , . ; ajatusviiva ! ?
 #TODO: vielä on joitakin välilyöntejä mukana.
 def tokenisoi_lauseet(teksti):
-    return re.split(', |-|! |\. |\? |\(|\)|–|—|:', teksti)
+    return re.split(', |-|! |\. |\.|\? |\(|\)|–|—|:', teksti)
 
 tokenisoi_lauseet(testi)
 

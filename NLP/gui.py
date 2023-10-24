@@ -15,7 +15,8 @@ asetukset = {
     "hukkasanat": False,
     "funktiosanat": False,
     "hukkasanapolku": "",
-    "sisaltosanapolku": ""
+    "sisaltosanapolku": "",
+    "avattavat_tiedostot": ""
 }
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
@@ -89,5 +90,7 @@ while True:
     # Haetaan poistettavien sanalistojen polut
     asetukset["hukkasanapolku"] = values["hukkasanapolku"]
     asetukset["sisaltosanapolku"] = values["sisaltosanapolku"]
+    asetukset["avattavat_tiedostot"] = values["tiedostot"]
+    print(asetukset["avattavat_tiedostot"])
 
 window.close()
