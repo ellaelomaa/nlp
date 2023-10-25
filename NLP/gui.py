@@ -4,7 +4,8 @@ import fetch
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
-    korpus = fetch.hae_korpus(asetukset["avattavat_tiedostot"])
+    korpus = fetch.hae_korpus2(asetukset["korpuspolku"])
+    print(korpus)
 
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
@@ -22,7 +23,7 @@ asetukset = {
     "funktiosanat": False,
     "hukkasanapolku": "",
     "sisaltosanapolku": "",
-    "avattavat_tiedostot": ""
+    "korpuspolku": ""
 }
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
@@ -35,12 +36,12 @@ layout = [
 
     # Käsiteltävien tekstien valinta
     [
-        sg.Text("Valitse käsiteltävät tekstit:"),
+        sg.Text("Valitse korpuksen sisältävä kansio:"),
         sg.LBox([], size=(50, 5), expand_x=True,
                 expand_y=True, key="lista"),
-        sg.Input(visible=False, enable_events=True, key="tiedostot",
+        sg.Input(visible=False, enable_events=True, key="korpuspolku",
                  font=("Arial Bold", 10), expand_x=True),
-        sg.FilesBrowse()
+        sg.FolderBrowse()
     ],
 
     # Normalisointitavan valinta
@@ -80,8 +81,8 @@ while True:
         kaynnista()
 
     # Päivitetään laatikkoon valittujen tiedostojen polut
-    if event == "tiedostot":
-        window["lista"].Update(values["tiedostot"].split(";"))
+    if event == "korpuspolku":
+        window["lista"].Update(values["korpuspolku"].split(";"))
 
     # Päivitetään valintojen perusteella asetussanakirjaa
     if values["stemmaa"] == True:
@@ -99,6 +100,6 @@ while True:
     # Haetaan poistettavien sanalistojen polut
     asetukset["hukkasanapolku"] = values["hukkasanapolku"]
     asetukset["sisaltosanapolku"] = values["sisaltosanapolku"]
-    asetukset["avattavat_tiedostot"] = values["tiedostot"]
+    asetukset["korpuspolku"] = values["korpuspolku"]
 
 window.close()
