@@ -1,10 +1,5 @@
-new = []
-with open ("funktiosanat.txt","r") as f:
-    for line in f:
-        stripped = line.strip("\n")
-        new.append(stripped)
+# helmin hiekkalaatikko
+from uralicNLP import uralicApi
 
-new.sort() #sorts by letter
-with open ("3ex.txt","w") as file:
-    for k in new:
-        file.write(k + "\n")
+kakkapylly = uralicApi.lemmatize("sullekin", "fin")
+print(kakkapylly)
