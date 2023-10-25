@@ -1,11 +1,13 @@
 import PySimpleGUI as sg
 import os
 import fetch
+import ella_tokenisointi as tokenisointi
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
-    korpus = fetch.hae_korpus2(asetukset["korpuspolku"])
-    print(korpus)
+    print(asetukset["tokenisointi"])
+    korpus = fetch.hae_korpus(asetukset["korpuspolku"])
+    tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
 
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
@@ -23,7 +25,8 @@ asetukset = {
     "funktiosanat": False,
     "hukkasanapolku": "",
     "sisaltosanapolku": "",
-    "korpuspolku": ""
+    "korpuspolku": "",
+    "tokenisointi": "sanoiksi"
 }
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
@@ -37,7 +40,7 @@ layout = [
     # Käsiteltävien tekstien valinta
     [
         sg.Text("Valitse korpuksen sisältävä kansio:"),
-        sg.LBox([], size=(50, 5), expand_x=True,
+        sg.LBox([], size=(50, 1), expand_x=True,
                 expand_y=True, key="lista"),
         sg.Input(visible=False, enable_events=True, key="korpuspolku",
                  font=("Arial Bold", 10), expand_x=True),
@@ -53,14 +56,27 @@ layout = [
                  key='eistemlem', default=True)
     ],
 
+    # Tokenisointitavan valinta
+
+    # Normalisointitavan valinta
+    [
+        sg.Text("Tokenisoi "),
+        sg.Radio("sanoiksi", "token",
+                 enable_events=True, key='sanoiksi', default=True),
+        sg.Radio('lauseiksi', "token", enable_events=True, key='lauseiksi'),
+        sg.Radio('virkkeiksi', "token", enable_events=True,
+                 key='virkkeiksi')
+    ],
+
+
     # Poistettavien sanojen valinta
     [sg.Checkbox(text=("Poista hukkasanat"), default=(
         False), key="hukka", enable_events=True),
-        sg.Input( enable_events=True, key="hukkasanapolku"),
+        sg.Input(enable_events=True, key="hukkasanapolku"),
         sg.FileBrowse()],
     [sg.Checkbox(text=("Poista sisältösanat"), default=(
         False), key="sisältö", enable_events=True),
-        sg.Input( enable_events=True, key="sisaltosanapolku"),
+        sg.Input(enable_events=True, key="sisaltosanapolku"),
         sg.FileBrowse()],
 
     [sg.Button("Käynnistä ohjelma")],
@@ -89,13 +105,22 @@ while True:
         asetukset["lemmaus"] = False
         asetukset["stemmaus"] = True
 
-    elif values["lemmaa"] == True:
+    if values["lemmaa"] == True:
         asetukset["stemmaus"] = False
         asetukset["lemmaus"] = True
 
-    elif values["eistemlem"] == True:
+    if values["eistemlem"] == True:
         asetukset["lemmaus"] = False
         asetukset["stemmaus"] = False
+
+    if values["sanoiksi"] == True:
+        asetukset["tokenisointi"] = "sanoiksi"
+
+    if values["lauseiksi"] == True:
+        asetukset["tokenisointi"] = "lauseiksi"
+        
+    if values["virkkeiksi"] == True:
+        asetukset["tokenisointi"] = "virkkeiksi"
 
     # Haetaan poistettavien sanalistojen polut
     asetukset["hukkasanapolku"] = values["hukkasanapolku"]
