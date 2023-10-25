@@ -1,4 +1,4 @@
-import ella_tokenisointi as token
+import tokenisointi
 eka_taso = "  "
 toka_taso = "    "
 kolmas_taso = "      "
@@ -11,19 +11,28 @@ def sanamäärä(korpus):
         print(toka_taso, len(korpus[arvo]))
 
 def sanapituus(korpus):
-    merkkeja = 0
-    sanoja = 0
     #lemmatisointi
     #grafeemeja per sana --> keskiarvo
 
     print("Sanojen keskimääräinen pituus:")
+
     for arvo in korpus:
+        merkkeja = 0
+        sanoja = 0
         print(eka_taso, arvo)
-        sanalista = token.tokenisoi_sanat(korpus[arvo])
+        sanalista = tokenisointi.tokenisoi_sanat(korpus[arvo])
+
         sanoja = len(sanalista)
+
         for sana in sanalista:
-            merkkeja =+ len(sana)
-        print(toka_taso, merkkeja/sanoja)
+            merkkeja += len(sana)
+            ++sanoja
+
+        print(toka_taso, "Merkkejä: ", merkkeja)
+        print(toka_taso, "Sanoja: ", sanoja)
+        if (merkkeja > 0 and sanoja > 0):
+            print(toka_taso, "Sanojen keskiarvoinen pituus: ", round(merkkeja/sanoja, 2))       
+        # print(toka_taso, merkkeja/sanoja)
 
 
 # def sanasto():

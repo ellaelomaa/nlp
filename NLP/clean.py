@@ -1,5 +1,5 @@
 import string
-import ella_tokenisointi
+import tokenisointi
 
 # poista tietyt sanat (erillinen lista)
 
@@ -12,7 +12,7 @@ def hukkasanojen_poisto(korpus, polku):
     funktiosanat = data.split("\n")
 
     for avain in korpus:
-        sanalista = ella_tokenisointi.tokenisoi_sanat(korpus[avain])
+        sanalista = tokenisointi.tokenisoi_sanat(korpus[avain])
         print("Ennen: ", len(sanalista))
         temp = [sana for sana in sanalista if sana not in funktiosanat]
         print("Jälkeen: ", len(temp))

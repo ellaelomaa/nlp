@@ -1,14 +1,14 @@
 import PySimpleGUI as sg
 import fetch
-import ella_tokenisointi as tokenisointi
+import tokenisointi
 import clean
 import count
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
     korpus = fetch.hae_korpus(asetukset["korpuspolku"])
-    tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
-    clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"], asetukset["sisaltosanat"], asetukset["sisaltosanapolku"])
+    # tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
+    # clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"], asetukset["sisaltosanat"], asetukset["sisaltosanapolku"])
 
     if asetukset["keskiarvot"] == True:
         count.tilastoja(korpus)
