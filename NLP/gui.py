@@ -1,14 +1,13 @@
 import PySimpleGUI as sg
-import os
 import fetch
 import ella_tokenisointi as tokenisointi
+import clean
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
-    print(asetukset["tokenisointi"])
     korpus = fetch.hae_korpus(asetukset["korpuspolku"])
     tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
-
+    clean.poistot(korpus, asetukset["hukkasanat"], asetukset["hukkasanapolku"])
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
 # Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja hukkasanat,
@@ -20,11 +19,12 @@ def kaynnista():
 # Sanakirjan alustus
 asetukset = {
     "lemmaus": False,
-    "stemmaus": False,
     "hukkasanat": False,
     "funktiosanat": False,
+    "erisnimet": False,
     "hukkasanapolku": "",
     "sisaltosanapolku": "",
+    "erisnimipolku": "",
     "korpuspolku": "",
     "tokenisointi": "sanoiksi"
 }
@@ -49,11 +49,10 @@ layout = [
 
     # Normalisointitavan valinta
     [
-        sg.Radio("Perusmuotoista", "stemlem",
+        sg.Radio("Perusmuotoista", "lemmaus",
                  enable_events=True, key='lemmaa'),
-        sg.Radio('Stemmaa', "stemlem", enable_events=True, key='stemmaa'),
-        sg.Radio('Ei mitään', "stemlem", enable_events=True,
-                 key='eistemlem', default=True)
+        sg.Radio('Ei mitään', "lemmaus", enable_events=True,
+                 key='eilemmaa', default=True)
     ],
 
     # Tokenisointitavan valinta
@@ -75,8 +74,12 @@ layout = [
         sg.Input(enable_events=True, key="hukkasanapolku"),
         sg.FileBrowse()],
     [sg.Checkbox(text=("Poista sisältösanat"), default=(
-        False), key="sisältö", enable_events=True),
+        False), key="sisalto", enable_events=True),
         sg.Input(enable_events=True, key="sisaltosanapolku"),
+        sg.FileBrowse()],
+    [sg.Checkbox(text=("Poista erisnimet"), default=(
+        False), key="erisnimet", enable_events=True),
+        sg.Input(enable_events=True, key="erisnimipolku"),
         sg.FileBrowse()],
 
     [sg.Button("Käynnistä ohjelma")],
@@ -101,18 +104,6 @@ while True:
         window["lista"].Update(values["korpuspolku"].split(";"))
 
     # Päivitetään valintojen perusteella asetussanakirjaa
-    if values["stemmaa"] == True:
-        asetukset["lemmaus"] = False
-        asetukset["stemmaus"] = True
-
-    if values["lemmaa"] == True:
-        asetukset["stemmaus"] = False
-        asetukset["lemmaus"] = True
-
-    if values["eistemlem"] == True:
-        asetukset["lemmaus"] = False
-        asetukset["stemmaus"] = False
-
     if values["sanoiksi"] == True:
         asetukset["tokenisointi"] = "sanoiksi"
 
@@ -122,9 +113,16 @@ while True:
     if values["virkkeiksi"] == True:
         asetukset["tokenisointi"] = "virkkeiksi"
 
+
+    asetukset["hukkasanat"] = values["hukka"]
+    asetukset["funktiosanat"] = values["sisalto"]
+    asetukset["erisnimet"] = values["erisnimet"]
+    asetukset["lemmaus"] = values["lemmaa"]
+
     # Haetaan poistettavien sanalistojen polut
     asetukset["hukkasanapolku"] = values["hukkasanapolku"]
     asetukset["sisaltosanapolku"] = values["sisaltosanapolku"]
+    asetukset["erisnimipolku"] = values["erisnimipolku"]
     asetukset["korpuspolku"] = values["korpuspolku"]
 
 window.close()

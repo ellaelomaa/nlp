@@ -26,7 +26,6 @@ def tokenisoi_lauseet(teksti):
     teksti = teksti.replace("\n", "")
     lauseet = re.split(', |-|! |\. |\.|\? |\(|\)|–|—|:', teksti)
     lauseet = list(filter(None, lauseet))
-    print(lauseet)
 
 # Virkkeiden tokenisointifunktio, eli isosta alkukirjaimesta pisteeseen, 
 # huutomerkkiin tai kysymyksmerkkiin.
@@ -36,8 +35,8 @@ def tokenisoi_virkkeet(teksti):
 def tokenisoi(korpus, valinta):
     for avain in korpus:
         if valinta == "sanoiksi":
-            print(tokenisoi_sanat(korpus[avain]))
+            korpus[avain] = tokenisoi_sanat(korpus[avain])
         elif valinta == "lauseiksi":
-            print(tokenisoi_lauseet(korpus[avain]))
+            korpus[avain] = tokenisoi_lauseet(korpus[avain])
         elif valinta == "virkkeiksi":
-            print(tokenisoi_virkkeet(korpus[avain]))
+            korpus[avain] = tokenisoi_virkkeet(korpus[avain])
