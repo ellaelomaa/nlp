@@ -11,22 +11,33 @@ testi = "raa'an aika-kausi Meidän vauva alkaa olla jo lähempänä kymmentä, k
 # Funktio tokenisoimaan sanat, eli erottelemaan ne listaksi.
 # Poistetaan samalla välimerkit, paitsi - ja '. 
 def tokenisoi_sanat(teksti):
-    valimerkiton = re.sub(r"[^\P{P}-']+", "", teksti)
+    valimerkiton = re.sub(r"[^\P{P}-'&]+", "", teksti)
+    valimerkiton.replace("&", "ja")
 
     # Erotellaan välilyönnistä sanat listaksi.
     tokenit = valimerkiton.split()
     return tokenit
+
+# Lauseiden tokenisointifunktio, eli lauseet erikoismerkistä erikoismerkkiin
+# : , . ; ajatusviiva ! ?s
+def tokenisoi_lauseet(teksti):
+
+    # Poistetaan ensin rivinvaihdot.
+    teksti = teksti.replace("\n", "")
+    lauseet = re.split(', |-|! |\. |\.|\? |\(|\)|–|—|:', teksti)
+    lauseet = list(filter(None, lauseet))
+    print(lauseet)
 
 # Virkkeiden tokenisointifunktio, eli isosta alkukirjaimesta pisteeseen, 
 # huutomerkkiin tai kysymyksmerkkiin.
 def tokenisoi_virkkeet(teksti):
     return sent_tokenize(teksti)
 
-# Lauseiden tokenisointifunktio, eli lauseet erikoismerkistä erikoismerkkiin
-# : , . ; ajatusviiva ! ?
-#TODO: vielä on joitakin välilyöntejä mukana.
-def tokenisoi_lauseet(teksti):
-    return re.split(', |-|! |\. |\.|\? |\(|\)|–|—|:', teksti)
-
-tokenisoi_lauseet(testi)
-
+def tokenisoi(korpus, valinta):
+    for avain in korpus:
+        if valinta == "sanoiksi":
+            print(tokenisoi_sanat(korpus[avain]))
+        elif valinta == "lauseiksi":
+            print(tokenisoi_lauseet(korpus[avain]))
+        elif valinta == "virkkeiksi":
+            print(tokenisoi_virkkeet(korpus[avain]))
