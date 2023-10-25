@@ -33,10 +33,9 @@ def sisaltosanojen_poisto(korpus, polku):
         temp = [sana for sana in sanalista if sana not in sisaltosanat]
         print("Jälkeen: ", len(temp))
         korpus[avain] = temp
-        
+
     return korpus
 
 def poistot(korpus, hukkabool, hukkapolku, sisaltobool, sisaltopolku):
-    print("hukkabool: ", hukkabool)
     if hukkabool == True:
         hukkasanojen_poisto(korpus, hukkapolku)
