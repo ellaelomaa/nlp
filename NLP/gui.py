@@ -42,26 +42,32 @@ asetukset = {
     "funktiotyyppimaara": False,
     "sisaltomaara": False,
     "sisaltotyyppimaara": False,
-    "lemmamaara": False
+    "lemmamaara": False,
+    "kaikki": False,
+    "tokenit": False,
+    "sisaltolista": False,
+    "funktiolista": False,
+    "hfl30": False,
+    "hfl50": False,
+    "hfl100": False,
+    "hapax": False
 }
-
-alkuaika = time.time()
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
 sg.theme("LightGreen10")
 
 tulostus_layout = [
-                   [sg.Checkbox(text="funktiosanojen määrä (N, %)",
-                                default=False, key="funktiomaara")],
-                   [sg.Checkbox(text="funktiosanatyyppien määrä (N)",
-                                default=False, key="funktiotyyppimaara")],
-                   [sg.Checkbox(text="sisältösanojen määrä (N, %)",
-                                default=False, key="sisaltomaara")],
-                   [sg.Checkbox(text="sisältösanatyyppien määrä (N)",
-                                default=False, key="sisaltotyyppimaara")],
-                   [sg.Checkbox(text="kaikkien lemmojen määrät (N)",
-                                default=False, key="lemmamaara")]
-                   ]
+    [sg.Checkbox(text="funktiosanojen määrä (N, %)",
+                 default=False, key="funktiomaara")],
+    [sg.Checkbox(text="funktiosanatyyppien määrä (N)",
+                 default=False, key="funktiotyyppimaara")],
+    [sg.Checkbox(text="sisältösanojen määrä (N, %)",
+                 default=False, key="sisaltomaara")],
+    [sg.Checkbox(text="sisältösanatyyppien määrä (N)",
+                 default=False, key="sisaltotyyppimaara")],
+    [sg.Checkbox(text="kaikkien lemmojen määrät (N)",
+                 default=False, key="lemmamaara")]
+]
 
 misc_layout = [
     [sg.Checkbox(text="TTR (Type-Token-Ratio)", default=False, key="TTR")],
@@ -72,7 +78,18 @@ menetelma_layout = [
     [sg.Checkbox(text="Jaccard similarity", default=False, key="jaccard")],
     [sg.Checkbox(text="Cosine similarity", default=False, key="cosine")],
     [sg.Checkbox(text="Eucledian distance", default=False, key="eucledian")],
+]
 
+samankaltaisuus_layout = [
+    [sg.Checkbox(text="Kaikki sanat (normalisoitu)",
+                 default=False, key="kaikki")],
+    [sg.Checkbox(text="Tokenit (normalisoitu)", default=False, key="tokenit")],
+    [sg.Checkbox(text="Sisältösanat", default=False, key="sisaltolista")],
+    [sg.Checkbox(text="Funktiosanat", default=False, key="funktiolista")],
+    [sg.Checkbox(text="HFL 30", default=False, key="hfl30")],
+    [sg.Checkbox(text="HFL 50", default=False, key="hfl50")],
+    [sg.Checkbox(text="HFL 100", default=False, key="hfl100")],
+    [sg.Checkbox(text="Hapax legomena", default=False, key="hapax"),]
 ]
 
 # Ulkoasu. Jokainen [ ] on yksi rivi. Jokaiseen asetukseen pitää laittaa
@@ -110,16 +127,18 @@ layout = [
         sg.Input(enable_events=True, key="erisnimipolku"),
         sg.FileBrowse()],
 
-    [sg.Frame("Tulostetaanko", tulostus_layout, title_location=sg.TITLE_LOCATION_TOP)],
-    [sg.Frame("Misc :D", misc_layout, title_location=sg.TITLE_LOCATION_TOP), sg.Frame("Menetelmä", menetelma_layout, title_location=sg.TITLE_LOCATION_TOP)],
-
+    [sg.Frame("Tulostetaanko", tulostus_layout,
+              title_location=sg.TITLE_LOCATION_TOP)],
+    [   sg.Frame("Misc :D", misc_layout, title_location=sg.TITLE_LOCATION_TOP), 
+        sg.Frame("Menetelmä", menetelma_layout, title_location=sg.TITLE_LOCATION_TOP), 
+        sg.Frame("Sanaston samankaltaisuus", samankaltaisuus_layout, title_location=sg.TITLE_LOCATION_TOP)],
     [sg.Button("Käynnistä ohjelma")],
     [sg.Button("Sulje")]
 ]
 
 # Luodaan ikkuna
 window = sg.Window("Helmin NLP-ohjelma",
-                   layout, icon="99_85283.ico")
+                   layout, icon="99_85283.ico", resizable=True)
 
 # Ikkuna on auki ja käyttäjä silmukassa, kunnes itse sulkee ohjelman
 while True:
@@ -133,6 +152,7 @@ while True:
         else:
             kaynnista()
 
+    # Valintalaatikkojen asetukset
     asetukset["funktiosanat"] = values["funktio"]
     asetukset["sisaltosanat"] = values["sisalto"]
     asetukset["erisnimet"] = values["erisnimet"]
@@ -144,7 +164,6 @@ while True:
     asetukset["sisaltomaara"] = values["sisaltomaara"]
     asetukset["sisaltotyyppimaara"] = values["sisaltotyyppimaara"]
     asetukset["lemmamaara"] = values["lemmamaara"]
-
 
     # Haetaan poistettavien sanalistojen polut
     asetukset["funktiosanapolku"] = values["funktiosanapolku"]
