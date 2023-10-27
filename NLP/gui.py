@@ -64,10 +64,7 @@ layout = [
     # Käsiteltävien tekstien valinta
     [
         sg.Text("Valitse korpuksen sisältävä kansio:"),
-        sg.LBox([], size=(50, 1), expand_x=True,
-                expand_y=True, key="lista"),
-        sg.Input(visible=False, enable_events=True, key="korpuspolku",
-                 font=("Arial Bold", 10), expand_x=True),
+        sg.Input(enable_events=True, key="korpuspolku"),
         sg.FolderBrowse()
     ],
 
@@ -131,10 +128,6 @@ while True:
 
     if event == "Käynnistä ohjelma":
         kaynnista()
-
-    # Päivitetään laatikkoon valittujen tiedostojen polut
-    if event == "korpuspolku":
-        window["lista"].Update(values["korpuspolku"].split(";"))
 
     # Päivitetään valintojen perusteella asetussanakirjaa
     if values["sanoiksi"] == True:
