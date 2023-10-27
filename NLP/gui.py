@@ -119,7 +119,7 @@ layout = [
 
 # Luodaan ikkuna
 window = sg.Window("Helmin NLP-ohjelma",
-                   layout, )
+                   layout, icon="99_85283.ico")
 
 # Ikkuna on auki ja käyttäjä silmukassa, kunnes itse sulkee ohjelman
 while True:
