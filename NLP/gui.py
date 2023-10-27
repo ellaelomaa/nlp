@@ -7,43 +7,27 @@ import time
 import NLP_sanalista
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
+
+
 def kaynnista():
     korpus = fetch.hae_korpus(asetukset["korpuspolku"])
     count.tilasto_maarat(korpus)
-    
+
     # Korpus, josta poistettu sanat.
-    #siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
-
-    if asetukset["keskiarvot"] == True:
-        count.tilasto_maarat(korpus)
-    
-    if asetukset["sanasto"] == True:
-        NLP_sanalista.sanasto(korpus)
-
-    if asetukset["virkkeet"] == True:
-        count.virkemäärä(korpus)
-
-    if asetukset["virkepituus"] == True:
-        count.virkepituus(korpus)
-
-    if asetukset["lausemaara"] == True:
-        count.lausemäärä(korpus)
-    
-    if asetukset["lausepituus"] == True:
-        count.lausepituus(korpus)
+    # siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
 
     if asetukset["grafeemeina"] == True:
         count.grafeemeina(korpus)
-    
+
     if asetukset["sanoina"] == True:
         count.sanoina(korpus)
-    
+
     if asetukset["lauseina"] == True:
         count.lauseina(korpus)
 
+
 # Sanakirjan alustus
 asetukset = {
-    "lemmaus": False,
     "funktiosanat": False,
     "sisaltosanat": False,
     "erisnimet": False,
@@ -51,15 +35,14 @@ asetukset = {
     "sisaltosanapolku": "",
     "erisnimipolku": "",
     "korpuspolku": "",
-    "keskiarvot": False,
-    "sanasto": False,
-    "virkkeet": False,
-    "virkepituus": False,
-    "lausemaara": False,
-    "lausepituus": False,
     "grafeemeina": False,
     "sanoina": False,
-    "lauseina": False
+    "lauseina": False,
+    "funktiomaara": False,
+    "funktiotyyppimaara": False,
+    "sisaltomaara": False,
+    "sisaltotyyppimaara": False,
+    "lemmamaara": False
 }
 
 alkuaika = time.time()
@@ -67,10 +50,35 @@ alkuaika = time.time()
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
 sg.theme("LightGreen10")
 
+tulostus_layout = [
+                   [sg.Checkbox(text="funktiosanojen määrä (N, %)",
+                                default=False, key="funktiomaara")],
+                   [sg.Checkbox(text="funktiosanatyyppien määrä (N)",
+                                default=False, key="funktiotyyppimaara")],
+                   [sg.Checkbox(text="sisältösanojen määrä (N, %)",
+                                default=False, key="sisaltomaara")],
+                   [sg.Checkbox(text="sisältösanatyyppien määrä (N)",
+                                default=False, key="sisaltotyyppimaara")],
+                   [sg.Checkbox(text="kaikkien lemmojen määrät (N)",
+                                default=False, key="lemmamaara")]
+                   ]
+
+misc_layout = [
+    [sg.Checkbox(text="TTR (Type-Token-Ratio)", default=False, key="TTR")],
+    [sg.Checkbox(text="LD (Lexical Density)", default=False, key="LD")]
+]
+
+menetelma_layout = [
+    [sg.Checkbox(text="Jaccard similarity", default=False, key="jaccard")],
+    [sg.Checkbox(text="Cosine similarity", default=False, key="cosine")],
+    [sg.Checkbox(text="Eucledian distance", default=False, key="eucledian")],
+
+]
+
 # Ulkoasu. Jokainen [ ] on yksi rivi. Jokaiseen asetukseen pitää laittaa
 # avain ja enable_events
 layout = [
-    [sg.Text("Asetukset", font=("Arial Bold", 20))],
+    [sg.Text("Asetukset", font=("Bebas Neue", 20))],
 
     # Käsiteltävien tekstien valinta
     [
@@ -80,20 +88,13 @@ layout = [
     ],
 
     [sg.Text("Sana-, lause- ja virkepituus (keskiarvo)"),
-     sg.Checkbox(text=("grafeemeina"), default=(False), key="grafeemeina", enable_events=True),
-     sg.Checkbox(text=("sanoina"), default=(False), key="sanoina", enable_events=True),
-     sg.Checkbox(text=("lauseina"), default=(False), key="lauseina", enable_events=True),
+     sg.Checkbox(text=("grafeemeina"), default=(False),
+                 key="grafeemeina", enable_events=True),
+     sg.Checkbox(text=("sanoina"), default=(False),
+                 key="sanoina", enable_events=True),
+     sg.Checkbox(text=("lauseina"), default=(False),
+                 key="lauseina", enable_events=True),
      ],
-
-    # # Normalisointitavan valinta
-    # [
-    #     sg.Radio("Perusmuotoista", "lemmaus",
-    #              enable_events=True, key='lemmaa'),
-    #     sg.Radio('Ei mitään', "lemmaus", enable_events=True,
-    #              key='eilemmaa', default=True)
-    # ],
-
-    # Tokenisointitavan valinta
 
     # Poistettavien sanojen valinta
     [sg.Checkbox(text=("Poista funktiosanat"), default=(
@@ -108,15 +109,9 @@ layout = [
         False), key="erisnimet", enable_events=True),
         sg.Input(enable_events=True, key="erisnimipolku"),
         sg.FileBrowse()],
-    
-    [sg.Text("Tulosta "),
-        sg.Checkbox("keskiarvotietoja", default=False, key="keskiarvot"),
-        sg.Checkbox("sanaston laajuus", default=False, key="sanasto"),
-        sg.Checkbox("virkemäärä", default=False, key="virkkeet"),                
-        sg.Checkbox("virkepituus", default=False, key="virkepituus"),                
-        sg.Checkbox("lausemäärä", default=False, key="lausemaara"),                
-        sg.Checkbox("lausepituus", default=False, key="lausepituus"),                
-        ],
+
+    [sg.Frame("Tulostetaanko", tulostus_layout, title_location=sg.TITLE_LOCATION_TOP)],
+    [sg.Frame("Misc :D", misc_layout, title_location=sg.TITLE_LOCATION_TOP), sg.Frame("Menetelmä", menetelma_layout, title_location=sg.TITLE_LOCATION_TOP)],
 
     [sg.Button("Käynnistä ohjelma")],
     [sg.Button("Sulje")]
@@ -133,20 +128,23 @@ while True:
         break
 
     if event == "Käynnistä ohjelma":
-        kaynnista()
+        if values["korpuspolku"] == "":
+            sg.popup_ok("Valitse korpuskansio.")
+        else:
+            kaynnista()
 
     asetukset["funktiosanat"] = values["funktio"]
     asetukset["sisaltosanat"] = values["sisalto"]
     asetukset["erisnimet"] = values["erisnimet"]
-    asetukset["keskiarvot"] = values["keskiarvot"]
-    asetukset["sanasto"] = values["sanasto"]
-    asetukset["virkkeet"] = values["virkkeet"]
-    asetukset["virkepituus"] = values["virkepituus"]
-    asetukset["lausemaara"] = values["lausemaara"]
-    asetukset["lausepituus"] = values["lausepituus"]
     asetukset["grafeemeina"] = values["grafeemeina"]
     asetukset["sanoina"] = values["sanoina"]
     asetukset["lauseina"] = values["lauseina"]
+    asetukset["funktiomaara"] = values["funktiomaara"]
+    asetukset["funktiotyyppimaara"] = values["funktiotyyppimaara"]
+    asetukset["sisaltomaara"] = values["sisaltomaara"]
+    asetukset["sisaltotyyppimaara"] = values["sisaltotyyppimaara"]
+    asetukset["lemmamaara"] = values["lemmamaara"]
+
 
     # Haetaan poistettavien sanalistojen polut
     asetukset["funktiosanapolku"] = values["funktiosanapolku"]
