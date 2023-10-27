@@ -23,12 +23,15 @@ def tokenisoi_lauseet(teksti):
     # Poistetaan ensin rivinvaihdot.
     teksti = teksti.replace("\n", "")
     lauseet = re.split(', |-|! |\. |\.|\? |\(|\)|–|—|:', teksti)
+    # Poistetaan tyhjät alkiot.
     lauseet = list(filter(None, lauseet))
+    return lauseet
 
 # Virkkeiden tokenisointifunktio, eli isosta alkukirjaimesta pisteeseen, 
 # huutomerkkiin tai kysymyksmerkkiin.
 def tokenisoi_virkkeet(teksti):
-    return sent_tokenize(teksti)
+    virkkeet= sent_tokenize(teksti)
+    return virkkeet
 
 def tokenisoi(korpus, valinta):
     for avain in korpus:

@@ -18,6 +18,7 @@ def hae_korpus(polku):
                 teksti += hae_tiedosto(tiedostopolku)
                 teksti += " "
         
-        korpus[bloginimi] = teksti
+        if len(teksti) > 0:
+            korpus[bloginimi] = teksti
    
     return korpus

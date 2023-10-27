@@ -4,35 +4,33 @@ import tokenisointi
 import clean
 import count
 import time
+import NLP_sanalista
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
     korpus = fetch.hae_korpus(asetukset["korpuspolku"])
-    tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
+    #tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
     
     # Korpus, josta poistettu sanat.
-    siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
-
-# Ehdotan, että asetuksia varten luodaan sanakirja.
-# Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja hukkasanat,
-    # tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
-    # clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"], asetukset["sisaltosanat"], asetukset["sisaltosanapolku"])
+    #siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
 
     if asetukset["keskiarvot"] == True:
         count.tilastoja(korpus)
     
     if asetukset["sanasto"] == True:
-        count.sanasto(korpus)
+        NLP_sanalista.sanasto(korpus)
 
     if asetukset["virkkeet"] == True:
         count.virkemäärä(korpus)
 
-# Ehdotan, että asetuksia varten luodaan sanakirja.
-# Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja funktiosanat,
-# olisi sanakirjan default-arvoina False, False ja False. Asetuksia muuttamalla
-# saisi esimerkiksi listan False, True ja True. Tämä lista välitettäisiin
-# parametrina main-funktioon, tai missä ikinä päätetäänkään mitä
-# korpukselle/tekstille halutaan tehdä.
+    if asetukset["virkepituus"] == True:
+        count.virkepituus(korpus)
+
+    if asetukset["lausemaara"] == True:
+        count.lausemäärä(korpus)
+    
+    if asetukset["lausepituus"] == True:
+        count.lausepituus(korpus)
 
 # Sanakirjan alustus
 asetukset = {
@@ -48,7 +46,9 @@ asetukset = {
     "keskiarvot": False,
     "sanasto": False,
     "virkkeet": False,
-    "virkepituus": False
+    "virkepituus": False,
+    "lausemaara": False,
+    "lausepituus": False
 }
 
 alkuaika = time.time()
@@ -111,6 +111,8 @@ layout = [
         sg.Checkbox("sanaston laajuus", default=False, key="sanasto"),
         sg.Checkbox("virkemäärä", default=False, key="virkkeet"),                
         sg.Checkbox("virkepituus", default=False, key="virkepituus"),                
+        sg.Checkbox("lausemäärä", default=False, key="lausemaara"),                
+        sg.Checkbox("lausepituus", default=False, key="lausepituus"),                
         ],
 
     [sg.Button("Käynnistä ohjelma")],
@@ -153,6 +155,8 @@ while True:
     asetukset["sanasto"] = values["sanasto"]
     asetukset["virkkeet"] = values["virkkeet"]
     asetukset["virkepituus"] = values["virkepituus"]
+    asetukset["lausemaara"] = values["lausemaara"]
+    asetukset["lausepituus"] = values["lausepituus"]
 
     # Haetaan poistettavien sanalistojen polut
     asetukset["funktiosanapolku"] = values["funktiosanapolku"]

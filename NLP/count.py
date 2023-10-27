@@ -1,9 +1,9 @@
 import tokenisointi
+import regex as re
 
 # Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
 toka_taso = "    "
-kolmas_taso = "      "
 
 # listayksköiden määrä (sanasto)
 def sanamäärä(korpus):
@@ -36,33 +36,53 @@ def sanapituus(korpus):
             print(toka_taso, "Sanojen keskiarvoinen pituus: ", round(merkkeja/sanoja, 2))
 
 def virkemäärä(korpus):
+    print("Virkkeiden määrä:")
     for arvo in korpus:
         virkelista = tokenisointi.tokenisoi_virkkeet(korpus[arvo])
         print(eka_taso, arvo)
         print(toka_taso, "Virkkeiden määrä: ", len(virkelista))
-    #count virkkeet
 
 def virkepituus(korpus):
+    print("Virkkeiden pituus:")
+    virkkeita = 0
     for arvo in korpus:
+        print(eka_taso, arvo)
+        virkkeita = tokenisointi.tokenisoi_virkkeet(korpus[arvo])
+
+        # Virkkeiden pituus lauseina
+        lauseita = tokenisointi.tokenisoi_lauseet(korpus[arvo])
+        print(toka_taso, "Keskimäärin lauseita virkkeessä: ", round(len(lauseita)/len(virkkeita),2))
+
         # Virkkeiden pituus sanoina
-        virkkeita = len(virkemäärä(korpus[arvo]))
-        sanoja = 0
-        for virke in korpus[arvo]:
-            sanoja += len(virke)
-        print("S")
+        sanoja = len(tokenisointi.tokenisoi_sanat(korpus[arvo]))
+        print(toka_taso, "Keskimäärin sanoja virkkeessä: ", round(sanoja/len(virkkeita), 2))
 
-        # laske virkkeet grafeemeina
-        # laske virkkeet lauseina
-        # keskiarvo kaikista
+        # Virkkeiden pituus grafeemeina, mukaan lukien erikoismerkit
+        grafeemeja = len(korpus[arvo])
+        print(toka_taso, "Keskimäärin grafeemeja virkkeessä: ", round(grafeemeja/len(virkkeita), 2))
 
-# def lausemäärä():
-#     #count lauseet
 
-# def lausepituus():
-#     #laske lauseet sanoina
-#     #laske lauseet grafeemeina
-#     #laske keskiarvo kummastakin
+    # Lauseiden määrä blogissa
+def lausemäärä(korpus):
+    print("Lauseiden määrä: ")
+    for arvo in korpus:
+        print(eka_taso, arvo, "lauseita: ", len(tokenisointi.tokenisoi_lauseet(korpus[arvo])))
 
+
+def lausepituus(korpus):
+    print("Lauseiden pituus:")
+    for arvo in korpus:
+        print(eka_taso, arvo)
+        lauseita = tokenisointi.tokenisoi_lauseet(korpus[arvo])
+
+        # Lauseiden pituus sanoina
+        sanoja = len(tokenisointi.tokenisoi_sanat(korpus[arvo]))
+        print(toka_taso, "Keskimäärin sanoja lauseessa: ", round(sanoja/len(lauseita)))
+
+        # Lauseiden pituus grafeemeina, eli ilman erikoismerkkejä
+        valimerkiton = re.sub(r"[^\P{P}-'&]+", "", korpus[arvo])
+        valimerkiton.replace("&", "ja")
+        print(toka_taso, "Keskimäärin grafeemeja lauseessa: ", round(len(valimerkiton)/len(lauseita)))
 
 def tilastoja(korpus):
     print("Tilastoja: ")
