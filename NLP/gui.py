@@ -9,7 +9,6 @@ import NLP_sanalista
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
     korpus = fetch.hae_korpus(asetukset["korpuspolku"])
-    #tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
     
     # Korpus, josta poistettu sanat.
     #siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
@@ -42,7 +41,6 @@ asetukset = {
     "sisaltosanapolku": "",
     "erisnimipolku": "",
     "korpuspolku": "",
-    "tokenisointi": "sanoiksi",
     "keskiarvot": False,
     "sanasto": False,
     "virkkeet": False,
@@ -77,17 +75,6 @@ layout = [
     ],
 
     # Tokenisointitavan valinta
-
-    # Normalisointitavan valinta
-    [
-        sg.Text("Tokenisoi "),
-        sg.Radio("sanoiksi", "token",
-                 enable_events=True, key='sanoiksi', default=True),
-        sg.Radio('lauseiksi', "token", enable_events=True, key='lauseiksi'),
-        sg.Radio('virkkeiksi', "token", enable_events=True,
-                 key='virkkeiksi')
-    ],
-
 
     # Poistettavien sanojen valinta
     [sg.Checkbox(text=("Poista funktiosanat"), default=(
@@ -128,17 +115,6 @@ while True:
 
     if event == "Käynnistä ohjelma":
         kaynnista()
-
-    # Päivitetään valintojen perusteella asetussanakirjaa
-    if values["sanoiksi"] == True:
-        asetukset["tokenisointi"] = "sanoiksi"
-
-    if values["lauseiksi"] == True:
-        asetukset["tokenisointi"] = "lauseiksi"
-        
-    if values["virkkeiksi"] == True:
-        asetukset["tokenisointi"] = "virkkeiksi"
-
 
     asetukset["funktiosanat"] = values["funktio"]
     asetukset["sisaltosanat"] = values["sisalto"]
