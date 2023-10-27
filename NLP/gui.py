@@ -9,12 +9,13 @@ import NLP_sanalista
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
     korpus = fetch.hae_korpus(asetukset["korpuspolku"])
+    count.tilasto_maarat(korpus)
     
     # Korpus, josta poistettu sanat.
     #siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
 
     if asetukset["keskiarvot"] == True:
-        count.tilastoja(korpus)
+        count.tilasto_maarat(korpus)
     
     if asetukset["sanasto"] == True:
         NLP_sanalista.sanasto(korpus)
@@ -31,6 +32,15 @@ def kaynnista():
     if asetukset["lausepituus"] == True:
         count.lausepituus(korpus)
 
+    if asetukset["grafeemeina"] == True:
+        count.grafeemeina(korpus)
+    
+    if asetukset["sanoina"] == True:
+        count.sanoina(korpus)
+    
+    if asetukset["lauseina"] == True:
+        count.lauseina(korpus)
+
 # Sanakirjan alustus
 asetukset = {
     "lemmaus": False,
@@ -46,7 +56,10 @@ asetukset = {
     "virkkeet": False,
     "virkepituus": False,
     "lausemaara": False,
-    "lausepituus": False
+    "lausepituus": False,
+    "grafeemeina": False,
+    "sanoina": False,
+    "lauseina": False
 }
 
 alkuaika = time.time()
@@ -66,13 +79,19 @@ layout = [
         sg.FolderBrowse()
     ],
 
-    # Normalisointitavan valinta
-    [
-        sg.Radio("Perusmuotoista", "lemmaus",
-                 enable_events=True, key='lemmaa'),
-        sg.Radio('Ei mitään', "lemmaus", enable_events=True,
-                 key='eilemmaa', default=True)
-    ],
+    [sg.Text("Sana-, lause- ja virkepituus (keskiarvo)"),
+     sg.Checkbox(text=("grafeemeina"), default=(False), key="grafeemeina", enable_events=True),
+     sg.Checkbox(text=("sanoina"), default=(False), key="sanoina", enable_events=True),
+     sg.Checkbox(text=("lauseina"), default=(False), key="lauseina", enable_events=True),
+     ],
+
+    # # Normalisointitavan valinta
+    # [
+    #     sg.Radio("Perusmuotoista", "lemmaus",
+    #              enable_events=True, key='lemmaa'),
+    #     sg.Radio('Ei mitään', "lemmaus", enable_events=True,
+    #              key='eilemmaa', default=True)
+    # ],
 
     # Tokenisointitavan valinta
 
@@ -119,13 +138,15 @@ while True:
     asetukset["funktiosanat"] = values["funktio"]
     asetukset["sisaltosanat"] = values["sisalto"]
     asetukset["erisnimet"] = values["erisnimet"]
-    asetukset["lemmaus"] = values["lemmaa"]
     asetukset["keskiarvot"] = values["keskiarvot"]
     asetukset["sanasto"] = values["sanasto"]
     asetukset["virkkeet"] = values["virkkeet"]
     asetukset["virkepituus"] = values["virkepituus"]
     asetukset["lausemaara"] = values["lausemaara"]
     asetukset["lausepituus"] = values["lausepituus"]
+    asetukset["grafeemeina"] = values["grafeemeina"]
+    asetukset["sanoina"] = values["sanoina"]
+    asetukset["lauseina"] = values["lauseina"]
 
     # Haetaan poistettavien sanalistojen polut
     asetukset["funktiosanapolku"] = values["funktiosanapolku"]
