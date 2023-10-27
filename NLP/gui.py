@@ -3,6 +3,7 @@ import fetch
 import tokenisointi
 import clean
 import count
+import time
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
@@ -12,6 +13,12 @@ def kaynnista():
 
     if asetukset["keskiarvot"] == True:
         count.tilastoja(korpus)
+    
+    if asetukset["sanasto"] == True:
+        count.sanasto(korpus)
+
+    if asetukset["virkkeet"] == True:
+        count.virkemäärä(korpus)
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
 # Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja funktiosanat,
@@ -32,7 +39,12 @@ asetukset = {
     "korpuspolku": "",
     "tokenisointi": "sanoiksi",
     "keskiarvot": False,
+    "sanasto": False,
+    "virkkeet": False,
+    "virkepituus": False
 }
+
+alkuaika = time.time()
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
 sg.theme("LightGreen10")
@@ -87,7 +99,12 @@ layout = [
         sg.Input(enable_events=True, key="erisnimipolku"),
         sg.FileBrowse()],
     
-    [sg.Checkbox("Tulosta keskiarvotietoja", default=False, key="keskiarvot")],
+    [sg.Text("Tulosta "),
+        sg.Checkbox("keskiarvotietoja", default=False, key="keskiarvot"),
+        sg.Checkbox("sanaston laajuus", default=False, key="sanasto"),
+        sg.Checkbox("virkemäärä", default=False, key="virkkeet"),                
+        sg.Checkbox("virkepituus", default=False, key="virkepituus"),                
+        ],
 
     [sg.Button("Käynnistä ohjelma")],
     [sg.Button("Sulje")]
@@ -125,12 +142,16 @@ while True:
     asetukset["sisaltosanat"] = values["sisalto"]
     asetukset["erisnimet"] = values["erisnimet"]
     asetukset["lemmaus"] = values["lemmaa"]
+    asetukset["keskiarvot"] = values["keskiarvot"]
+    asetukset["sanasto"] = values["sanasto"]
+    asetukset["virkkeet"] = values["virkkeet"]
+    asetukset["virkepituus"] = values["virkepituus"]
 
     # Haetaan poistettavien sanalistojen polut
     asetukset["funktiosanapolku"] = values["funktiosanapolku"]
     asetukset["sisaltosanapolku"] = values["sisaltosanapolku"]
     asetukset["erisnimipolku"] = values["erisnimipolku"]
     asetukset["korpuspolku"] = values["korpuspolku"]
-    asetukset["keskiarvot"] = values["keskiarvot"]
+
 
 window.close()

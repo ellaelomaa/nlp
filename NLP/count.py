@@ -1,4 +1,7 @@
 import tokenisointi
+from nltk.probability import FreqDist
+
+# Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
 toka_taso = "    "
 kolmas_taso = "      "
@@ -31,23 +34,40 @@ def sanapituus(korpus):
         print(toka_taso, "Merkkejä: ", merkkeja)
         print(toka_taso, "Sanoja: ", sanoja)
         if (merkkeja > 0 and sanoja > 0):
-            print(toka_taso, "Sanojen keskiarvoinen pituus: ", round(merkkeja/sanoja, 2))       
-        # print(toka_taso, merkkeja/sanoja)
+            print(toka_taso, "Sanojen keskiarvoinen pituus: ", round(merkkeja/sanoja, 2))
 
 
-# def sanasto():
-#     #lemmatisointi
-#     #remove duplicates
-#     #count
+def sanasto(korpus):
+    #lemmatisointi
+    #remove duplicates
+    #count
+    fdist = FreqDist()
+    print("Sanaston laajuus (lemmaamaton):")
+    for arvo in korpus:
+        print(eka_taso, arvo)
+        sanalista = tokenisointi.tokenisoi_sanat(korpus[arvo])
+        for sana in sanalista:
+            fdist[sana.lower()] += 1
+        print(toka_taso, fdist.B())
 
-# def virkemäärä():
-#     #count virkkeet
+def virkemäärä(korpus):
+    for arvo in korpus:
+        virkelista = tokenisointi.tokenisoi_virkkeet(korpus[arvo])
+        print(eka_taso, arvo)
+        print(toka_taso, "Virkkeiden määrä: ", len(virkelista))
+    #count virkkeet
 
-# def virkepituus():
-#     # laske virkkeet sanoina
-#     # laske virkkeet grafeemeina
-#     # laske virkkeet lauseina
-#     # keskiarvo kaikista
+def virkepituus(korpus):
+    for arvo in korpus:
+        # Virkkeiden pituus sanoina
+        virkkeita = len(virkemäärä(korpus[arvo]))
+        sanoja = 0
+        for virke in korpus[arvo]:
+
+
+        # laske virkkeet grafeemeina
+        # laske virkkeet lauseina
+        # keskiarvo kaikista
 
 # def lausemäärä():
 #     #count lauseet
