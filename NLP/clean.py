@@ -4,7 +4,7 @@ import tokenisointi
 # poista tietyt sanat (erillinen lista)
 
 # Funktiosanojen poisto
-def hukkasanojen_poisto(korpus, polku):
+def funktiosanojen_poisto(korpus, polku):
 
     tiedosto = open(polku, "r")
     data = tiedosto.read()
@@ -36,6 +36,6 @@ def sisaltosanojen_poisto(korpus, polku):
 
     return korpus
 
-def poistot(korpus, hukkabool, hukkapolku, sisaltobool, sisaltopolku):
-    if hukkabool == True:
-        hukkasanojen_poisto(korpus, hukkapolku)
+def poistot(korpus, funktiobool, funktiopolku, sisaltobool, sisaltopolku):
+    if funktiobool == True:
+        funktiosanojen_poisto(korpus, funktiopolku)

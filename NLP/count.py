@@ -63,7 +63,8 @@ def virkepituus(korpus):
         virkkeita = len(virkemäärä(korpus[arvo]))
         sanoja = 0
         for virke in korpus[arvo]:
-
+            sanoja += len(virke)
+        print("S")
 
         # laske virkkeet grafeemeina
         # laske virkkeet lauseina
