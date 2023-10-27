@@ -9,7 +9,9 @@ import time
 def kaynnista():
     korpus = fetch.hae_korpus(asetukset["korpuspolku"])
     tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
-    clean.poistot(korpus, asetukset["hukkasanat"], asetukset["hukkasanapolku"])
+    
+    # Korpus, josta poistettu sanat.
+    siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
 # Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja hukkasanat,
