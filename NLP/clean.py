@@ -5,7 +5,6 @@ import tokenisointi
 
 # Funktiosanojen poisto
 def funktiosanojen_poisto(korpus, polku):
-
     tiedosto = open(polku, "r")
     data = tiedosto.read()
     # Muutetaan tiedosto listaksi

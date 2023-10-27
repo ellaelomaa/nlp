@@ -1,5 +1,4 @@
 import tokenisointi
-from nltk.probability import FreqDist
 
 # Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
@@ -35,20 +34,6 @@ def sanapituus(korpus):
         print(toka_taso, "Sanoja: ", sanoja)
         if (merkkeja > 0 and sanoja > 0):
             print(toka_taso, "Sanojen keskiarvoinen pituus: ", round(merkkeja/sanoja, 2))
-
-
-def sanasto(korpus):
-    #lemmatisointi
-    #remove duplicates
-    #count
-    fdist = FreqDist()
-    print("Sanaston laajuus (lemmaamaton):")
-    for arvo in korpus:
-        print(eka_taso, arvo)
-        sanalista = tokenisointi.tokenisoi_sanat(korpus[arvo])
-        for sana in sanalista:
-            fdist[sana.lower()] += 1
-        print(toka_taso, fdist.B())
 
 def virkemäärä(korpus):
     for arvo in korpus:

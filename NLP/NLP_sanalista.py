@@ -1,4 +1,5 @@
 import clean.py
+from nltk.probability import FreqDist
 
 # Funktiosanalista
 def funktiosanat(normalisoitu):
@@ -43,3 +44,16 @@ def saneet(tokenit):
     # normalisointi
     # remove duplicates
     return sanelista
+
+def sanasto(korpus):
+    #lemmatisointi
+    #remove duplicates
+    #count
+    fdist = FreqDist()
+    print("Sanaston laajuus (lemmaamaton):")
+    for arvo in korpus:
+        print(eka_taso, arvo)
+        sanalista = tokenisointi.tokenisoi_sanat(korpus[arvo])
+        for sana in sanalista:
+            fdist[sana.lower()] += 1
+        print(toka_taso, fdist.B())
