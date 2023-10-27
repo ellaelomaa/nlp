@@ -1,7 +1,8 @@
 import PySimpleGUI as sg
 import fetch
-import NLP.tokenisointi as tokenisointi
+import tokenisointi
 import clean
+import count
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 def kaynnista():
@@ -11,6 +12,14 @@ def kaynnista():
 
 # Ehdotan, että asetuksia varten luodaan sanakirja.
 # Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja hukkasanat,
+    # tokenisointi.tokenisoi(korpus, asetukset["tokenisointi"])
+    # clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"], asetukset["sisaltosanat"], asetukset["sisaltosanapolku"])
+
+    if asetukset["keskiarvot"] == True:
+        count.tilastoja(korpus)
+
+# Ehdotan, että asetuksia varten luodaan sanakirja.
+# Esim. jos mahdolliset asetukset ovat alustavasti lemmaus, stemmaus ja funktiosanat,
 # olisi sanakirjan default-arvoina False, False ja False. Asetuksia muuttamalla
 # saisi esimerkiksi listan False, True ja True. Tämä lista välitettäisiin
 # parametrina main-funktioon, tai missä ikinä päätetäänkään mitä
@@ -19,14 +28,15 @@ def kaynnista():
 # Sanakirjan alustus
 asetukset = {
     "lemmaus": False,
-    "hukkasanat": False,
     "funktiosanat": False,
+    "sisaltosanat": False,
     "erisnimet": False,
-    "hukkasanapolku": "",
+    "funktiosanapolku": "",
     "sisaltosanapolku": "",
     "erisnimipolku": "",
     "korpuspolku": "",
-    "tokenisointi": "sanoiksi"
+    "tokenisointi": "sanoiksi",
+    "keskiarvot": False,
 }
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
@@ -69,9 +79,9 @@ layout = [
 
 
     # Poistettavien sanojen valinta
-    [sg.Checkbox(text=("Poista hukkasanat"), default=(
-        False), key="hukka", enable_events=True),
-        sg.Input(enable_events=True, key="hukkasanapolku"),
+    [sg.Checkbox(text=("Poista funktiosanat"), default=(
+        False), key="funktio", enable_events=True),
+        sg.Input(enable_events=True, key="funktiosanapolku"),
         sg.FileBrowse()],
     [sg.Checkbox(text=("Poista sisältösanat"), default=(
         False), key="sisalto", enable_events=True),
@@ -81,6 +91,8 @@ layout = [
         False), key="erisnimet", enable_events=True),
         sg.Input(enable_events=True, key="erisnimipolku"),
         sg.FileBrowse()],
+    
+    [sg.Checkbox("Tulosta keskiarvotietoja", default=False, key="keskiarvot")],
 
     [sg.Button("Käynnistä ohjelma")],
     [sg.Button("Sulje")]
@@ -114,15 +126,16 @@ while True:
         asetukset["tokenisointi"] = "virkkeiksi"
 
 
-    asetukset["hukkasanat"] = values["hukka"]
-    asetukset["funktiosanat"] = values["sisalto"]
+    asetukset["funktiosanat"] = values["funktio"]
+    asetukset["sisaltosanat"] = values["sisalto"]
     asetukset["erisnimet"] = values["erisnimet"]
     asetukset["lemmaus"] = values["lemmaa"]
 
     # Haetaan poistettavien sanalistojen polut
-    asetukset["hukkasanapolku"] = values["hukkasanapolku"]
+    asetukset["funktiosanapolku"] = values["funktiosanapolku"]
     asetukset["sisaltosanapolku"] = values["sisaltosanapolku"]
     asetukset["erisnimipolku"] = values["erisnimipolku"]
     asetukset["korpuspolku"] = values["korpuspolku"]
+    asetukset["keskiarvot"] = values["keskiarvot"]
 
 window.close()

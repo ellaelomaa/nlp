@@ -1,7 +1,7 @@
+import fetch #tota korpusnimee varten importtasin mutta lol ei toimi
 
 def korpuksenhakujuttu():
-    #hae korpus -funktio tähän
-    print("Korpuksen nimi:" + corpusname)
+    print("Korpuksen nimi:" + corpus_name) #pitääkö tälle tehä oma returninsa?
     print("Sanoja korpuksessa:" + sanamäärä)
     print("Sanapituuden keskiarvo:" + sanapituus)
     print("Sanaston laajuus:" + sanasto)

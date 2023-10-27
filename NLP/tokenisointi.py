@@ -1,10 +1,40 @@
+from nltk.tokenize import sent_tokenize
+import nltk
+import regex as re
+from re import split
 
-# tokenisoi sanat
-def sanat():
+# Tarvitaan sent_tokenizen toimimiseen. Lataa vain kerran, sitten voi poistaa :)
+#nltk.download("punkt")
 
-#tokenisoi lauseet (erikoismerkistä erikoismerkkiin: : , . ; ajatusviiva ! ?)
-# jos monta erikoismerkkiä peräkkäin (?? !! ...) niin poista --> entä jos "ei!" <- poistaako?
-def lauseet():
+# Funktio tokenisoimaan sanat, eli erottelemaan ne listaksi.
+# Poistetaan samalla välimerkit, paitsi - ja '. 
+def tokenisoi_sanat(teksti):
+    valimerkiton = re.sub(r"[^\P{P}-'&]+", "", teksti)
+    valimerkiton.replace("&", "ja")
 
-#tokenisoi virkkeet (isosta kirjaimesta pisteeseen, huutomerkkiin, kysymysmerkkiin)
-def virkkeet():
+    # Erotellaan välilyönnistä sanat listaksi.
+    tokenit = valimerkiton.split()
+    return tokenit
+
+# Lauseiden tokenisointifunktio, eli lauseet erikoismerkistä erikoismerkkiin
+# : , . ; ajatusviiva ! ?s
+def tokenisoi_lauseet(teksti):
+
+    # Poistetaan ensin rivinvaihdot.
+    teksti = teksti.replace("\n", "")
+    lauseet = re.split(', |-|! |\. |\.|\? |\(|\)|–|—|:', teksti)
+    lauseet = list(filter(None, lauseet))
+
+# Virkkeiden tokenisointifunktio, eli isosta alkukirjaimesta pisteeseen, 
+# huutomerkkiin tai kysymyksmerkkiin.
+def tokenisoi_virkkeet(teksti):
+    return sent_tokenize(teksti)
+
+def tokenisoi(korpus, valinta):
+    for avain in korpus:
+        if valinta == "sanoiksi":
+            korpus[avain] = tokenisoi_sanat(korpus[avain])
+        elif valinta == "lauseiksi":
+            korpus[avain] = tokenisoi_lauseet(korpus[avain])
+        elif valinta == "virkkeiksi":
+            korpus[avain] = tokenisoi_virkkeet(korpus[avain])

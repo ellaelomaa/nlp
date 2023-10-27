@@ -1,11 +1,23 @@
+import os
 
-# Hae_teksti txt/docs + määrittele filename
-def filename():
-     teksti = []
-     #from tekstit read jotainjotain
+def hae_tiedosto(polku):
+    tiedosto = open(polku, "r", encoding="utf-8")
+    teksti = tiedosto.read()
+    return teksti
 
+def hae_korpus(polku):
+    korpus = dict()
+    for kansio, alakansiot, tiedostot in os.walk(polku):
+        bloginimi = os.path.basename(kansio)
 
-# hae_korpus + määrittele corpusname
-def corpusname():
-     korpus = []
-     #from tekstit hae kaikki tai jotian read from folder jotain
+        teksti = ""
+
+        for tiedosto in tiedostot:
+            tiedostopolku = os.path.join(kansio, tiedosto)
+            if tiedostopolku.endswith(".txt"):
+                teksti += hae_tiedosto(tiedostopolku)
+                teksti += " "
+        
+        korpus[bloginimi] = teksti
+   
+    return korpus

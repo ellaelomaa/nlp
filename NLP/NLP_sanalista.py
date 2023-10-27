@@ -4,9 +4,9 @@ import clean.py
 def funktiosanat(normalisoitu):
     funktiosanalista = []
     with open("funktiosanat.txt", "r") as file:
-        funktiosanat_listassa = file.read().splitlines()
+        funktiosanat_tiedostossa = file.read().splitlines()
     for funktiosana in normalisoitu:
-        if funktiosana in funktiosanat_listassa:
+        if funktiosana in funktiosanat_tiedostossa:
             funktiosanalista.append(funktiosana)
     return funktiosanalista
 
@@ -14,15 +14,16 @@ def funktiosanat(normalisoitu):
 def sisältösanat(normalisoitu):
     sisältösanalista = []
     with open("funktiosanat.txt", "r") as file:
-        funktiosanat_listassa = file.read().splitlines()
+        funktiosanat_tiedostossa = file.read().splitlines()
     for funktiosana in normalisoitu:
-        if funktiosana in funktiosanat_listassa:
+        if funktiosana in funktiosanat_tiedostossa:
             sisältösanalista.append(funktiosana)
     return sisältösanalista
 
 
-# High frequency lexicon 30/50/100 (lemmattu, funktiosanat poistettu) määrävalinta gui:hin
+# High frequency lexicon 30/50/100 (lemmattu, funktiosanat poistettu)
 def taajuussanasto(tokenit):
+    # öööööhh miten tehdään toi että saa valita ton määrän? tehäänkö taa vasta gui-hommassa?
     taajuussanalista = []
     # poista erisnimet
     # normalisointi
