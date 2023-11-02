@@ -1,5 +1,6 @@
 import tokenisointi
 import regex as re
+import numpy as np
 
 # Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
@@ -153,3 +154,11 @@ def keskiarvot(korpus, graf, sanat, lauseet):
         sanoina(korpus)
     if lauseet == True:
         lauseina(korpus)
+
+def varianssi():
+    data = 
+    variance = np.var(data)
+
+def keskihajonta():
+    data = 
+    standard_deviation = np.std(data)
