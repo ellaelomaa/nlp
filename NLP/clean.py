@@ -1,10 +1,35 @@
 import string
 import tokenisointi
+from uralicNLP import uralicApi #uralicApi.download(fin) josset oo ladannu suomem kieli mälliä
 
 # To do:
 # hukkasanojen poisto (listasta)
 # erisnimien poisto
-# normalisointi
+
+# Normalisointi/lemmaus-funktio
+def normalisointi(tokenit):
+    lang = "fin"  # kielivalinta
+    analyzer = uralicApi.Analyzer() # tää haluaa listan nii pitää tehdä tästä uus oma muuttujansa tms.
+    normalisoitu = []
+    for token in tokenit:
+        lemmatized = analyzer.analyze(token, lang)
+        if lemmatized:
+            normalisoitu.append(lemmatized[0]['lemma'])
+        else:
+            normalisoitu.append(token)
+
+    return normalisoitu
+
+# Erisnimien poisto. Tää täytyy tehdä sitten tokenisoimattomalle tiedostolle (joissain erisnimissä monia osia)
+def erisnimien_poisto(korpus): 
+    erisnimet_poistettu = []
+    with open("erisnimet.txt", "r") as file:
+        erisnimet_tiedostossa = file.read().splitlines()
+    for erisnimi in korpus:
+        if erisnimi in erisnimet_tiedostossa:
+            erisnimet_poistettu.append(erisnimi)
+    return erisnimet_poistettu
+
 
 # Funktiosanojen poisto
 def funktiosanojen_poisto(korpus, polku):
