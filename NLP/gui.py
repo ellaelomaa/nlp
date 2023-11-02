@@ -31,14 +31,6 @@ asetukset = {
     "korpuspolku": "",
     "kirjoittaja": True,
     "teksti": False,
-    "grafeemeina": False,
-    "sanoina": False,
-    "lauseina": False,
-    "funktiomaara": False,
-    "funktiotyyppimaara": False,
-    "sisaltomaara": False,
-    "sisaltotyyppimaara": False,
-    "lemmamaara": False,
     "kaikki": False,
     "tokenit": False,
     "sisaltolista": False,
@@ -52,12 +44,12 @@ asetukset = {
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
 # sg.theme("LightGreen10")
 
-sg.LOOK_AND_FEEL_TABLE['teema'] = {'BACKGROUND': '#E3F2FD',
-                                   'TEXT': '#000000',
-                                   'INPUT': '#86A8FF',
-                                   'TEXT_INPUT': '#000000',
-                                   'SCROLL': '#86A8FF',
-                                   'BUTTON': ('#FFFFFF', '#5079D3'),
+sg.LOOK_AND_FEEL_TABLE['teema'] = {'BACKGROUND': '#5c9ead',
+                                   'TEXT': '#faf9f9',
+                                   'INPUT': '#b3dee2',
+                                   'TEXT_INPUT': '#5e503f',
+                                   'SCROLL': '#B3F2DD',
+                                   'BUTTON': ('#5e503f', '#fcca46'),
                                    'PROGRESS': sg.DEFAULT_PROGRESS_BAR_COLOR,
                                    'BORDER': 0, 'SLIDER_DEPTH': 0,
                                    'PROGRESS_DEPTH': 0,
@@ -74,39 +66,32 @@ osio1 = [
             sg.FolderBrowse()
         ],
     [sg.Text("Tulosta"),
-     sg.Radio("kirjoittajan", "osiotulostus", key="kirjoittaja", default=True),
-     sg.Radio("tekstin", "osiotulostus", key="teksti", default=False),
-     sg.Text("mukaan")
+            sg.Radio("kirjoittajan", "osiotulostus",
+                     key="kirjoittaja", default=True),
+            sg.Radio("tekstin", "osiotulostus", key="teksti", default=False),
+            sg.Text("mukaan")
      ],
 
 ]
 
-tulostus_layout = [
-    [sg.Checkbox(text="funktiosanojen määrä (N, %)",
-                 default=False, key="funktiomaara")],
-    [sg.Checkbox(text="funktiosanatyyppien määrä (N)",
-                 default=False, key="funktiotyyppimaara")],
-    [sg.Checkbox(text="sisältösanojen määrä (N, %)",
-                 default=False, key="sisaltomaara")],
-    [sg.Checkbox(text="sisältösanatyyppien määrä (N)",
-                 default=False, key="sisaltotyyppimaara")],
-    [sg.Checkbox(text="kaikkien lemmojen määrät (N)",
-                 default=False, key="lemmamaara")]
-]
-
-vertailu_layout = [
-
-]
-
-misc_layout = [
-    [sg.Checkbox(text="TTR (Type-Token-Ratio)", default=False, key="TTR")],
-    [sg.Checkbox(text="LD (Lexical Density)", default=False, key="LD")]
-]
-
-menetelma_layout = [
-    [sg.Checkbox(text="Jaccard similarity", default=False, key="jaccard")],
-    [sg.Checkbox(text="Cosine similarity", default=False, key="cosine")],
-    [sg.Checkbox(text="Eucledian distance", default=False, key="eucledian")],
+osio2 = [
+    [sg.Text("Vertailukohde 1:"),
+        sg.Radio("Teksti:", "vertailu1", key="tekstiv1", default="True"),
+     sg.Radio("Kirjailija", "vertailu1", key="kirjailijav1")],
+    [sg.Text("Vertailukohde 2:"),
+        sg.Radio("Teksti:", "vertailu2", key="tekstiv2", default="True"),
+     sg.Radio("Kirjailija", "vertailu2", key="kirjailijav2")],
+    [sg.Text("Sanalistan tyyppi:"),
+     sg.Radio("Kaikki sanat (tokenit)", "tyyppi", key="sanat", default=True),
+     sg.Radio("Kaikki lemmat (typet)", "tyyppi", key="lemmat"),
+     sg.Radio("Sisältösanat", "tyyppi", key="sisalto"),
+     sg.Radio("Funktiosanat", "tyyppi", key="funktiosanat"),
+     ],
+    [sg.Text("Samankaltaisuusfunktio:"),
+     sg.Radio("Jaccard", "samankaltaisuus", key="jaccard", default="True"),
+     sg.Radio("Cosine", "samankaltaisuus", key="cosine"),
+     sg.Radio("Eucledian", "samankaltaisuus", key="eucledian"),
+     ]
 ]
 
 samankaltaisuus_layout = [
@@ -121,6 +106,26 @@ samankaltaisuus_layout = [
     [sg.Checkbox(text="Hapax legomena", default=False, key="hapax"),]
 ]
 
+muuttujat = [
+    [sg.Checkbox(text="Sanapituus", default=False, key="sanapituus")],
+    [sg.Checkbox(text="Lausepituus", default=False, key="lausepituus")],
+    [sg.Checkbox(text="Virkepituus", default=False, key="virkepituus")],
+    [sg.Checkbox(text="Sanaston laajuus", default=False, key="laajuus")],
+    [sg.Checkbox(text="TTR", default=False, key="ttr")],
+    [sg.Checkbox(text="LD", default=False, key="ld")],
+]
+
+analyysimenetelma = [
+    [sg.Checkbox("PCA", default=False, key="PCA")],
+    [sg.Checkbox("Cluster", default=False, key="cluster")],
+
+]
+
+osio3 = [
+    [sg.Frame("Muuttujat", muuttujat, title_location=sg.TITLE_LOCATION_TOP),
+    sg.Frame("Analyysimenetelmä", analyysimenetelma, title_location=sg.TITLE_LOCATION_TOP)]
+]
+
 # Ulkoasu. Jokainen [ ] on yksi rivi. Jokaiseen asetukseen pitää laittaa
 # avain ja enable_events
 layout = [
@@ -130,21 +135,11 @@ layout = [
 
     [sg.Frame("Perustunnusluvut", osio1, title_location=sg.TITLE_LOCATION_TOP)
      ],
-    # [sg.Text("Sana-, lause- ja virkepituus (keskiarvo)"),
-    #  sg.Checkbox(text=("grafeemeina"), default=(False),
-    #              key="grafeemeina", enable_events=True),
-    #  sg.Checkbox(text=("sanoina"), default=(False),
-    #              key="sanoina", enable_events=True),
-    #  sg.Checkbox(text=("lauseina"), default=(False),
-    #              key="lauseina", enable_events=True),
-    #  ],
-
-    [sg.Frame("Tulostetaanko", tulostus_layout,
+    [sg.Frame("Sanalistojen vertailu", osio2,
               title_location=sg.TITLE_LOCATION_TOP)],
-    [sg.Frame("Misc :D", misc_layout, title_location=sg.TITLE_LOCATION_TOP),
-        sg.Frame("Menetelmä", menetelma_layout,
-                 title_location=sg.TITLE_LOCATION_TOP),
-        sg.Frame("Sanaston samankaltaisuus", samankaltaisuus_layout, title_location=sg.TITLE_LOCATION_TOP)],
+    [sg.Frame("Tilastolliset menetelmät", osio3,
+              title_location=sg.TITLE_LOCATION_TOP)],
+
     [sg.Button("Käynnistä ohjelma")],
     [sg.Button("Sulje")]
 ]
@@ -166,15 +161,6 @@ while True:
             kaynnista()
 
     # Valintalaatikkojen asetukset
-    asetukset["perustunnusluvut"] = values["perustunnusluvut"]
-    asetukset["grafeemeina"] = values["grafeemeina"]
-    asetukset["sanoina"] = values["sanoina"]
-    asetukset["lauseina"] = values["lauseina"]
-    asetukset["funktiomaara"] = values["funktiomaara"]
-    asetukset["funktiotyyppimaara"] = values["funktiotyyppimaara"]
-    asetukset["sisaltomaara"] = values["sisaltomaara"]
-    asetukset["sisaltotyyppimaara"] = values["sisaltotyyppimaara"]
-    asetukset["lemmamaara"] = values["lemmamaara"]
     asetukset["korpuspolku"] = values["korpuspolku"],
     asetukset["kirjoittaja"] = values["kirjoittaja"],
     asetukset["teksti"] = values["teksti"]
