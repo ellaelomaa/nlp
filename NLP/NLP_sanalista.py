@@ -43,7 +43,7 @@ def saneet(tokenit):
     sanelista = []
     # poista erisnimet
     # normalisointi
-    # remove duplicates
+    # remove duplicates tai joku semmonen
     return sanelista
 
 def sanasto(korpus):

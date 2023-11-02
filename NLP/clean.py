@@ -1,7 +1,10 @@
 import string
 import tokenisointi
 
-# poista tietyt sanat (erillinen lista)
+# To do:
+# hukkasanojen poisto (listasta)
+# erisnimien poisto
+# normalisointi
 
 # Funktiosanojen poisto
 def funktiosanojen_poisto(korpus, polku):
