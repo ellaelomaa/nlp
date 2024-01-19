@@ -41,7 +41,7 @@
 - negaatiot
 - tunnusluvut
 
-# Tilastoihin
+# Tilastoihin (morfeemimäärä)
 - moodi,
 - mediaani,
 - vaihteluväli,
