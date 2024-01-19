@@ -40,8 +40,9 @@
 - erikoismerkkien frekvenssit,
 - negaatiot
 - tunnusluvut
+- sanaluokista prosenttimäärät ja absoluuttiset määrät
 
-# Tilastoihin
+# Tilastoihin (morfeemimäärä)
 - moodi,
 - mediaani,
 - vaihteluväli,
