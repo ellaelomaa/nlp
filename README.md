@@ -9,6 +9,7 @@
   - lauseenvastikkeiden määrä?,
 - NLTK (https://www.nltk.org/)
 - Käyttöliittymän tekemiseen PySimpleGUI (https://www.pysimplegui.org/en/latest/).
+- Mahdollisesti Murre (https://github.com/mikahama/murre)
 
 # Tavoitteet
 - Korkean tason tavoitteena tutkia, voiko ihmisen ja LLM:n tuottaman tekstin erottaa toisistaan? Kielioppi, informaatiorakenne, kappaleiden pituus.
