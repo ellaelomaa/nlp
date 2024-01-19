@@ -1,7 +1,7 @@
 # Käytettävät kirjastot ja muut lähteet
 - Sanojen käsittelyyn UralicNLP (https://github.com/mikahama/uralicNLP)
   - sanaluokkajakaumat,
-  - sijamuotojakaumat?,
+  - sijamuotojakaumat,
   - sanaston tiheys (lexical density, eli sisältösanojen ja funktiosanojen suhde),
   - lemmaus,
   - morfeemien laskeminen,
