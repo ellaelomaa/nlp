@@ -24,9 +24,13 @@
 - morfeemien laskeminen
 
 # Tilastoihin
-- kokonaismäärät,
-- keskiarvot,
-- mediaanit
+- moodi,
+- mediaani,
+- vaihteluväli,
+- varianssi,
+- keskihajonta,
+- keskiarvo,
+- kokonaismäärät
 
 # Käsin tehdään
 - lauseiden erottelu
