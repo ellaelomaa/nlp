@@ -1,4 +1,4 @@
-# Käytettävät kirjastot
+# Käytettävät kirjastot ja muut lähteet
 - Sanojen käsittelyyn UralicNLP (https://github.com/mikahama/uralicNLP)
   - sanaluokkajakaumat,
   - sijamuotojakaumat?,
@@ -10,6 +10,7 @@
 - NLTK (https://www.nltk.org/)
 - Käyttöliittymän tekemiseen PySimpleGUI (https://www.pysimplegui.org/en/latest/).
 - Mahdollisesti Murre (https://github.com/mikahama/murre)
+- POS-tägit ja muut (https://universaldependencies.org/u/feat/index.html) selitettynä
 
 # Tavoitteet
 - Korkean tason tavoitteena tutkia, voiko ihmisen ja LLM:n tuottaman tekstin erottaa toisistaan? Kielioppi, informaatiorakenne, kappaleiden pituus.
