@@ -1,10 +1,10 @@
 # Käytettävät kirjastot
 - Sanojen käsittelyyn UralicNLP (https://github.com/mikahama/uralicNLP)
-- - sanaluokkajakaumat,
+  - sanaluokkajakaumat,
   - sijamuotojakaumat?,
   - sanaston tiheys (lexical density, eli sisältösanojen ja funktiosanojen suhde),
   - lemmaus,
-  - morfeemien laskeminen?,
+  - morfeemien laskeminen,
   - lausepituus?,
   - lauseenvastikkeiden määrä?,
 - NLTK (https://www.nltk.org/)
@@ -20,7 +20,13 @@
 - erikoismerkkien ja numeraalien määrät,
 - kirjoittajien hapax legomena,
 - tekstien samankaltaisuus kirjoittajalla,
-- kirjoittajien samankaltaisuus
+- kirjoittajien samankaltaisuus,
+- morfeemien laskeminen
+
+# Tilastoihin
+- kokonaismäärät,
+- keskiarvot,
+- mediaanit
 
 # Käsin tehdään
 - lauseiden erottelu
