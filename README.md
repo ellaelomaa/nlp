@@ -2,7 +2,11 @@
 - Sanojen käsittelyyn UralicNLP (https://github.com/mikahama/uralicNLP)
 - - sanaluokkajakaumat,
   - sijamuotojakaumat?,
-  - sanaston tiheys (lexical density, eli sisältösanojen ja funktiosanojen suhde)
+  - sanaston tiheys (lexical density, eli sisältösanojen ja funktiosanojen suhde),
+  - lemmaus,
+  - morfeemien laskeminen?,
+  - lausepituus?,
+  - lauseenvastikkeiden määrä?,
 - NLTK (https://www.nltk.org/)
 - Käyttöliittymän tekemiseen PySimpleGUI (https://www.pysimplegui.org/en/latest/).
 
@@ -11,7 +15,6 @@
 
 # Toiminnot:
 - sanapituus,
-- lausepituus,
 - virkkeiden pituus sanoina ja lauseina,
 - type-token -ratio (TTR),
 - erikoismerkkien ja numeraalien määrät,
