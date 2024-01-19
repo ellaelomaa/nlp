@@ -11,14 +11,15 @@ def hae_korpus(polku):
         bloginimi = os.path.basename(kansio)
 
         teksti = ""
+        tekstit = {}
 
         for tiedosto in tiedostot:
             tiedostopolku = os.path.join(kansio, tiedosto)
             if tiedostopolku.endswith(".txt"):
-                teksti += hae_tiedosto(tiedostopolku)
-                teksti += " "
+                teksti = hae_tiedosto(tiedostopolku)
+                tekstit[tiedostopolku] = teksti
         
-        if len(teksti) > 0:
-            korpus[bloginimi] = teksti
+        if len(tekstit) > 0:
+            korpus[bloginimi] = tekstit
    
     return korpus

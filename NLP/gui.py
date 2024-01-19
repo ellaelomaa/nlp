@@ -1,8 +1,10 @@
+import os
 import PySimpleGUI as sg
 import fetch
 import tokenisointi
 import clean
 import count
+import uralic
 import time
 import NLP_sanalista
 
@@ -10,35 +12,36 @@ import NLP_sanalista
 
 
 def kaynnista():
-    korpus = fetch.hae_korpus(asetukset["korpuspolku"])
-    count.tilasto_maarat(korpus)
+    # Haetaan polku corpora-kansioon, jonne käyttäjä itse
+    # kiltisti tiputtelee ja lajittelee tekstitiedostonsa
+    path = os.path.abspath(os.path.curdir)
+    folder = "corpora"
+    korpus = fetch.hae_korpus(os.path.join(path, folder))
+
+    count.laskut(asetukset, korpus)
+    uralic.uralic(asetukset, korpus)
 
     # Korpus, josta poistettu sanat.
     # siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
 
-    if asetukset["grafeemeina"] == True:
-        count.grafeemeina(korpus)
-
-    if asetukset["sanoina"] == True:
-        count.sanoina(korpus)
-
-    if asetukset["lauseina"] == True:
-        count.lauseina(korpus)
-
 
 # Sanakirjan alustus
 asetukset = {
-    "korpuspolku": "",
-    "kirjoittaja": True,
-    "teksti": False,
     "kaikki": False,
     "tokenit": False,
-    "sisaltolista": False,
-    "funktiolista": False,
-    "hfl30": False,
-    "hfl50": False,
-    "hfl100": False,
-    "hapax": False
+    "sanapituus": False,
+    "grafeemit": False,
+    "morfeemit": False,
+    "lausepituus": False,
+    "virkesana": False,
+    "virkelause": False,
+    "TTR": False,
+    "LD": False,
+    "sanaluokat": False,
+    "pituusvarianssi": False,
+    "hapaxlegomena": False,
+    "erikoismerkit": False,
+    "negaatiot": False
 }
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
@@ -59,86 +62,30 @@ sg.LOOK_AND_FEEL_TABLE['teema'] = {'BACKGROUND': '#5c9ead',
 
 sg.theme("teema")
 
-osio1 = [
-        [
-            sg.Text("Valitse korpuksen sisältävä kansio:"),
-            sg.Input(enable_events=True, key="korpuspolku"),
-            sg.FolderBrowse()
-        ],
-    [sg.Text("Tulosta"),
-            sg.Radio("kirjoittajan", "osiotulostus",
-                     key="kirjoittaja", default=True),
-            sg.Radio("tekstin", "osiotulostus", key="teksti", default=False),
-            sg.Text("mukaan")
-     ],
-
-]
-
-osio2 = [
-    [sg.Text("Vertailukohde 1:"),
-        sg.Radio("Teksti:", "vertailu1", key="tekstiv1", default="True"),
-     sg.Radio("Kirjailija", "vertailu1", key="kirjailijav1")],
-    [sg.Text("Vertailukohde 2:"),
-        sg.Radio("Teksti:", "vertailu2", key="tekstiv2", default="True"),
-     sg.Radio("Kirjailija", "vertailu2", key="kirjailijav2")],
-    [sg.Text("Sanalistan tyyppi:"),
-     sg.Radio("Kaikki sanat (tokenit)", "tyyppi", key="sanat", default=True),
-     sg.Radio("Kaikki lemmat (typet)", "tyyppi", key="lemmat"),
-     sg.Radio("Sisältösanat", "tyyppi", key="sisalto"),
-     sg.Radio("Funktiosanat", "tyyppi", key="funktiosanat"),
-     ],
-    [sg.Text("Samankaltaisuusfunktio:"),
-     sg.Radio("Jaccard", "samankaltaisuus", key="jaccard", default="True"),
-     sg.Radio("Cosine", "samankaltaisuus", key="cosine"),
-     sg.Radio("Eucledian", "samankaltaisuus", key="eucledian"),
-     ]
-]
-
-samankaltaisuus_layout = [
-    [sg.Checkbox(text="Kaikki sanat (normalisoitu)",
-                 default=False, key="kaikki")],
-    [sg.Checkbox(text="Tokenit (normalisoitu)", default=False, key="tokenit")],
-    [sg.Checkbox(text="Sisältösanat", default=False, key="sisaltolista")],
-    [sg.Checkbox(text="Funktiosanat", default=False, key="funktiolista")],
-    [sg.Checkbox(text="HFL 30", default=False, key="hfl30")],
-    [sg.Checkbox(text="HFL 50", default=False, key="hfl50")],
-    [sg.Checkbox(text="HFL 100", default=False, key="hfl100")],
-    [sg.Checkbox(text="Hapax legomena", default=False, key="hapax"),]
-]
-
 muuttujat = [
     [sg.Checkbox(text="Sanapituus", default=False, key="sanapituus")],
-    [sg.Checkbox(text="Lausepituus", default=False, key="lausepituus")],
-    [sg.Checkbox(text="Virkepituus", default=False, key="virkepituus")],
-    [sg.Checkbox(text="Sanaston laajuus", default=False, key="laajuus")],
-    [sg.Checkbox(text="TTR", default=False, key="ttr")],
-    [sg.Checkbox(text="LD", default=False, key="ld")],
-]
-
-analyysimenetelma = [
-    [sg.Checkbox("PCA", default=False, key="PCA")],
-    [sg.Checkbox("Cluster", default=False, key="cluster")],
-
+    [sg.Checkbox(text="Grafeemeja sanoissa", default=False, key="grafeemit")],
+    [sg.Checkbox(text="Morfeemien määrä sanoissa", default=False, key="morfeemit")],
+    [sg.Checkbox(text="Lausepituus", default=False, key="lausepituus", disabled=True)],
+    [sg.Checkbox(text="Virkepituus sanoina", default=False, key="virkesana")],
+    [sg.Checkbox(text="Virkepituus lauseina", default=False, key="virkelause", disabled=True)],
+    [sg.Checkbox(text="TTR", default=False, key="ttr", disabled=True)],
+    [sg.Checkbox(text="Sanaston tiheys", default=False, key="sanastotiheys", disabled=True)],
+    [sg.Checkbox(text="Sanaluokkien frekvenssit", default=False, key="sanaluokat", disabled=True)],
 ]
 
 osio3 = [
-    [sg.Frame("Muuttujat", muuttujat, title_location=sg.TITLE_LOCATION_TOP),
-    sg.Frame("Analyysimenetelmä", analyysimenetelma, title_location=sg.TITLE_LOCATION_TOP)]
+    [sg.Frame("Muuttujat", muuttujat, title_location=sg.TITLE_LOCATION_TOP)]
 ]
 
 # Ulkoasu. Jokainen [ ] on yksi rivi. Jokaiseen asetukseen pitää laittaa
 # avain ja enable_events
 layout = [
+    [sg.Text("Pudota kaikki käsiteltävät tekstit corpus-kansioon. Luo omat alakansiot jokaiselle kirjailijalle. Tekstien pitää olla .txt-muodossa. Valitse alla olevista asetuksista mitä tulosteita haluat.")],
     [sg.Text("Asetukset", font=("Bebas Neue", 20))],
 
     # Käsiteltävien tekstien valinta
-
-    [sg.Frame("Perustunnusluvut", osio1, title_location=sg.TITLE_LOCATION_TOP)
-     ],
-    [sg.Frame("Sanalistojen vertailu", osio2,
-              title_location=sg.TITLE_LOCATION_TOP)],
-    [sg.Frame("Tilastolliset menetelmät", osio3,
-              title_location=sg.TITLE_LOCATION_TOP)],
+    [osio3],
 
     [sg.Button("Käynnistä ohjelma")],
     [sg.Button("Sulje")]
@@ -155,15 +102,12 @@ while True:
         break
 
     if event == "Käynnistä ohjelma":
-        if values["korpuspolku"] == "":
-            sg.popup_ok("Valitse korpuskansio.")
-        else:
-            kaynnista()
-
+        kaynnista()
+    
     # Valintalaatikkojen asetukset
-    asetukset["korpuspolku"] = values["korpuspolku"],
-    asetukset["kirjoittaja"] = values["kirjoittaja"],
-    asetukset["teksti"] = values["teksti"]
-
+    asetukset["sanapituus"] = values["sanapituus"]
+    asetukset["grafeemit"] = values["grafeemit"]
+    asetukset["morfeemit"] = values["morfeemit"]
+    asetukset["virkesana"] = values ["virkesana"]
 
 window.close()

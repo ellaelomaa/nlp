@@ -1,6 +1,9 @@
 import tokenisointi
 import regex as re
-import numpy as np
+# import numpy as np
+
+# Tässä tiedostossa lasketaan kaikki perustilastot ilman kielen
+# käsittelyä ja NLP-kirjastoja
 
 # Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
@@ -33,7 +36,7 @@ def sanapituus(korpus):
         print(toka_taso, "Merkkejä: ", merkkeja)
         print(toka_taso, "Sanoja: ", sanoja)
         if (merkkeja > 0 and sanoja > 0):
-            print(toka_taso, "Sanojen keskiavaininen pituus: ", round(merkkeja/sanoja, 2))
+            print(toka_taso, "Sanojen keskimääräinen pituus: ", round(merkkeja/sanoja, 2))
 
 def virkemäärä(korpus):
     print("Virkkeiden määrä:")
@@ -41,6 +44,15 @@ def virkemäärä(korpus):
         virkelista = tokenisointi.tokenisoi_virkkeet(korpus[avain])
         print(eka_taso, avain)
         print(toka_taso, "Virkkeiden määrä: ", len(virkelista))
+
+def virkelausepituus(korpus):
+    print("Virkkeiden pituus sanoina:")
+    for kirjoittaja in korpus:
+        print(eka_taso, kirjoittaja)
+        sanoja = len(tokenisointi.tokenisoi_sanat(korpus[kirjoittaja]))
+        virkkeita = tokenisointi.tokenisoi_virkkeet(korpus[kirjoittaja])
+        print(toka_taso, "Keskimäärin sanoja virkkeessä: ", round(sanoja/len(virkkeita), 2))
+
 
 def virkepituus(korpus):
     print("Virkkeiden pituus:")
@@ -143,7 +155,8 @@ def tilasto_maarat(korpus):
     print("Tilastoja: ")
 
     sanamäärä(korpus)
-    lausemäärä(korpus)
+    # TODO: lauseiden laskeminen, ei ollutkaan niin helppoa!
+    # lausemäärä(korpus)
     virkemäärä(korpus)
 
 def keskiarvot(korpus, graf, sanat, lauseet):
@@ -155,10 +168,20 @@ def keskiarvot(korpus, graf, sanat, lauseet):
     if lauseet == True:
         lauseina(korpus)
 
-def varianssi():
-    data = 
-    variance = np.var(data)
+def laskut(asetukset, korpus):
+    tilasto_maarat(korpus)
+    if asetukset["sanapituus"] == True:
+        sanapituus(korpus)
+    if asetukset["grafeemit"] == True:
+        grafeemeina(korpus)
+    if asetukset["virkesana"] == True:
+        virkelausepituus(korpus)
+        
 
-def keskihajonta():
-    data = 
-    standard_deviation = np.std(data)
+# def varianssi():
+#     data = 
+#     variance = np.var(data)
+
+# def keskihajonta():
+#     data = 
+#     standard_deviation = np.std(data)
