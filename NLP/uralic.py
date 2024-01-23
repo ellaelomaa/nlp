@@ -15,6 +15,109 @@ eka_taso = "  "
 toka_taso = "    "
 kolmas_taso = "      "
 
+def sanaluokat(korpus):
+    for blogi in korpus:
+        print(eka_taso, blogi)
+
+        saneitaBlogi = 0
+
+        # Sanaluokkamuuttujat (UD2) blogille
+        adj = 0
+        adv = 0
+        noun = 0
+        verb = 0
+        num = 0
+        part = 0
+        pron = 0
+        acr = 0
+        po = 0
+
+        for teksti in korpus[blogi]:
+            print(toka_taso, teksti, ":")
+
+            #Sanaluokkamuuttujat tekstille
+            adjTeksti= 0
+            advTeksti = 0
+            nounTeksti = 0
+            verbTeksti = 0
+            numTeksti = 0
+            partTeksti = 0
+            pronTeksti = 0
+            acrTeksti = 0
+            poTeksti = 0
+
+            saneet = tokenisoi_sanat(korpus[blogi][teksti])
+
+            # Lasketaan saneiden määrä teksteittäin...
+            saneitaTeksti = len(saneet)
+
+            # ...ja samalla kasvatetaan koko blogin saneiden määrää.
+            saneitaBlogi += saneitaTeksti
+
+            for sane in saneet:
+                # Morfologinen analyysi uralicNLP:n avulla,
+                # josta erotellaan sanaluokka
+                tulos = uralicApi.analyze(sane, "fin")
+                if (len(tulos) > 0):
+                    analyysi = tulos[0][0]
+                    osat = analyysi.split("+", 2)
+                    lauseenjasen = ""
+                    if len(osat) > 1:
+                        lauseenjasen = osat[1]
+                
+                        match lauseenjasen:
+                            case "A":
+                                adj += 1
+                                adjTeksti += 1
+                            case "ACR":
+                                acr += 1
+                                acrTeksti += 1
+                            case "Adv":
+                                adv += 1
+                                advTeksti += 1
+                            case "N":
+                                noun += 1
+                                nounTeksti += 1
+                            case "Num":
+                                num += 1
+                                numTeksti += 1
+                            case "V":
+                                verb += 1
+                                verbTeksti += 1
+                            case "Pcle":
+                                part += 1
+                                partTeksti += 1
+                            
+                            #En tiedä mikä on Pcle#voi, mutta niitä löytyi paljon :D
+                            case "Pcle#voi":
+                                part += 1
+                                partTeksti += 1
+                            case "Po":
+                                po += 1
+                                poTeksti += 1
+                            case "Pron":
+                                pron += 1
+                                pronTeksti += 1
+
+            print(kolmas_taso, "Adj ", round(adjTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "ACR ", round(acrTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "N ", round(nounTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "Num ", round(numTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "V ", round(verbTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "Pcle & Pcle#voi", round(partTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "Po ", round(poTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "Pron ", round(pronTeksti/saneitaTeksti*100, 2), " %")
+
+    print(toka_taso, "Blogissa: ")
+    print(kolmas_taso, "Adj ", round(adj/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "ACR ", round(acr/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "N ", round(noun/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "Num ", round(num/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "V ", round(verb/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "Pcle & Pcle#voi", round(part/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "Po ", round(po/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "Pron ", round(pron/saneitaBlogi*100, 2), " %")
+
 def ttr(korpus):
     for blogi in korpus:
         print(eka_taso, blogi)
@@ -150,4 +253,6 @@ def uralic(asetukset, korpus):
         morfeemit(korpus)
     if asetukset["TTR"] == True:
         ttr(korpus)
+    if asetukset["sanaluokat"] == True:
+        sanaluokat(korpus)
         
