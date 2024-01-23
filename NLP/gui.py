@@ -74,7 +74,7 @@ muuttujat = [
     [sg.Checkbox(text="Virkepituus lauseina", default=False, key="virkelause", disabled=True)],
     [sg.Checkbox(text="TTR", default=False, key="TTR")],
     [sg.Checkbox(text="Sanaston tiheys", default=False, key="sanastotiheys", disabled=True)],
-    [sg.Checkbox(text="Sanaluokkien frekvenssit", default=False, key="sanaluokat", disabled=True)],
+    [sg.Checkbox(text="Sanaluokkien frekvenssit", default=False, key="sanaluokat")],
 ]
 
 osio3 = [
@@ -115,5 +115,6 @@ while True:
     asetukset["morfeemit"] = values["morfeemit"]
     asetukset["virkesana"] = values ["virkesana"]
     asetukset["TTR"] = values["TTR"]
+    asetukset["sanaluokat"] = values["sanaluokat"]
 
 window.close()
