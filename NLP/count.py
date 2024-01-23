@@ -8,121 +8,115 @@ import regex as re
 # Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
 toka_taso = "    "
+kolmas_taso = "      "
 
-# Kokonaissanamäärä
-def sanamäärä(korpus):
+# Kokonaissanamäärä blogiteksteittäin
+def sanamaara(korpus):
     print("Kokonaissanamäärät:")
-    for avain in korpus:
-        print(eka_taso, avain)
-        print(toka_taso, len(korpus[avain]))
+    
+    for blogi in korpus:
+        sanoja = 0
+        print(eka_taso, blogi)
+        for teksti in korpus[blogi]:
+            tekstiPituus = len(tokenisointi.tokenisoi_sanat(korpus[blogi][teksti]))
+            print(toka_taso, teksti, ": ", tekstiPituus)
+            sanoja += tekstiPituus
+        print(toka_taso, "Sanoja yhteensä blogissa: ", sanoja)
 
 def sanapituus(korpus):
-    #lemmatisointi
-    #grafeemeja per sana --> keskiavain
-
     print("Sanojen keskimääräinen pituus:")
 
-    for avain in korpus:
-        merkkeja = 0
-        print(eka_taso, avain)
-        sanalista = tokenisointi.tokenisoi_sanat(korpus[avain])
+    for blogi in korpus:
+        sanojaBlogissa = 0
+        merkkejaBlogissa = 0
+        print(eka_taso, blogi)
+        for teksti in korpus[blogi]:
+            sanalista = tokenisointi.tokenisoi_sanat(korpus[blogi][teksti])
+            sanojaTekstissa = len(sanalista)
+            merkkejaTekstissa = 0
+            sanojaBlogissa += sanojaTekstissa
 
-        sanoja = len(sanalista)
+            for sana in sanalista:
+                merkkejaTekstissa += len(sana)
+                merkkejaBlogissa += len(sana)
+            print(toka_taso, teksti, round(merkkejaTekstissa/sanojaTekstissa, 2))
 
-        for sana in sanalista:
-            merkkeja += len(sana)
-            ++sanoja
+        if (sanojaBlogissa > 0 and merkkejaBlogissa > 0):
+            print(toka_taso, blogi, "yleensä: ", round(merkkejaBlogissa/sanojaBlogissa, 2))
 
-        print(toka_taso, "Merkkejä: ", merkkeja)
-        print(toka_taso, "Sanoja: ", sanoja)
-        if (merkkeja > 0 and sanoja > 0):
-            print(toka_taso, "Sanojen keskimääräinen pituus: ", round(merkkeja/sanoja, 2))
-
-def virkemäärä(korpus):
+def virkemaara(korpus):
     print("Virkkeiden määrä:")
-    for avain in korpus:
-        virkelista = tokenisointi.tokenisoi_virkkeet(korpus[avain])
-        print(eka_taso, avain)
-        print(toka_taso, "Virkkeiden määrä: ", len(virkelista))
+    for blogi in korpus:
+        lauseita = 0
+        print(eka_taso, blogi)
+        for teksti in korpus[blogi]:
+            lausepituus = len(tokenisointi.tokenisoi_lauseet(korpus[blogi][teksti]))
+            print(toka_taso, teksti, ": ", lausepituus)
+            lauseita += lausepituus
+        print(toka_taso, "Virkkeitä yhteensä blogissa : ", lauseita)
 
-def virkelausepituus(korpus):
-    print("Virkkeiden pituus sanoina:")
-    for kirjoittaja in korpus:
-        print(eka_taso, kirjoittaja)
-        sanoja = len(tokenisointi.tokenisoi_sanat(korpus[kirjoittaja]))
-        virkkeita = tokenisointi.tokenisoi_virkkeet(korpus[kirjoittaja])
-        print(toka_taso, "Keskimäärin sanoja virkkeessä: ", round(sanoja/len(virkkeita), 2))
-
-
-def virkepituus(korpus):
-    print("Virkkeiden pituus:")
-    virkkeita = 0
-    for avain in korpus:
-        print(eka_taso, avain)
-        virkkeita = tokenisointi.tokenisoi_virkkeet(korpus[avain])
-
-        # Virkkeiden pituus lauseina
-        lauseita = tokenisointi.tokenisoi_lauseet(korpus[avain])
-        print(toka_taso, "Keskimäärin lauseita virkkeessä: ", round(len(lauseita)/len(virkkeita),2))
-
-        # Virkkeiden pituus sanoina
-        sanoja = len(tokenisointi.tokenisoi_sanat(korpus[avain]))
-        print(toka_taso, "Keskimäärin sanoja virkkeessä: ", round(sanoja/len(virkkeita), 2))
-
-        # Virkkeiden pituus grafeemeina, mukaan lukien erikoismerkit
-        grafeemeja = len(korpus[avain])
-        print(toka_taso, "Keskimäärin grafeemeja virkkeessä: ", round(grafeemeja/len(virkkeita), 2))
-
-
-    # Lauseiden määrä blogissa
-def lausemäärä(korpus):
-    print("Lauseiden määrä: ")
-    for avain in korpus:
-        print(eka_taso, avain, "lauseita: ", len(tokenisointi.tokenisoi_lauseet(korpus[avain])))
-
-
-def lausepituus(korpus):
-    print("Lauseiden pituus:")
-    for avain in korpus:
-        print(eka_taso, avain)
-        lauseita = tokenisointi.tokenisoi_lauseet(korpus[avain])
-
-        # Lauseiden pituus sanoina
-        sanoja = len(tokenisointi.tokenisoi_sanat(korpus[avain]))
-        print(toka_taso, "Keskimäärin sanoja lauseessa: ", round(sanoja/len(lauseita)))
-
-        # Lauseiden pituus grafeemeina, eli ilman erikoismerkkejä
-        valimerkiton = re.sub(r"[^\P{P}-'&]+", "", korpus[avain])
-        valimerkiton.replace("&", "ja")
-        print(toka_taso, "Keskimäärin grafeemeja lauseessa: ", round(len(valimerkiton)/len(lauseita)))
+def sanojaVirkkeissa(korpus):
+    print("Keskimääräinen virkkeiden pituus teksteissä:")
+    for blogi in korpus:
+        sanojaBlogissa = 0
+        virkkeitaBlogissa = 0
+        print(eka_taso, blogi)
+        for teksti in korpus[blogi]:
+            sanojaTekstissa = len(tokenisointi.tokenisoi_sanat(korpus[blogi][teksti]))
+            sanojaBlogissa += sanojaTekstissa
+            virkkeitaTekstissa = len(tokenisointi.tokenisoi_virkkeet(korpus[blogi][teksti]))
+            virkkeitaBlogissa += virkkeitaTekstissa
+            print(toka_taso, teksti, ": ", round(sanojaTekstissa/virkkeitaTekstissa, 2))
+        print(toka_taso, "Blogissa keskimäärin sanoja virkkeissä: ", round(sanojaBlogissa/virkkeitaBlogissa, 2))
 
 def grafeemeina(korpus):
-    print("Grafeemit:")
-    for avain in korpus:
-        print(eka_taso, avain)
+    print("Keskimäärin grafeemeja sanoissa:")
+    # Käydään korpus blogi kerrallaan läpi
 
-        # Grafeemeja sanassa
-        merkkeja = 0
-        
-        sanalista = tokenisointi.tokenisoi_sanat(korpus[avain])
-        sanoja = len(sanalista)
+    for blogi in korpus:
+        # Alustetaan muuttujat koko blogia koskeville muuttujille.
+        sanojaBlogissa = 0
+        merkkejaBlogissa = 0
+        print(eka_taso, blogi)
 
-        for sana in sanalista:
-            merkkeja += len(sana)
-            ++sanoja
+        # Käydään blogin tekstit kerrallaan läpi
+        for teksti in korpus[blogi]:
+            merkkejaTekstissa = 0
 
-        print(toka_taso, "Grafeemeja sanassa: ", round(merkkeja/sanoja, 2))
+            # Keskiarvoa varten lasketaan sanojen määrä tekstissä
+            sanalista = tokenisointi.tokenisoi_sanat(korpus[blogi][teksti])
+            sanojaTekstissa = len(sanalista)
 
-        # Grafeemeja lauseessa
-        lauseita = tokenisointi.tokenisoi_lauseet(korpus[avain])
-        valimerkiton = re.sub(r"[^\P{P}-'&]+", "", korpus[avain])
-        valimerkiton.replace("&", "ja")
-        print(toka_taso, "Grafeemeja lauseessa: ", round(len(valimerkiton)/len(lauseita)))
+            # Kasvatetaan samalla koko blogin sanamäärää laskevaa muuttujaa
+            sanojaBlogissa += len(sanalista)
 
-        # Grafeemeja virkkeessä
-        virkkeita = tokenisointi.tokenisoi_virkkeet(korpus[avain])
-        grafeemeja = len(korpus[avain])
-        print(toka_taso, "Grafeemeja virkkeessä: ", round(grafeemeja/len(virkkeita), 2))
+            # Lasketaan, kuinka pitkiä sanat ovat teksteittäin
+            for sana in sanalista:
+                merkkejaTekstissa += len(sana)
+                merkkejaBlogissa += len(sana)
+
+            print(toka_taso, teksti, round(merkkejaTekstissa/sanojaTekstissa, 2))
+        print(toka_taso, blogi, "yleensä: ", round(merkkejaBlogissa/sanojaBlogissa, 2))
+
+    print("Keskimäärin grafeemeja virkkeissä:")
+    
+    
+    for blogi in korpus:
+        # Alustetaan muuttujat keskiarvon laskua varten
+        virkkeitaBlogissa = 0
+        merkkejaBlogissa = 0
+
+        print(eka_taso, blogi)
+
+        for teksti in korpus[blogi]:
+            # Grafeemeja ovat myös välimerkit, joten niitä ei tarvitse poistaa
+            merkkejaTekstissa = len(korpus[blogi][teksti])
+            merkkejaBlogissa += merkkejaTekstissa
+
+            virkkeitaTekstissa = len(tokenisointi.tokenisoi_lauseet(korpus[blogi][teksti]))
+            virkkeitaBlogissa += virkkeitaTekstissa
+            print(toka_taso, teksti, round(merkkejaTekstissa/virkkeitaTekstissa, 2))
+        print(toka_taso, blogi, "yleensä: ", round(merkkejaBlogissa/virkkeitaBlogissa, 2))
 
 def sanoina(korpus):
     print("Sanat:")
@@ -139,25 +133,7 @@ def sanoina(korpus):
         # Virkkeiden pituus sanoina
         virkkeita = tokenisointi.tokenisoi_virkkeet(korpus[avain])
         sanoja = len(tokenisointi.tokenisoi_sanat(korpus[avain]))
-        print(toka_taso, "Keskimäärin sanoja virkkeessä: ", round(sanoja/len(virkkeita), 2))
-
-def lauseina(korpus):
-    print("Lauseet:")
-    for avain in korpus:
-        print(eka_taso, avain)
-        virkkeita = tokenisointi.tokenisoi_virkkeet(korpus[avain])
-
-        # Virkkeiden pituus lauseina
-        lauseita = tokenisointi.tokenisoi_lauseet(korpus[avain])
-        print(toka_taso, "Keskimäärin lauseita virkkeessä: ", round(len(lauseita)/len(virkkeita),2))        
-
-def tilasto_maarat(korpus):
-    print("Tilastoja: ")
-
-    sanamäärä(korpus)
-    # TODO: lauseiden laskeminen, ei ollutkaan niin helppoa!
-    # lausemäärä(korpus)
-    virkemäärä(korpus)
+        print(toka_taso, "Keskimäärin sanoja virkkeessä: ", round(sanoja/len(virkkeita), 2))    
 
 def keskiarvot(korpus, graf, sanat, lauseet):
     print("Sana-, lause- ja virkepituus keskiarviona:")
@@ -168,14 +144,17 @@ def keskiarvot(korpus, graf, sanat, lauseet):
     if lauseet == True:
         lauseina(korpus)
 
-def laskut(asetukset, korpus):
-    tilasto_maarat(korpus)
+def tilastoja(asetukset, korpus):
+    if asetukset["sanamaarat"] == True:
+        sanamaara(korpus)
+    if asetukset["virkemaarat"] == True:
+        virkemaara(korpus)
     if asetukset["sanapituus"] == True:
         sanapituus(korpus)
     if asetukset["grafeemit"] == True:
         grafeemeina(korpus)
     if asetukset["virkesana"] == True:
-        virkelausepituus(korpus)
+        sanojaVirkkeissa(korpus)
         
 
 # def varianssi():

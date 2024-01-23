@@ -7,19 +7,22 @@ def hae_tiedosto(polku):
 
 def hae_korpus(polku):
     korpus = dict()
+    
     for kansio, alakansiot, tiedostot in os.walk(polku):
         bloginimi = os.path.basename(kansio)
+        blogikorpus = dict()
 
         teksti = ""
-        tekstit = {}
 
         for tiedosto in tiedostot:
             tiedostopolku = os.path.join(kansio, tiedosto)
             if tiedostopolku.endswith(".txt"):
                 teksti = hae_tiedosto(tiedostopolku)
-                tekstit[tiedostopolku] = teksti
+                tekstiNimi = os.path.basename(tiedostopolku)
+
+                blogikorpus[os.path.splitext(tekstiNimi)[0]] = teksti
         
-        if len(tekstit) > 0:
-            korpus[bloginimi] = tekstit
-   
+        if (len(blogikorpus) > 0):
+            korpus[bloginimi] = blogikorpus
+            
     return korpus

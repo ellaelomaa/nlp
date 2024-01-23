@@ -18,7 +18,7 @@ def kaynnista():
     folder = "corpora"
     korpus = fetch.hae_korpus(os.path.join(path, folder))
 
-    count.laskut(asetukset, korpus)
+    count.tilastoja(asetukset, korpus)
     uralic.uralic(asetukset, korpus)
 
     # Korpus, josta poistettu sanat.
@@ -27,7 +27,8 @@ def kaynnista():
 
 # Sanakirjan alustus
 asetukset = {
-    "kaikki": False,
+    "sanamaarat": False,
+    "virkemaarat": False,
     "tokenit": False,
     "sanapituus": False,
     "grafeemit": False,
@@ -63,13 +64,15 @@ sg.LOOK_AND_FEEL_TABLE['teema'] = {'BACKGROUND': '#5c9ead',
 sg.theme("teema")
 
 muuttujat = [
+    [sg.Checkbox(text="Sanojen määrä", default=False, key="sanamaarat")],
+    [sg.Checkbox(text="Virkkeiden määrä", default=False, key="virkemaarat")],
     [sg.Checkbox(text="Sanapituus", default=False, key="sanapituus")],
     [sg.Checkbox(text="Grafeemeja sanoissa", default=False, key="grafeemit")],
     [sg.Checkbox(text="Morfeemien määrä sanoissa", default=False, key="morfeemit")],
     [sg.Checkbox(text="Lausepituus", default=False, key="lausepituus", disabled=True)],
     [sg.Checkbox(text="Virkepituus sanoina", default=False, key="virkesana")],
     [sg.Checkbox(text="Virkepituus lauseina", default=False, key="virkelause", disabled=True)],
-    [sg.Checkbox(text="TTR", default=False, key="ttr", disabled=True)],
+    [sg.Checkbox(text="TTR", default=False, key="TTR")],
     [sg.Checkbox(text="Sanaston tiheys", default=False, key="sanastotiheys", disabled=True)],
     [sg.Checkbox(text="Sanaluokkien frekvenssit", default=False, key="sanaluokat", disabled=True)],
 ]
@@ -105,9 +108,12 @@ while True:
         kaynnista()
     
     # Valintalaatikkojen asetukset
+    asetukset["sanamaarat"] =values["sanamaarat"]
+    asetukset["virkemaarat"] = values["virkemaarat"]
     asetukset["sanapituus"] = values["sanapituus"]
     asetukset["grafeemit"] = values["grafeemit"]
     asetukset["morfeemit"] = values["morfeemit"]
     asetukset["virkesana"] = values ["virkesana"]
+    asetukset["TTR"] = values["TTR"]
 
 window.close()
