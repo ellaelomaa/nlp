@@ -55,49 +55,52 @@ def sanaluokat(korpus):
             saneitaBlogi += saneitaTeksti
 
             for sane in saneet:
-                # Morfologinen analyysi uralicNLP:n avulla,
-                # josta erotellaan sanaluokka
-                tulos = uralicApi.analyze(sane, "fin")
-                if (len(tulos) > 0):
-                    analyysi = tulos[0][0]
-                    osat = analyysi.split("+", 2)
-                    lauseenjasen = ""
-                    if len(osat) > 1:
-                        lauseenjasen = osat[1]
-                
-                        match lauseenjasen:
-                            case "A":
-                                adj += 1
-                                adjTeksti += 1
-                            case "ACR":
-                                acr += 1
-                                acrTeksti += 1
-                            case "Adv":
-                                adv += 1
-                                advTeksti += 1
-                            case "N":
-                                noun += 1
-                                nounTeksti += 1
-                            case "Num":
-                                num += 1
-                                numTeksti += 1
-                            case "V":
-                                verb += 1
-                                verbTeksti += 1
-                            case "Pcle":
-                                part += 1
-                                partTeksti += 1
-                            
-                            #En tiedä mikä on Pcle#voi, mutta niitä löytyi paljon :D
-                            case "Pcle#voi":
-                                part += 1
-                                partTeksti += 1
-                            case "Po":
-                                po += 1
-                                poTeksti += 1
-                            case "Pron":
-                                pron += 1
-                                pronTeksti += 1
+                try:
+                    # Morfologinen analyysi uralicNLP:n avulla,
+                    # josta erotellaan sanaluokka
+                    tulos = uralicApi.analyze(sane, "fin")
+                    if (len(tulos) > 0):
+                        analyysi = tulos[0][0]
+                        osat = analyysi.split("+", 2)
+                        lauseenjasen = ""
+                        if len(osat) > 1:
+                            lauseenjasen = osat[1]
+                    
+                            match lauseenjasen:
+                                case "A":
+                                    adj += 1
+                                    adjTeksti += 1
+                                case "ACR":
+                                    acr += 1
+                                    acrTeksti += 1
+                                case "Adv":
+                                    adv += 1
+                                    advTeksti += 1
+                                case "N":
+                                    noun += 1
+                                    nounTeksti += 1
+                                case "Num":
+                                    num += 1
+                                    numTeksti += 1
+                                case "V":
+                                    verb += 1
+                                    verbTeksti += 1
+                                case "Pcle":
+                                    part += 1
+                                    partTeksti += 1
+                                
+                                #En tiedä mikä on Pcle#voi, mutta niitä löytyi paljon :D
+                                case "Pcle#voi":
+                                    part += 1
+                                    partTeksti += 1
+                                case "Po":
+                                    po += 1
+                                    poTeksti += 1
+                                case "Pron":
+                                    pron += 1
+                                    pronTeksti += 1
+                except:
+                    print(kolmas_taso, "Virhe sanaluokkajäsennyksessä. Vian aiheuttanut sane: ", sane)
 
             print(kolmas_taso, "Adj ", round(adjTeksti/saneitaTeksti*100, 2), " %")
             print(kolmas_taso, "ACR ", round(acrTeksti/saneitaTeksti*100, 2), " %")
@@ -143,15 +146,18 @@ def ttr(korpus):
 
             # Käydään tekstin saneet kerrallaan läpi.
             for sane in saneet:
-                # Lemmataan jokainen sane. 
-                lemma = uralicApi.lemmatize(sane.lower(), "fin", word_boundaries=False)
-                if (len(lemma) > 0):
-                    # Lisätään sane lemmalistaan.
-                    lemmat.append(lemma[0])
+                try:
+                    # Lemmataan jokainen sane. 
+                    lemma = uralicApi.lemmatize(sane.lower(), "fin", word_boundaries=False)
+                    if (len(lemma) > 0):
+                        # Lisätään sane lemmalistaan.
+                        lemmat.append(lemma[0])
 
-                # Mikäli lemmaa ei löydy, lisätään sane sellaisenaan tyyppilistaan.
-                elif (len(lemma) == 0):
-                    lemmat.append(sane)
+                    # Mikäli lemmaa ei löydy, lisätään sane sellaisenaan tyyppilistaan.
+                    elif (len(lemma) == 0):
+                        lemmat.append(sane)
+                except:
+                    print(kolmas_taso, "Virhe lemmauksessa. Vian aiheuttanut sane: ", sane)
 
             # Haetaan uniikit lemmat saneista muuttamalla lemmalista setiksi.
             tyypit = set(lemmat)
@@ -186,17 +192,21 @@ def morfeemit(korpus):
             tokenit = tokenisoi_sanat(korpus[blogi][teksti])
 
             # Käydään tokenit kerralla läpi ja uralicAPI-kirjaston avulla etsitään niistä morfeemit.
+            
             for token in tokenit:
-                morfeemit = uralicApi.segment(token, "fin")
-                if (len(morfeemit) > 0):
-                    # Funktio palauttaa kaikki sanan mahdolliset morfeemiyhdistelmät.
-                    # Laskennan ja analyysin helpottamiseksi valitaan aina ensimmäinen vaihtoehto.
-                    morfeemeja += len(morfeemit[0])
-                    morfeemejaBlogissa += len(morfeemit[0])
+                try: 
+                    morfeemit = uralicApi.segment(token, "fin")
+                    if (len(morfeemit) > 0):
+                        # Funktio palauttaa kaikki sanan mahdolliset morfeemiyhdistelmät.
+                        # Laskennan ja analyysin helpottamiseksi valitaan aina ensimmäinen vaihtoehto.
+                        morfeemeja += len(morfeemit[0])
+                        morfeemejaBlogissa += len(morfeemit[0])
 
-                    # Lisätään löydettyjen morfeemien määrät listoihin.
-                    morfeemejaBlogiLista.append(len(morfeemit[0]))
-                    morfeemejaTekstiLista.append(len(morfeemit[0]))
+                        # Lisätään löydettyjen morfeemien määrät listoihin.
+                        morfeemejaBlogiLista.append(len(morfeemit[0]))
+                        morfeemejaTekstiLista.append(len(morfeemit[0]))
+                except:
+                    print(kolmas_taso, "Virhe morfologisessa analyysissa. Vian aiheuttanut tokeni: ", token)
 
             # Tekstikohtaiset tilastot.
             minMorf = min(morfeemejaTekstiLista)
@@ -208,8 +218,8 @@ def morfeemit(korpus):
             print(kolmas_taso, "morfeemeja (min)", minMorf)
             print(kolmas_taso, "morfeemeja (max)", maxMorf)
             print(kolmas_taso, "vaihteluväli: ", maxMorf-minMorf)
-            print(kolmas_taso, "keskihajonta: ", statistics.stdev(morfeemejaTekstiLista), 4)
-            print(kolmas_taso, "varianssi: ", statistics.variance(morfeemejaTekstiLista), 4)
+            print(kolmas_taso, "keskihajonta: ", statistics.stdev(morfeemejaTekstiLista))
+            print(kolmas_taso, "varianssi: ", statistics.variance(morfeemejaTekstiLista))
 
         # Blogikohtaiset tilastot.
         minMorfBlogi = min(morfeemejaBlogiLista)
@@ -220,8 +230,8 @@ def morfeemit(korpus):
         print(toka_taso, "Blogin sanoissa morfeemeja (min): ", minMorfBlogi)
         print(toka_taso, "Blogin sanoissa morfeemeja (max): ", maxMorfBlogi)
         print(toka_taso, "Blogin morfeemien määrän vaihteluväli: ", maxMorfBlogi-minMorfBlogi)
-        print(toka_taso, "Blogin morfeemien määrän keskihajonta: ", statistics.stdev(morfeemejaBlogiLista), 4)
-        print(toka_taso, "Blogin morfeemien määrän varianssi: ", statistics.variance(morfeemejaBlogiLista), 4)
+        print(toka_taso, "Blogin morfeemien määrän keskihajonta: ", statistics.stdev(morfeemejaBlogiLista))
+        print(toka_taso, "Blogin morfeemien määrän varianssi: ", statistics.variance(morfeemejaBlogiLista))
 
 # Lemmausfunktio. jossa jokaisen tekstin sana lemmataan. 
 # Mikäli sanalle tarjoaan useampaa lemmaa,

@@ -30,7 +30,7 @@ def tokenisoi_lauseet(teksti):
 # Virkkeiden tokenisointifunktio, eli isosta alkukirjaimesta pisteeseen, 
 # huutomerkkiin tai kysymyksmerkkiin.
 def tokenisoi_virkkeet(teksti):
-    virkkeet= sent_tokenize(teksti)
+    virkkeet= sent_tokenize(teksti, language="finnish")
     return virkkeet
 
 def tokenisoi(korpus, valinta):

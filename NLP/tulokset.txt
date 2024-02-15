@@ -1,0 +1,853 @@
+Kokonaissanamäärät:
+   Bard
+     bard_huonekalu :  268
+     bard_kotiäitinä :  232
+     bard_synnytyskertomus :  398
+     bard_työhuone :  190
+     bard_vauva :  370
+     Sanoja yhteensä blogissa:  1458
+   BIHNS
+     bihns_huonekalu :  440
+     bihns_kotiäitinä :  791
+     bihns_synnytyskertomus :  2319
+     bihns_työhuone :  431
+     bihns_vauva :  822
+     Sanoja yhteensä blogissa:  4803
+   ChatGPT
+     ChatGPT_huonekalu :  353
+     ChatGPT_kotiäitinä :  411
+     ChatGPT_synnytyskertomus :  533
+     ChatGPT_työhuone :  456
+     ChatGPT_vauva :  484
+     Sanoja yhteensä blogissa:  2237
+   Karkkipurkki
+     karkkipurkki_huonekalu :  559
+     karkkipurkki_kotiäitinä :  394
+     karkkipurkki_synnytyskertomus :  663
+     karkkipurkki_työhuone :  432
+     karkkipurkki_vauva :  376
+     Sanoja yhteensä blogissa:  2424
+   Lähiömutsi
+     lähiömutsi_huonekalu :  338
+     lähiömutsi_kotiäitinä :  519
+     lähiömutsi_synnytyskertomus :  1450
+     lähiömutsi_työhuone :  953
+     lähiömutsi_vauva :  824
+     Sanoja yhteensä blogissa:  4084
+Virkkeiden määrä:
+   Bard
+     bard_huonekalu :  50
+     bard_kotiäitinä :  49
+     bard_synnytyskertomus :  85
+     bard_työhuone :  39
+     bard_vauva :  63
+     Virkkeitä yhteensä blogissa :  286
+   BIHNS
+     bihns_huonekalu :  71
+     bihns_kotiäitinä :  89
+     bihns_synnytyskertomus :  360
+     bihns_työhuone :  53
+     bihns_vauva :  122
+     Virkkeitä yhteensä blogissa :  695
+   ChatGPT
+     ChatGPT_huonekalu :  68
+     ChatGPT_kotiäitinä :  79
+     ChatGPT_synnytyskertomus :  105
+     ChatGPT_työhuone :  84
+     ChatGPT_vauva :  78
+     Virkkeitä yhteensä blogissa :  414
+   Karkkipurkki
+     karkkipurkki_huonekalu :  93
+     karkkipurkki_kotiäitinä :  61
+     karkkipurkki_synnytyskertomus :  109
+     karkkipurkki_työhuone :  75
+     karkkipurkki_vauva :  56
+     Virkkeitä yhteensä blogissa :  394
+   Lähiömutsi
+     lähiömutsi_huonekalu :  58
+     lähiömutsi_kotiäitinä :  90
+     lähiömutsi_synnytyskertomus :  271
+     lähiömutsi_työhuone :  172
+     lähiömutsi_vauva :  146
+     Virkkeitä yhteensä blogissa :  737
+Sanojen keskimääräinen pituus:
+   Bard
+     bard_huonekalu 5.75
+     bard_kotiäitinä 6.2
+     bard_synnytyskertomus 6.53
+     bard_työhuone 6.96
+     bard_vauva 5.89
+     Bard yleensä:  6.23
+   BIHNS
+     bihns_huonekalu 6.53
+     bihns_kotiäitinä 6.23
+     bihns_synnytyskertomus 6.09
+     bihns_työhuone 6.86
+     bihns_vauva 5.73
+     BIHNS yleensä:  6.16
+   ChatGPT
+     ChatGPT_huonekalu 6.37
+     ChatGPT_kotiäitinä 6.56
+     ChatGPT_synnytyskertomus 6.53
+     ChatGPT_työhuone 6.53
+     ChatGPT_vauva 6.54
+     ChatGPT yleensä:  6.51
+   Karkkipurkki
+     karkkipurkki_huonekalu 6.42
+     karkkipurkki_kotiäitinä 6.49
+     karkkipurkki_synnytyskertomus 6.88
+     karkkipurkki_työhuone 6.18
+     karkkipurkki_vauva 6.47
+     Karkkipurkki yleensä:  6.52
+   Lähiömutsi
+     lähiömutsi_huonekalu 7.21
+     lähiömutsi_kotiäitinä 6.8
+     lähiömutsi_synnytyskertomus 6.93
+     lähiömutsi_työhuone 7.25
+     lähiömutsi_vauva 6.86
+     Lähiömutsi yleensä:  7.0
+Keskimäärin grafeemeja sanoissa:
+   Bard
+     bard_huonekalu 5.75
+     bard_kotiäitinä 6.2
+     bard_synnytyskertomus 6.53
+     bard_työhuone 6.96
+     bard_vauva 5.89
+     Bard yleensä:  6.23
+   BIHNS
+     bihns_huonekalu 6.53
+     bihns_kotiäitinä 6.23
+     bihns_synnytyskertomus 6.09
+     bihns_työhuone 6.86
+     bihns_vauva 5.73
+     BIHNS yleensä:  6.16
+   ChatGPT
+     ChatGPT_huonekalu 6.37
+     ChatGPT_kotiäitinä 6.56
+     ChatGPT_synnytyskertomus 6.53
+     ChatGPT_työhuone 6.53
+     ChatGPT_vauva 6.54
+     ChatGPT yleensä:  6.51
+   Karkkipurkki
+     karkkipurkki_huonekalu 6.42
+     karkkipurkki_kotiäitinä 6.49
+     karkkipurkki_synnytyskertomus 6.88
+     karkkipurkki_työhuone 6.18
+     karkkipurkki_vauva 6.47
+     Karkkipurkki yleensä:  6.52
+   Lähiömutsi
+     lähiömutsi_huonekalu 7.21
+     lähiömutsi_kotiäitinä 6.8
+     lähiömutsi_synnytyskertomus 6.93
+     lähiömutsi_työhuone 7.25
+     lähiömutsi_vauva 6.86
+     Lähiömutsi yleensä:  7.0
+Keskimäärin grafeemeja virkkeissä:
+   Bard
+     bard_huonekalu 37.54
+     bard_kotiäitinä 35.45
+     bard_synnytyskertomus 36.61
+     bard_työhuone 40.59
+     bard_vauva 42.05
+     Bard yleensä:  38.31
+   BIHNS
+     bihns_huonekalu 47.79
+     bihns_kotiäitinä 65.48
+     bihns_synnytyskertomus 46.97
+     bihns_työhuone 65.38
+     bihns_vauva 46.63
+     BIHNS yleensä:  50.77
+   ChatGPT
+     ChatGPT_huonekalu 39.37
+     ChatGPT_kotiäitinä 40.51
+     ChatGPT_synnytyskertomus 39.38
+     ChatGPT_työhuone 42.01
+     ChatGPT_vauva 47.96
+     ChatGPT yleensä:  41.74
+   Karkkipurkki
+     karkkipurkki_huonekalu 45.77
+     karkkipurkki_kotiäitinä 49.56
+     karkkipurkki_synnytyskertomus 49.17
+     karkkipurkki_työhuone 42.51
+     karkkipurkki_vauva 51.52
+     Karkkipurkki yleensä:  47.49
+   Lähiömutsi
+     lähiömutsi_huonekalu 48.95
+     lähiömutsi_kotiäitinä 46.01
+     lähiömutsi_synnytyskertomus 43.48
+     lähiömutsi_työhuone 46.77
+     lähiömutsi_vauva 45.68
+     Lähiömutsi yleensä:  45.42
+Keskimääräinen virkkeiden pituus teksteissä:
+   Bard
+     bard_huonekalu :  9.24
+     bard_kotiäitinä :  7.03
+     bard_synnytyskertomus :  7.65
+     bard_työhuone :  8.64
+     bard_vauva :  9.02
+     Blogissa keskimäärin sanoja virkkeissä:  8.24
+   BIHNS
+     bihns_huonekalu :  13.33
+     bihns_kotiäitinä :  15.82
+     bihns_synnytyskertomus :  14.58
+     bihns_työhuone :  17.96
+     bihns_vauva :  14.17
+     Blogissa keskimäärin sanoja virkkeissä:  14.82
+   ChatGPT
+     ChatGPT_huonekalu :  10.38
+     ChatGPT_kotiäitinä :  11.42
+     ChatGPT_synnytyskertomus :  10.25
+     ChatGPT_työhuone :  11.69
+     ChatGPT_vauva :  12.41
+     Blogissa keskimäärin sanoja virkkeissä:  11.19
+   Karkkipurkki
+     karkkipurkki_huonekalu :  10.96
+     karkkipurkki_kotiäitinä :  15.15
+     karkkipurkki_synnytyskertomus :  17.92
+     karkkipurkki_työhuone :  16.0
+     karkkipurkki_vauva :  17.9
+     Blogissa keskimäärin sanoja virkkeissä:  14.96
+   Lähiömutsi
+     lähiömutsi_huonekalu :  12.52
+     lähiömutsi_kotiäitinä :  11.28
+     lähiömutsi_synnytyskertomus :  10.0
+     lähiömutsi_työhuone :  12.22
+     lähiömutsi_vauva :  14.21
+     Blogissa keskimäärin sanoja virkkeissä:  11.54
+Morfeemitilastoja:
+   Bard :
+     bard_huonekalu :
+       morfeemeja (avg) 1.68
+       morfeemeja (median) 2
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 4
+       vaihteluväli:  3
+       keskihajonta:  0.7457651742584379
+       varianssi:  0.5561656951367182
+     bard_kotiäitinä :
+       morfeemeja (avg) 1.98
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.872892115076628
+       varianssi:  0.7619406445629492
+     bard_synnytyskertomus :
+       morfeemeja (avg) 1.77
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 4
+       vaihteluväli:  3
+       keskihajonta:  0.8287908415554299
+       varianssi:  0.6868942590461578
+     bard_työhuone :
+       morfeemeja (avg) 1.87
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 4
+       vaihteluväli:  3
+       keskihajonta:  0.7488968960054253
+       varianssi:  0.5608465608465608
+     bard_vauva :
+       morfeemeja (avg) 1.75
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.8233037401595816
+       varianssi:  0.6778290485607559
+     Blogin sanoissa morfeemeja (avg):  1.79
+     Blogin sanoissa morfeemeja (median):  2.0
+     Blogin sanoissa morfeemeja (moodi):  1
+     Blogin sanoissa morfeemeja (min):  1
+     Blogin sanoissa morfeemeja (max):  5
+     Blogin morfeemien määrän vaihteluväli:  4
+     Blogin morfeemien määrän keskihajonta:  0.8158096117212684
+     Blogin morfeemien määrän varianssi:  0.6655453225768069
+   BIHNS :
+     bihns_huonekalu :
+       morfeemeja (avg) 1.75
+       morfeemeja (median) 2
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 4
+       vaihteluväli:  3
+       keskihajonta:  0.7891438199354799
+       varianssi:  0.622747968542361
+     bihns_kotiäitinä :
+       morfeemeja (avg) 1.8
+       morfeemeja (median) 2
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 6
+       vaihteluväli:  5
+       keskihajonta:  0.8156356411194375
+       varianssi:  0.665261499064316
+     bihns_synnytyskertomus :
+       Virhe morfologisessa analyysissa. Vian aiheuttanut tokeni:  3-4
+       Virhe morfologisessa analyysissa. Vian aiheuttanut tokeni:  3-4min
+       Virhe morfologisessa analyysissa. Vian aiheuttanut tokeni:  3-4
+       Virhe morfologisessa analyysissa. Vian aiheuttanut tokeni:  190-200
+       morfeemeja (avg) 1.78
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.8032212409731899
+       varianssi:  0.6451643619505113
+     bihns_työhuone :
+       morfeemeja (avg) 1.87
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.8663457386959982
+       varianssi:  0.7505549389567148
+     bihns_vauva :
+       Virhe morfologisessa analyysissa. Vian aiheuttanut tokeni:  3-4
+       morfeemeja (avg) 1.63
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.7624139500882126
+       varianssi:  0.5812750312891114
+     Blogin sanoissa morfeemeja (avg):  1.76
+     Blogin sanoissa morfeemeja (median):  2
+     Blogin sanoissa morfeemeja (moodi):  1
+     Blogin sanoissa morfeemeja (min):  1
+     Blogin sanoissa morfeemeja (max):  6
+     Blogin morfeemien määrän vaihteluväli:  5
+     Blogin morfeemien määrän keskihajonta:  0.8048925003341505
+     Blogin morfeemien määrän varianssi:  0.6478519370941604
+   ChatGPT :
+     ChatGPT_huonekalu :
+       morfeemeja (avg) 1.81
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 6
+       vaihteluväli:  5
+       keskihajonta:  0.8998695162329488
+       varianssi:  0.8097651462453211
+     ChatGPT_kotiäitinä :
+       morfeemeja (avg) 1.92
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.8510982512467704
+       varianssi:  0.7243682332753107
+     ChatGPT_synnytyskertomus :
+       morfeemeja (avg) 1.84
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.7537992649084047
+       varianssi:  0.5682133317764512
+     ChatGPT_työhuone :
+       morfeemeja (avg) 1.79
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 4
+       vaihteluväli:  3
+       keskihajonta:  0.7677250558057055
+       varianssi:  0.5894017613118737
+     ChatGPT_vauva :
+       morfeemeja (avg) 1.83
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 4
+       vaihteluväli:  3
+       keskihajonta:  0.7875332132182352
+       varianssi:  0.6202085619218384
+     Blogin sanoissa morfeemeja (avg):  1.84
+     Blogin sanoissa morfeemeja (median):  2.0
+     Blogin sanoissa morfeemeja (moodi):  2
+     Blogin sanoissa morfeemeja (min):  1
+     Blogin sanoissa morfeemeja (max):  6
+     Blogin morfeemien määrän vaihteluväli:  5
+     Blogin morfeemien määrän keskihajonta:  0.8070217890683761
+     Blogin morfeemien määrän varianssi:  0.6512841680311224
+   Karkkipurkki :
+     karkkipurkki_huonekalu :
+       morfeemeja (avg) 1.8
+       morfeemeja (median) 2
+       morfeemeja (moodi) 1
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.894139645832727
+       varianssi:  0.7994857062498745
+     karkkipurkki_kotiäitinä :
+       morfeemeja (avg) 1.93
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.87897734608733
+       varianssi:  0.7726011749347258
+     karkkipurkki_synnytyskertomus :
+       morfeemeja (avg) 1.88
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.8374954744931803
+       varianssi:  0.7013986697965571
+     karkkipurkki_työhuone :
+       morfeemeja (avg) 1.76
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.81383368339887
+       varianssi:  0.6623252642345722
+     karkkipurkki_vauva :
+       morfeemeja (avg) 1.76
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.7956402264885125
+       varianssi:  0.6330433700066914
+     Blogin sanoissa morfeemeja (avg):  1.83
+     Blogin sanoissa morfeemeja (median):  2.0
+     Blogin sanoissa morfeemeja (moodi):  2
+     Blogin sanoissa morfeemeja (min):  1
+     Blogin sanoissa morfeemeja (max):  5
+     Blogin morfeemien määrän vaihteluväli:  4
+     Blogin morfeemien määrän keskihajonta:  0.8494901236064956
+     Blogin morfeemien määrän varianssi:  0.721633470104979
+   Lähiömutsi :
+     lähiömutsi_huonekalu :
+       morfeemeja (avg) 1.94
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 6
+       vaihteluväli:  5
+       keskihajonta:  0.9588593254893404
+       varianssi:  0.9194112060778727
+     lähiömutsi_kotiäitinä :
+       morfeemeja (avg) 1.88
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 6
+       vaihteluväli:  5
+       keskihajonta:  0.8732320576133806
+       varianssi:  0.7625342264436985
+     lähiömutsi_synnytyskertomus :
+       morfeemeja (avg) 1.89
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.8080187559821033
+       varianssi:  0.6528943100188657
+     lähiömutsi_työhuone :
+       morfeemeja (avg) 1.96
+       morfeemeja (median) 2.0
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 6
+       vaihteluväli:  5
+       keskihajonta:  0.9189683971309623
+       varianssi:  0.8445029149254502
+     lähiömutsi_vauva :
+       morfeemeja (avg) 1.83
+       morfeemeja (median) 2
+       morfeemeja (moodi) 2
+       morfeemeja (min) 1
+       morfeemeja (max) 5
+       vaihteluväli:  4
+       keskihajonta:  0.8500271947333708
+       varianssi:  0.722546231786284
+     Blogin sanoissa morfeemeja (avg):  1.9
+     Blogin sanoissa morfeemeja (median):  2.0
+     Blogin sanoissa morfeemeja (moodi):  2
+     Blogin sanoissa morfeemeja (min):  1
+     Blogin sanoissa morfeemeja (max):  6
+     Blogin morfeemien määrän vaihteluväli:  5
+     Blogin morfeemien määrän keskihajonta:  0.8654747654806361
+     Blogin morfeemien määrän varianssi:  0.749046569683762
+   Bard
+     bard_huonekalu
+       saneita:  268
+       tyyppejä:  113
+       TTR:  0.4216417910447761
+     bard_kotiäitinä
+       saneita:  232
+       tyyppejä:  120
+       TTR:  0.5172413793103449
+     bard_synnytyskertomus
+       saneita:  398
+       tyyppejä:  173
+       TTR:  0.43467336683417085
+     bard_työhuone
+       saneita:  190
+       tyyppejä:  100
+       TTR:  0.5263157894736842
+     bard_vauva
+       saneita:  370
+       tyyppejä:  134
+       TTR:  0.3621621621621622
+     Blogissa saneita:  1458
+     Blogissa tyyppejä:  640
+     Blogin TTR:  0.438957475994513
+   BIHNS
+     bihns_huonekalu
+       saneita:  440
+       tyyppejä:  239
+       TTR:  0.5431818181818182
+     bihns_kotiäitinä
+       saneita:  791
+       tyyppejä:  382
+       TTR:  0.4829329962073325
+     bihns_synnytyskertomus
+       saneita:  2319
+       Virhe lemmauksessa. Vian aiheuttanut sane:  190-200
+       tyyppejä:  726
+       TTR:  0.3130659767141009
+     bihns_työhuone
+       saneita:  431
+       tyyppejä:  259
+       TTR:  0.6009280742459396
+     bihns_vauva
+       saneita:  822
+       tyyppejä:  382
+       TTR:  0.46472019464720193
+     Blogissa saneita:  4803
+     Blogissa tyyppejä:  1988
+     Blogin TTR:  0.4139079741828024
+   ChatGPT
+     ChatGPT_huonekalu
+       saneita:  353
+       tyyppejä:  167
+       TTR:  0.4730878186968839
+     ChatGPT_kotiäitinä
+       saneita:  411
+       tyyppejä:  207
+       TTR:  0.5036496350364964
+     ChatGPT_synnytyskertomus
+       saneita:  533
+       tyyppejä:  264
+       TTR:  0.49530956848030017
+     ChatGPT_työhuone
+       saneita:  456
+       tyyppejä:  240
+       TTR:  0.5263157894736842
+     ChatGPT_vauva
+       saneita:  484
+       tyyppejä:  244
+       TTR:  0.5041322314049587
+     Blogissa saneita:  2237
+     Blogissa tyyppejä:  1122
+     Blogin TTR:  0.5015645954403218
+   Karkkipurkki
+     karkkipurkki_huonekalu
+       saneita:  559
+       tyyppejä:  258
+       TTR:  0.46153846153846156
+     karkkipurkki_kotiäitinä
+       saneita:  394
+       tyyppejä:  217
+       TTR:  0.550761421319797
+     karkkipurkki_synnytyskertomus
+       saneita:  663
+       tyyppejä:  359
+       TTR:  0.5414781297134238
+     karkkipurkki_työhuone
+       saneita:  432
+       tyyppejä:  234
+       TTR:  0.5416666666666666
+     karkkipurkki_vauva
+       saneita:  376
+       tyyppejä:  246
+       TTR:  0.6542553191489362
+     Blogissa saneita:  2424
+     Blogissa tyyppejä:  1314
+     Blogin TTR:  0.5420792079207921
+   Lähiömutsi
+     lähiömutsi_huonekalu
+       saneita:  338
+       tyyppejä:  225
+       TTR:  0.665680473372781
+     lähiömutsi_kotiäitinä
+       saneita:  519
+       tyyppejä:  311
+       TTR:  0.5992292870905588
+     lähiömutsi_synnytyskertomus
+       saneita:  1450
+       tyyppejä:  734
+       TTR:  0.5062068965517241
+     lähiömutsi_työhuone
+       saneita:  953
+       tyyppejä:  544
+       TTR:  0.5708289611752361
+     lähiömutsi_vauva
+       saneita:  824
+       tyyppejä:  463
+       TTR:  0.5618932038834952
+     Blogissa saneita:  4084
+     Blogissa tyyppejä:  2277
+     Blogin TTR:  0.557541625857003
+   Bard
+     bard_huonekalu :
+       Adj  10.82  %
+       ACR  0.0  %
+       N  31.34  %
+       Num  0.75  %
+       V  26.12  %
+       Pcle & Pcle#voi 12.31  %
+       Po  0.37  %
+       Pron  17.91  %
+     bard_kotiäitinä :
+       Adj  10.78  %
+       ACR  0.0  %
+       N  30.17  %
+       Num  0.43  %
+       V  33.62  %
+       Pcle & Pcle#voi 14.66  %
+       Po  0.0  %
+       Pron  7.76  %
+     bard_synnytyskertomus :
+       Adj  7.79  %
+       ACR  0.25  %
+       N  31.16  %
+       Num  0.75  %
+       V  29.4  %
+       Pcle & Pcle#voi 19.35  %
+       Po  0.25  %
+       Pron  10.55  %
+     bard_työhuone :
+       Adj  8.95  %
+       ACR  0.0  %
+       N  37.89  %
+       Num  0.0  %
+       V  28.42  %
+       Pcle & Pcle#voi 12.11  %
+       Po  0.53  %
+       Pron  10.53  %
+     bard_vauva :
+       Adj  10.81  %
+       ACR  0.0  %
+       N  32.43  %
+       Num  0.54  %
+       V  34.32  %
+       Pcle & Pcle#voi 12.43  %
+       Po  0.0  %
+       Pron  9.46  %
+   BIHNS
+     bihns_huonekalu :
+       Adj  8.86  %
+       ACR  0.0  %
+       N  29.77  %
+       Num  0.68  %
+       V  27.05  %
+       Pcle & Pcle#voi 17.95  %
+       Po  0.0  %
+       Pron  12.73  %
+     bihns_kotiäitinä :
+       Adj  6.57  %
+       ACR  0.0  %
+       N  30.97  %
+       Num  1.77  %
+       V  28.32  %
+       Pcle & Pcle#voi 17.57  %
+       Po  0.0  %
+       Pron  12.26  %
+     bihns_synnytyskertomus :
+       Virhe sanaluokkajäsennyksessä. Vian aiheuttanut sane:  190-200
+       Adj  5.0  %
+       ACR  0.0  %
+       N  28.33  %
+       Num  1.21  %
+       V  29.11  %
+       Pcle & Pcle#voi 21.26  %
+       Po  0.0  %
+       Pron  12.33  %
+     bihns_työhuone :
+       Adj  11.6  %
+       ACR  0.0  %
+       N  36.19  %
+       Num  0.7  %
+       V  22.04  %
+       Pcle & Pcle#voi 15.55  %
+       Po  0.0  %
+       Pron  9.51  %
+     bihns_vauva :
+       Adj  6.08  %
+       ACR  0.0  %
+       N  29.32  %
+       Num  0.97  %
+       V  26.52  %
+       Pcle & Pcle#voi 20.92  %
+       Po  0.0  %
+       Pron  12.41  %
+   ChatGPT
+     ChatGPT_huonekalu :
+       Adj  8.78  %
+       ACR  0.0  %
+       N  34.28  %
+       Num  1.98  %
+       V  23.23  %
+       Pcle & Pcle#voi 13.03  %
+       Po  0.0  %
+       Pron  16.43  %
+     ChatGPT_kotiäitinä :
+       Adj  6.33  %
+       ACR  0.0  %
+       N  31.14  %
+       Num  0.73  %
+       V  28.71  %
+       Pcle & Pcle#voi 17.27  %
+       Po  0.49  %
+       Pron  12.17  %
+     ChatGPT_synnytyskertomus :
+       Adj  6.94  %
+       ACR  0.0  %
+       N  28.89  %
+       Num  0.94  %
+       V  30.58  %
+       Pcle & Pcle#voi 16.51  %
+       Po  0.38  %
+       Pron  13.13  %
+     ChatGPT_työhuone :
+       Adj  10.31  %
+       ACR  0.0  %
+       N  30.92  %
+       Num  0.44  %
+       V  29.17  %
+       Pcle & Pcle#voi 13.6  %
+       Po  0.22  %
+       Pron  11.84  %
+     ChatGPT_vauva :
+       Adj  6.2  %
+       ACR  0.0  %
+       N  30.17  %
+       Num  1.24  %
+       V  30.58  %
+       Pcle & Pcle#voi 17.77  %
+       Po  0.0  %
+       Pron  11.16  %
+   Karkkipurkki
+     karkkipurkki_huonekalu :
+       Adj  10.73  %
+       ACR  0.0  %
+       N  27.91  %
+       Num  0.18  %
+       V  28.26  %
+       Pcle & Pcle#voi 16.64  %
+       Po  0.0  %
+       Pron  13.06  %
+     karkkipurkki_kotiäitinä :
+       Adj  9.39  %
+       ACR  0.0  %
+       N  31.22  %
+       Num  2.28  %
+       V  27.92  %
+       Pcle & Pcle#voi 18.53  %
+       Po  0.0  %
+       Pron  6.6  %
+     karkkipurkki_synnytyskertomus :
+       Adj  6.03  %
+       ACR  0.0  %
+       N  35.44  %
+       Num  0.75  %
+       V  29.11  %
+       Pcle & Pcle#voi 14.33  %
+       Po  0.0  %
+       Pron  9.35  %
+     karkkipurkki_työhuone :
+       Adj  10.42  %
+       ACR  0.0  %
+       N  28.24  %
+       Num  1.62  %
+       V  25.23  %
+       Pcle & Pcle#voi 16.67  %
+       Po  0.0  %
+       Pron  14.12  %
+     karkkipurkki_vauva :
+       Adj  8.51  %
+       ACR  0.27  %
+       N  28.72  %
+       Num  1.33  %
+       V  28.99  %
+       Pcle & Pcle#voi 16.76  %
+       Po  0.0  %
+       Pron  9.04  %
+   Lähiömutsi
+     lähiömutsi_huonekalu :
+       Adj  7.99  %
+       ACR  0.0  %
+       N  34.02  %
+       Num  1.18  %
+       V  26.04  %
+       Pcle & Pcle#voi 14.2  %
+       Po  0.0  %
+       Pron  10.65  %
+     lähiömutsi_kotiäitinä :
+       Adj  6.94  %
+       ACR  0.0  %
+       N  32.76  %
+       Num  1.16  %
+       V  28.52  %
+       Pcle & Pcle#voi 18.5  %
+       Po  0.0  %
+       Pron  9.63  %
+     lähiömutsi_synnytyskertomus :
+       Adj  4.34  %
+       ACR  0.0  %
+       N  38.07  %
+       Num  1.17  %
+       V  30.69  %
+       Pcle & Pcle#voi 15.24  %
+       Po  0.0  %
+       Pron  6.41  %
+     lähiömutsi_työhuone :
+       Adj  9.02  %
+       ACR  0.0  %
+       N  38.51  %
+       Num  1.26  %
+       V  23.08  %
+       Pcle & Pcle#voi 13.75  %
+       Po  0.0  %
+       Pron  10.6  %
+     lähiömutsi_vauva :
+       Adj  5.58  %
+       ACR  0.0  %
+       N  36.17  %
+       Num  1.33  %
+       V  27.31  %
+       Pcle & Pcle#voi 19.05  %
+       Po  0.0  %
+       Pron  5.7  %
+     Blogissa:
+       Adj  6.32  %
+       ACR  0.0  %
+       N  36.78  %
+       Num  1.22  %
+       V  27.57  %
+       Pcle & Pcle#voi 15.99  %
+       Po  0.0  %
+       Pron  8.01  %
