@@ -6,9 +6,6 @@ from nltk import Counter
 import statistics
 from collections import Counter
 
-eka_taso = "  "
-toka_taso = "    "
-kolmas_taso = "      "
 
 # Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
@@ -94,31 +91,29 @@ def sanaluokat(korpus):
                                     part += 1
                                     partTeksti += 1
                                 case "Po":
-                                    po += 1
-                                    poTeksti += 1
+                                    adj += 1
+                                    adjTeksti += 1
                                 case "Pron":
                                     pron += 1
                                     pronTeksti += 1
                 except:
                     print(kolmas_taso, "Virhe sanaluokkajäsennyksessä. Vian aiheuttanut sane: ", sane)
 
-            print(kolmas_taso, "Adj ", round(adjTeksti/saneitaTeksti*100, 2), " %")
+            print(kolmas_taso, "Adj ", round((adjTeksti)/saneitaTeksti*100, 2), " %")
             print(kolmas_taso, "ACR ", round(acrTeksti/saneitaTeksti*100, 2), " %")
             print(kolmas_taso, "N ", round(nounTeksti/saneitaTeksti*100, 2), " %")
             print(kolmas_taso, "Num ", round(numTeksti/saneitaTeksti*100, 2), " %")
             print(kolmas_taso, "V ", round(verbTeksti/saneitaTeksti*100, 2), " %")
             print(kolmas_taso, "Pcle & Pcle#voi", round(partTeksti/saneitaTeksti*100, 2), " %")
-            print(kolmas_taso, "Po ", round(poTeksti/saneitaTeksti*100, 2), " %")
             print(kolmas_taso, "Pron ", round(pronTeksti/saneitaTeksti*100, 2), " %")
 
     print(toka_taso, "Blogissa: ")
-    print(kolmas_taso, "Adj ", round(adj/saneitaBlogi*100, 2), " %")
+    print(kolmas_taso, "Adj ", round((adj)/saneitaBlogi*100, 2), " %")
     print(kolmas_taso, "ACR ", round(acr/saneitaBlogi*100, 2), " %")
     print(kolmas_taso, "N ", round(noun/saneitaBlogi*100, 2), " %")
     print(kolmas_taso, "Num ", round(num/saneitaBlogi*100, 2), " %")
     print(kolmas_taso, "V ", round(verb/saneitaBlogi*100, 2), " %")
     print(kolmas_taso, "Pcle & Pcle#voi", round(part/saneitaBlogi*100, 2), " %")
-    print(kolmas_taso, "Po ", round(po/saneitaBlogi*100, 2), " %")
     print(kolmas_taso, "Pron ", round(pron/saneitaBlogi*100, 2), " %")
 
 def ttr(korpus):
@@ -237,22 +232,25 @@ def morfeemit(korpus):
 # Mikäli sanalle tarjoaan useampaa lemmaa,
 # valitaan ensimmäinen. Virheitä siis tulee, mutta ohjelma
 # porskuttaa eteenmpäin.
-def lemmat(korpus):
+def lemmaus(korpus):
     lemmaDictKorpus = {}
     for blogi in korpus:
+        lemmaDictKorpus[blogi] = {}
         for teksti in korpus[blogi]:
-            lemmaDictTeksti = {}
+            # Tokenisoidaan teksti sanalistaksi
             saneet = tokenisoi_sanat(korpus[blogi][teksti])
 
             # Lista, johon tallennetaan yhden tekstin saneet
             lemmalista = []
             for sane in saneet:
-                lemma = uralicApi.lemmatize(sane, "fin", word_boundaries=False)
-                if (len(lemma) > 0):
-                    lemmalista.append(lemma[0])
+                try:
+                    lemma = uralicApi.lemmatize(sane, "fin", word_boundaries=False)
+                    if (len(lemma) > 0):
+                        lemmalista.append(lemma[0])
+                except:
+                    print("Lemmaus epäonnistui, sane: ", sane)
             
-            lemmaDictTeksti[teksti] = lemmalista
-            lemmaDictKorpus[blogi] = lemmaDictTeksti
+            lemmaDictKorpus[blogi][teksti] = lemmalista
         
     return lemmaDictKorpus
 

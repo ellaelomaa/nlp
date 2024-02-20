@@ -1,68 +1,39 @@
-import string
+from uralic import lemmaus
 import tokenisointi
-from uralicNLP import uralicApi #uralicApi.download(fin) josset oo ladannu suomem kieli mälliä
+from pathlib import Path
+import os
 
-# To do:
-# hukkasanojen poisto (listasta)
-# erisnimien poisto
-
-# Normalisointi/lemmaus-funktio
-def normalisointi(tokenit):
-    lang = "fin"  # kielivalinta
-    analyzer = uralicApi.Analyzer() # tää haluaa listan nii pitää tehdä tästä uus oma muuttujansa tms.
-    normalisoitu = []
-    for token in tokenit:
-        lemmatized = analyzer.analyze(token, lang)
-        if lemmatized:
-            normalisoitu.append(lemmatized[0]['lemma'])
-        else:
-            normalisoitu.append(token)
-
-    return normalisoitu
-
-# Erisnimien poisto. Tää täytyy tehdä sitten tokenisoimattomalle tiedostolle (joissain erisnimissä monia osia)
-def erisnimien_poisto(korpus): 
-    erisnimet_poistettu = []
-    with open("erisnimet.txt", "r") as file:
-        erisnimet_tiedostossa = file.read().splitlines()
-    for erisnimi in korpus:
-        if erisnimi in erisnimet_tiedostossa:
-            erisnimet_poistettu.append(erisnimi)
-    return erisnimet_poistettu
-
+# Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
+eka_taso = "  "
+toka_taso = "    "
+kolmas_taso = "      "
+neljas_taso = "        "
 
 # Funktiosanojen poisto
-def funktiosanojen_poisto(korpus, polku):
-    tiedosto = open(polku, "r")
+def funktiosanojen_poisto(korpus):
+    tiedosto = open(os.path.join(os.path.dirname(__file__), "sanalistat/funktiosanat.txt"), "r")
     data = tiedosto.read()
     # Muutetaan tiedosto listaksi
     funktiosanat = data.split("\n")
 
-    for avain in korpus:
-        sanalista = tokenisointi.tokenisoi_sanat(korpus[avain])
-        print("Ennen: ", len(sanalista))
-        temp = [sana for sana in sanalista if sana not in funktiosanat]
-        print("Jälkeen: ", len(temp))
-        korpus[avain] = temp
+    # Lemmataan korpus, jotta funktiosanoja voidaan vertailla ja poistaa
+    lemmat = lemmaus(korpus)
 
-    return korpus
+    print("Sanastotiheys teksteittäin")
+    for blogi in lemmat:
+        print(eka_taso, blogi)
+        for teksti in lemmat[blogi]:
+            maara = 0
+            for lemma in lemmat[blogi][teksti]:
+                if lemma in funktiosanat:
+                    maara += 1
+            print(kolmas_taso, teksti)
+            print(neljas_taso, "Funktiosanoja yhteensä:", maara)
+            sanamaara = len(lemmat[blogi][teksti])
+            print(neljas_taso, "Funktiosanoja prosentteina:", round(maara/sanamaara*100, 2))
+            
+    return lemmat
 
-
-# Sisältösanojen poisto
-def sisaltosanojen_poisto(korpus, polku):
-    tiedosto = open(polku, "r")
-    data = tiedosto.read()
-    sisaltosanat = data.split("\n")
-    
-    for avain in korpus:
-        sanalista = tokenisointi.tokenisoi_sanat(korpus[avain])
-        print("Ennen: ", len(sanalista))
-        temp = [sana for sana in sanalista if sana not in sisaltosanat]
-        print("Jälkeen: ", len(temp))
-        korpus[avain] = temp
-
-    return korpus
-
-def poistot(korpus, funktiobool, funktiopolku, sisaltobool, sisaltopolku):
-    if funktiobool == True:
-        funktiosanojen_poisto(korpus, funktiopolku)
+def poistot(asetukset, korpus):
+    if asetukset["tiheys"] == True:
+        funktiosanojen_poisto(korpus)

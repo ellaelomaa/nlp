@@ -5,6 +5,12 @@ def hae_tiedosto(polku):
     teksti = tiedosto.read()
     return teksti
 
+def hae_jasennetty():
+    path = os.path.abspath(os.path.curdir)
+    folder = "jasennettu"
+    korpus = hae_korpus(os.path.join(path, folder))
+    return korpus
+
 def hae_korpus(polku):
     korpus = dict()
     

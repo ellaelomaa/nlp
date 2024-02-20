@@ -22,9 +22,11 @@ def tokenisoi_lauseet(teksti):
 
     # Poistetaan ensin rivinvaihdot.
     teksti = teksti.replace("\n", "")
-    lauseet = re.split(', |-|! |\. |\.|\? |\(|\)|–|—|:', teksti)
+    valimerkiton = re.sub(r"[^\P{P}-'&|]+", "", teksti)
+    lauseet = re.split("\|", valimerkiton)
     # Poistetaan tyhjät alkiot.
     lauseet = list(filter(None, lauseet))
+    
     return lauseet
 
 # Virkkeiden tokenisointifunktio, eli isosta alkukirjaimesta pisteeseen, 

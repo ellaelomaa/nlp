@@ -6,7 +6,6 @@ import clean
 import count
 import uralic
 import time
-import NLP_sanalista
 
 # Tässä ajetaan itse ohjelma asetusten mukaan läpi
 
@@ -20,6 +19,7 @@ def kaynnista():
 
     count.tilastoja(asetukset, korpus)
     uralic.uralic(asetukset, korpus)
+    clean.poistot(asetukset, korpus)
 
     # Korpus, josta poistettu sanat.
     # siistikorpus = clean.poistot(korpus, asetukset["funktiosanat"], asetukset["funktiosanapolku"])
@@ -33,7 +33,7 @@ asetukset = {
     "sanapituus": False,
     "grafeemit": False,
     "morfeemit": False,
-    "lausepituus": False,
+    "lausetilastot": False,
     "virkesana": False,
     "virkelause": False,
     "TTR": False,
@@ -42,7 +42,8 @@ asetukset = {
     "pituusvarianssi": False,
     "hapaxlegomena": False,
     "erikoismerkit": False,
-    "negaatiot": False
+    "negaatiot": False,
+    "tiheys": False
 }
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
@@ -69,11 +70,11 @@ muuttujat = [
     [sg.Checkbox(text="Sanapituus", default=False, key="sanapituus")],
     [sg.Checkbox(text="Grafeemeja sanoissa", default=False, key="grafeemit")],
     [sg.Checkbox(text="Morfeemien määrä sanoissa", default=False, key="morfeemit")],
-    [sg.Checkbox(text="Lausepituus", default=False, key="lausepituus", disabled=True)],
+    [sg.Checkbox(text="Lausetilastoja", default=False, key="lausetilastot")],
     [sg.Checkbox(text="Virkepituus sanoina", default=False, key="virkesana")],
-    [sg.Checkbox(text="Virkepituus lauseina", default=False, key="virkelause", disabled=True)],
+    [sg.Checkbox(text="Virkepituus lauseina", default=False, key="virkelause")],
     [sg.Checkbox(text="TTR", default=False, key="TTR")],
-    [sg.Checkbox(text="Sanaston tiheys", default=False, key="sanastotiheys", disabled=True)],
+    [sg.Checkbox(text="Sanaston tiheys", default=False, key="tiheys")],
     [sg.Checkbox(text="Sanaluokkien frekvenssit", default=False, key="sanaluokat")],
 ]
 
@@ -111,10 +112,13 @@ while True:
     asetukset["sanamaarat"] =values["sanamaarat"]
     asetukset["virkemaarat"] = values["virkemaarat"]
     asetukset["sanapituus"] = values["sanapituus"]
+    asetukset["lausetilastot"] = values["lausetilastot"]
     asetukset["grafeemit"] = values["grafeemit"]
     asetukset["morfeemit"] = values["morfeemit"]
     asetukset["virkesana"] = values ["virkesana"]
     asetukset["TTR"] = values["TTR"]
     asetukset["sanaluokat"] = values["sanaluokat"]
+    asetukset["tiheys"] = values["tiheys"]
+    asetukset["virkelause"] = values["virkelause"]
 
 window.close()
