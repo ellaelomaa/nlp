@@ -5,6 +5,7 @@ def hae_tiedosto(polku):
     teksti = tiedosto.read()
     return teksti
 
+# Helmin manuaalisesti lauseiksi jäsennetyn tiedoston haku
 def hae_jasennetty():
     path = os.path.abspath(os.path.curdir)
     folder = "jasennettu"

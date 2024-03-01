@@ -40,11 +40,20 @@ asetukset = {
     "LD": False,
     "sanaluokat": False,
     "pituusvarianssi": False,
-    "hapaxlegomena": False,
+    "hapax": False,
     "erikoismerkit": False,
     "negaatiot": False,
-    "tiheys": False
-}
+    "tiheys": False,
+    "erikoismerkit": False,
+    "hfl": False,
+    "50": False,
+    "100": False,
+    "erisnimet": False,
+    "yule": False,
+    "yulek": False,
+    "yulei": False,
+    "kosini": False,
+    }
 
 # PySimpleGuin eräs perusteemoista, saadaanpahan jotain söpöä hetkeksi :)
 # sg.theme("LightGreen10")
@@ -64,6 +73,7 @@ sg.LOOK_AND_FEEL_TABLE['teema'] = {'BACKGROUND': '#5c9ead',
 
 sg.theme("teema")
 
+# GUI:n asetusten järjestys ja avaimet
 muuttujat = [
     [sg.Checkbox(text="Sanojen määrä", default=False, key="sanamaarat")],
     [sg.Checkbox(text="Virkkeiden määrä", default=False, key="virkemaarat")],
@@ -76,6 +86,13 @@ muuttujat = [
     [sg.Checkbox(text="TTR", default=False, key="TTR")],
     [sg.Checkbox(text="Sanaston tiheys", default=False, key="tiheys")],
     [sg.Checkbox(text="Sanaluokkien frekvenssit", default=False, key="sanaluokat")],
+    [sg.Checkbox(text="Erikoismerkkien määrä", default=False, key="erikoismerkit")],
+    [sg.Checkbox(text="HFL, sanoja: ", default=False, key="hfl"), sg.Radio("50", "maara", key="50", default=True), sg.Radio("100", "maara", key="100", default=False)],
+    [sg.Checkbox(text="Hapax Legomena", default=False, key="hapax")],
+    [sg.Checkbox(text="Erisnimet", default=False, key="erisnimet")],
+    [sg.Checkbox(text="Yule, metodi: ", default=False, key="yule"), sg.Radio("Yule K", "yule", key="yulek", default=True), sg.Radio("Yule I", "yule", key="yulei", default=False)],
+    [sg.Checkbox(text="Kosinisimilaarisuus", default=False, key="kosini")],
+
 ]
 
 osio3 = [
@@ -120,5 +137,15 @@ while True:
     asetukset["sanaluokat"] = values["sanaluokat"]
     asetukset["tiheys"] = values["tiheys"]
     asetukset["virkelause"] = values["virkelause"]
+    asetukset["erikoismerkit"] = values["erikoismerkit"]
+    asetukset["hfl"] = values["hfl"]
+    asetukset["50"] = values["50"]
+    asetukset["100"] = values["100"]
+    asetukset["hapax"] = values["hapax"],
+    asetukset["erisnimet"] = values["erisnimet"]
+    asetukset["yule"] = values["yule"]
+    asetukset["yulek"] = values["yulek"]
+    asetukset["yulei"] = values["yulei"]
+    asetukset["kosini"] = values["kosini"]
 
 window.close()
