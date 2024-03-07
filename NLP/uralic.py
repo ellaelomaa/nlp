@@ -153,7 +153,7 @@ def erisnimetKorpus(korpus):
         for teksti in korpus[blogi]:
             print(toka_taso, teksti)
 
-            erisnimet = erisnimet(teksti, nlp)
+            erisnimet = erisnimetTeksti(teksti, nlp)
 
             print(kolmas_taso, erisnimet)
             korpus[blogi][teksti] = erisnimet
@@ -339,14 +339,14 @@ def lemmaus(korpus):
 # Pääohjelmassa kutsuttava funktio, joka kutsuu kaikkia muita asetusten mukaan.
 def uralic(asetukset, korpus):
     #lemmat(korpus)
-    if asetukset["morfeemit"] == True:
+    if asetukset["Morfeemeja sanoissa"] == True:
         morfeemit(korpus)
-    if asetukset["TTR"] == True:
+    if asetukset["Type-token ratio"] == True:
         ttr(korpus)
-    if asetukset["sanaluokat"] == True:
+    if asetukset["Sanaluokkien frekvenssit"] == True:
         sanaluokat(korpus)
-    if asetukset["hapax"] == True:
+    if asetukset["Hapax Legomena"] == True:
         hapaxlegomenon(korpus)
-    if asetukset["erisnimet"] == True:
+    if asetukset["Erisnimet"] == True:
         erisnimetKorpus(korpus)
         

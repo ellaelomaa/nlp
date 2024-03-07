@@ -33,6 +33,7 @@ def sanamaara(korpus):
             print(toka_taso, teksti, ": ", tekstiPituus)
             sanoja += tekstiPituus
         print(toka_taso, "Sanoja yhteensä blogissa: ", sanoja)
+    
 
 # Lasketaan sanojen pituuden keskiarvo ja keskihajonta
 def sanapituus(korpus):
@@ -266,14 +267,14 @@ def yulelaskut(teksti, valinta):
 
 # Käydään korpus teksteittäin läpi ja kutsutaan apufunktiota laskuihin
 # https://swizec.com/blog/measuring-vocabulary-richness-with-python/
-def yule(korpus, asetukset):
+def yule(korpus, kirjain):
     print("Yule")
     for blogi in korpus:
         print(eka_taso, blogi)
         for teksti in korpus[blogi]:
             print(toka_taso, teksti)
 
-            if asetukset["yulek"] == True:
+            if kirjain == "K":
                 yulelaskut(korpus[blogi][teksti], "k")
             else:
                 yulelaskut(korpus[blogi][teksti], "i")
@@ -324,30 +325,38 @@ def kosinisimilaarisuus(korpus, nlp):
     print(df)
 
 def tilastoja(asetukset, korpus):
+    tulos = ""
     nlp = spacy.load("fi_core_news_sm")
 
-    if asetukset["sanamaarat"] == True:
+    asetuslista = ["Sanamäärä", "Virkemäärä", "Grafeemeja sanoissa", 
+                   "Virkepituus sanoina", "Virkepituus lauseina",
+                   "Kosinisimilaarisuus"]
+    
+
+    if asetukset["Sanamäärä"] == True:
         sanamaara(korpus)
-    if asetukset["virkemaarat"] == True:
+    if asetukset["Virkemäärä"] == True:
         virkemaara(korpus)
-    if asetukset["sanapituus"] == True:
-        sanapituus(korpus)
-    if asetukset["grafeemit"] == True:
+    if asetukset["Grafeemeja sanoissa"] == True:
         grafeemeina(korpus)
-    if asetukset["virkesana"] == True:
+    if asetukset["Virkepituus sanoina"] == True:
         sanojaVirkkeissa(korpus)
-    if asetukset["lausetilastot"] == True:
-        lausetilastoja()
-    if asetukset["virkelause"] == True:
+    # if asetukset["lausetilastot"] == True:
+    #     lausetilastoja()
+    if asetukset["Virkepituus lauseina"] == True:
         lauseitaVirkkeissa()
-    if asetukset["erikoismerkit"] == True:
-        erikoismerkit(korpus)
-    if asetukset["hfl"] == True:
-        if asetukset["50"] == True:
-            hfl(korpus, 50)
-        else:
-            hfl(korpus, 100)
-    if asetukset["yule"] == True:
-        yule(korpus, asetukset)
-    if asetukset["kosini"] == True:
+    # if asetukset["erikoismerkit"] == True:
+    #     erikoismerkit(korpus)
+    # if asetukset["hfl"] == True:
+    #     if asetukset["50"] == True:
+    #         hfl(korpus, 50)
+    #     else:
+    #         hfl(korpus, 100)
+    if asetukset["Yule K"] == True:
+        yule(korpus, "K")
+    if asetukset["Yule I"] == True:
+        yule(korpus, "I")
+    if asetukset["Kosinisimilaarisuus"] == True:
         kosinisimilaarisuus(korpus, nlp)
+
+    return tulos

@@ -14,6 +14,10 @@ def tokenisoi_sanat(teksti):
 
     # Erotellaan välilyönnistä sanat listaksi.
     tokenit = valimerkiton.split()
+
+    # # Muutetaan kaikki vielä pieniksi kirjaimiksi
+    # tokenit = [sana.lower() for sana in tokenit]
+    
     return tokenit
 
 # Lauseiden tokenisointifunktio, eli lauseet erikoismerkistä erikoismerkkiin

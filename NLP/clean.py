@@ -35,5 +35,5 @@ def funktiosanojen_poisto(korpus):
     return lemmat
 
 def poistot(asetukset, korpus):
-    if asetukset["tiheys"] == True:
+    if asetukset["Sanaston tiheys"] == True:
         funktiosanojen_poisto(korpus)
