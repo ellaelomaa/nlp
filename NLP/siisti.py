@@ -1,5 +1,4 @@
 from uralic import lemmaus
-import tokenisointi
 from pathlib import Path
 import os
 

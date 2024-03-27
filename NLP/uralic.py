@@ -8,13 +8,14 @@ from collections import Counter
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import spacy
-
+import main
+import os
 
 # Muuttujat sisentämään tulosteiden rivejä luettavuuden helpottamiseksi.
 eka_taso = "  "
 toka_taso = "    "
 kolmas_taso = "      "
-
+neljas_taso = "        "
 # Tulostetaan teksteittäin ja blogeittain löydettyjen sanaluokkien määrät
 def sanaluokat(korpus):
     for blogi in korpus:
@@ -193,28 +194,26 @@ def hapaxlegomenon(korpus):
             # Haetaan uniikit lemmat saneista muuttamalla lemmalista setiksi.
             tyypit = set(lemmat)
             print(kolmas_taso, "Uniikkeja sanoja: ", len(tyypit))
+            main.lisaaTaulukkoon("Teksteittäin", len(tyypit), "Hapax legomenon", teksti)
 
 # TTR = tekstin tyypit (= uniikit sanat) / tokeneilla (saneilla)
 # Mitä lähempänä TTR on numeroa 1, sitä enemmän sanastollista monipuolisuutta.
 def ttr(korpus):
-    for blogi in korpus:
-        print(eka_taso, blogi)
-
+    for kirjoittaja in korpus:
         # Koko blogia koskevat laskurit.
-        saneitaBlogi = 0
-        tyypitBlogi = 0
+        saneitaKirjoittaja = 0
+        tyypitKirjoittaja = 0
 
         # Käydään blogitekstit yksi kerrallaan läpi.
-        for teksti in korpus[blogi]:
-            print(toka_taso, teksti)
-            saneet = tokenisoi_sanat(korpus[blogi][teksti])
+        for teksti in korpus[kirjoittaja]:
+            saneet = tokenisoi_sanat(korpus[kirjoittaja][teksti])
 
             # Lasketaan saneiden määrä teksteittäin...
             saneitaTeksti = len(saneet)
 
             # ...ja samalla kasvatetaan koko blogin saneiden määrää.
-            saneitaBlogi += saneitaTeksti
-            print(kolmas_taso, "saneita: ", saneitaTeksti)
+            saneitaKirjoittaja += saneitaTeksti
+            main.lisaaTaulukkoon("Teksteittäin", saneitaTeksti, "Saneita", teksti), 
             
             # Alustetaan muuttuja, johon kerätään yhden tekstin kaikki lemmat.
             lemmat = []
@@ -236,37 +235,37 @@ def ttr(korpus):
 
             # Haetaan uniikit lemmat saneista muuttamalla lemmalista setiksi.
             tyypit = set(lemmat)
-            print(kolmas_taso, "tyyppejä: ", len(tyypit))
-            print(kolmas_taso, "TTR: ", len(tyypit)/saneitaTeksti)
+            tyyppeja = len(tyypit)
+            main.lisaaTaulukkoon("Teksteittäin", tyyppeja, "Tyyppejä", teksti), 
+            main.lisaaTaulukkoon("Teksteittäin", tyyppeja/saneitaTeksti, "TTR", teksti), 
             
-            tyypitBlogi += len(tyypit)
-        print(toka_taso, "Blogissa saneita: ", saneitaBlogi)
-        print(toka_taso, "Blogissa tyyppejä: ", tyypitBlogi)
-        print(toka_taso, "Blogin TTR: ",tyypitBlogi/saneitaBlogi)
+            tyypitKirjoittaja += len(tyypit)
+
+        main.lisaaTaulukkoon("Teksteittäin", saneitaTeksti, "Saneita", kirjoittaja), 
+        main.lisaaTaulukkoon("Teksteittäin", tyypitKirjoittaja, "Tyyppejä", kirjoittaja), 
+        main.lisaaTaulukkoon("Teksteittäin", tyypitKirjoittaja/saneitaKirjoittaja, "TTR", kirjoittaja), 
 
 # Sanoissa morfeemien määrien keskiarvo, moodi, mediaani, minimi, maksimi,
 # vaihteluväli, keskihajonta ja varianssi teksteittäin ja blogeittain
 def morfeemit(korpus):
     print("Morfeemitilastoja:")
-    for blogi in korpus:
-        morfeemejaBlogissa = 0
-        sanojaBlogissa = 0
+    for kirjoittaja in korpus:
+        morfeemejaKirjoittaja = 0
+        sanojaTeksti = 0
 
         # Listamuuttuja, johon laitetaan kaikkien blogien tekstien sanojen morfeemien määrät.
-        morfeemejaBlogiLista = []
+        morfeemejaKirjoittajaLista = []
 
-        print(eka_taso, blogi, ":")
-        for teksti in korpus[blogi]:
-            print(toka_taso, teksti, ":")
-            sanojaTekstissa = len(tokenisoi_sanat(korpus[blogi][teksti]))
-            sanojaBlogissa += sanojaTekstissa 
+        for teksti in korpus[kirjoittaja]:
+            sanojaTekstissa = len(tokenisoi_sanat(korpus[kirjoittaja][teksti]))
+            sanojaTeksti += sanojaTekstissa 
             morfeemeja = 0
 
             # Listamuuttuja, johon laitetaan kaikki tekstin sanojen morfeemien määrät.
             morfeemejaTekstiLista = []
 
             # Tokenisoidaan teksti sanoiksi.
-            tokenit = tokenisoi_sanat(korpus[blogi][teksti])
+            tokenit = tokenisoi_sanat(korpus[kirjoittaja][teksti])
 
             # Käydään tokenit kerralla läpi ja uralicAPI-kirjaston avulla etsitään niistä morfeemit.
             
@@ -277,10 +276,10 @@ def morfeemit(korpus):
                         # Funktio palauttaa kaikki sanan mahdolliset morfeemiyhdistelmät.
                         # Laskennan ja analyysin helpottamiseksi valitaan aina ensimmäinen vaihtoehto.
                         morfeemeja += len(morfeemit[0])
-                        morfeemejaBlogissa += len(morfeemit[0])
+                        morfeemejaKirjoittaja += len(morfeemit[0])
 
                         # Lisätään löydettyjen morfeemien määrät listoihin.
-                        morfeemejaBlogiLista.append(len(morfeemit[0]))
+                        morfeemejaKirjoittajaLista.append(len(morfeemit[0]))
                         morfeemejaTekstiLista.append(len(morfeemit[0]))
                 except:
                     print(kolmas_taso, "Virhe morfologisessa analyysissa. Vian aiheuttanut tokeni: ", token)
@@ -289,26 +288,41 @@ def morfeemit(korpus):
             minMorf = min(morfeemejaTekstiLista)
             maxMorf = max(morfeemejaTekstiLista)        
 
-            print(kolmas_taso, "morfeemeja (avg)", round(morfeemeja/sanojaTekstissa, 2))
-            print(kolmas_taso, "morfeemeja (median)", statistics.median(morfeemejaTekstiLista))
-            print(kolmas_taso, "morfeemeja (moodi)", statistics.mode(morfeemejaTekstiLista))
-            print(kolmas_taso, "morfeemeja (min)", minMorf)
-            print(kolmas_taso, "morfeemeja (max)", maxMorf)
-            print(kolmas_taso, "vaihteluväli: ", maxMorf-minMorf)
-            print(kolmas_taso, "keskihajonta: ", statistics.stdev(morfeemejaTekstiLista))
-            print(kolmas_taso, "varianssi: ", statistics.variance(morfeemejaTekstiLista))
+            main.lisaaTaulukkoon("Teksteittäin", round(statistics.mean(morfeemejaTekstiLista), 2), "Morfeemeja (avg)", teksti)
+
+            main.lisaaTaulukkoon("Teksteittäin", statistics.median(morfeemejaTekstiLista), "Morfeemeja (mediaani)", teksti)
+
+            main.lisaaTaulukkoon("Teksteittäin", statistics.mode(morfeemejaTekstiLista), "Morfeemeja (moodi)", teksti)
+            
+            main.lisaaTaulukkoon("Teksteittäin", minMorf, "Morfeemeja (min)", teksti)
+
+            main.lisaaTaulukkoon("Teksteittäin", maxMorf, "Morfeemeja (max)", teksti)
+
+            main.lisaaTaulukkoon("Teksteittäin", maxMorf-minMorf, "Morfeemeja (vaihteluväli)", teksti)
+
+            main.lisaaTaulukkoon("Teksteittäin", statistics.stdev(morfeemejaTekstiLista), "Morfeemeja (keskihajonta)", teksti)
+
+            main.lisaaTaulukkoon("Teksteittäin", statistics.variance(morfeemejaTekstiLista), "Morfeemeja (varianssi)", teksti)
 
         # Blogikohtaiset tilastot.
-        minMorfBlogi = min(morfeemejaBlogiLista)
-        maxMorfBlogi = max(morfeemejaBlogiLista)  
-        print(toka_taso, "Blogin sanoissa morfeemeja (avg): ", round(morfeemejaBlogissa/sanojaBlogissa, 2))
-        print(toka_taso, "Blogin sanoissa morfeemeja (median): ", statistics.median(morfeemejaBlogiLista))
-        print(toka_taso, "Blogin sanoissa morfeemeja (moodi): ", statistics.mode(morfeemejaBlogiLista) )
-        print(toka_taso, "Blogin sanoissa morfeemeja (min): ", minMorfBlogi)
-        print(toka_taso, "Blogin sanoissa morfeemeja (max): ", maxMorfBlogi)
-        print(toka_taso, "Blogin morfeemien määrän vaihteluväli: ", maxMorfBlogi-minMorfBlogi)
-        print(toka_taso, "Blogin morfeemien määrän keskihajonta: ", statistics.stdev(morfeemejaBlogiLista))
-        print(toka_taso, "Blogin morfeemien määrän varianssi: ", statistics.variance(morfeemejaBlogiLista))
+        minMorfBlogi = min(morfeemejaKirjoittajaLista)
+        maxMorfBlogi = max(morfeemejaKirjoittajaLista)  
+        main.lisaaTaulukkoon("Teksteittäin", statistics.mean(morfeemejaKirjoittajaLista), "Morfeemeja (avg)", kirjoittaja)
+
+        main.lisaaTaulukkoon("Teksteittäin", statistics.median(morfeemejaKirjoittajaLista), "Morfeemeja (mediaani)", kirjoittaja)
+        
+        main.lisaaTaulukkoon("Teksteittäin", statistics.mode(morfeemejaKirjoittajaLista), "Morfeemeja (moodi)", kirjoittaja)
+
+        main.lisaaTaulukkoon("Teksteittäin", minMorfBlogi, "Morfeemeja (min)", kirjoittaja)
+
+        main.lisaaTaulukkoon("Teksteittäin", maxMorfBlogi, "Morfeemeja (max)", kirjoittaja)
+
+        main.lisaaTaulukkoon("Teksteittäin", maxMorfBlogi-minMorfBlogi, "Morfeemeja (vaihteluväli)", kirjoittaja)
+
+        main.lisaaTaulukkoon("Teksteittäin", statistics.stdev(morfeemejaKirjoittajaLista), "Morfeemeja (keskihajonta)", kirjoittaja)
+
+        main.lisaaTaulukkoon("Teksteittäin", statistics.variance(morfeemejaKirjoittajaLista), "Morfeemeja (varianssi)", kirjoittaja)
+
 
 # Lemmausfunktio. jossa jokaisen tekstin sana lemmataan. 
 # Mikäli sanalle tarjoaan useampaa lemmaa,
@@ -336,8 +350,33 @@ def lemmaus(korpus):
         
     return lemmaDictKorpus
 
+# Sanaston tiheys
+def tiheys(korpus):
+    tiedosto = open(os.path.join(os.path.dirname(__file__), "sanalistat/funktiosanat.txt"), "r")
+    data = tiedosto.read()
+    # Muutetaan tiedosto listaksi
+    funktiosanat = data.split("\n")
+
+    # Lemmataan korpus, jotta funktiosanoja voidaan vertailla ja poistaa
+    lemmat = lemmaus(korpus)
+
+    print("Sanastotiheys teksteittäin")
+    for kirjoittaja in lemmat:
+        print(eka_taso, kirjoittaja)
+        for teksti in lemmat[kirjoittaja]:
+            maara = 0
+            for lemma in lemmat[kirjoittaja][teksti]:
+                if lemma in funktiosanat:
+                    maara += 1
+            print(kolmas_taso, teksti)
+            print(neljas_taso, "Funktiosanoja yhteensä:", maara)
+            main.lisaaTaulukkoon("Teksteittäin", maara, "Funktiosanoja", teksti)
+            sanamaara = len(lemmat[kirjoittaja][teksti])
+            print(neljas_taso, "Funktiosanoja prosentteina:", round(maara/sanamaara*100, 2))
+            main.lisaaTaulukkoon("Teksteittäin", round(maara/sanamaara*100, 2), "Funktiosanoja (%)", teksti)
+
 # Pääohjelmassa kutsuttava funktio, joka kutsuu kaikkia muita asetusten mukaan.
-def uralic(asetukset, korpus):
+def uralicAsetukset(asetukset, korpus):
     #lemmat(korpus)
     if asetukset["Morfeemeja sanoissa"] == True:
         morfeemit(korpus)
@@ -349,4 +388,6 @@ def uralic(asetukset, korpus):
         hapaxlegomenon(korpus)
     if asetukset["Erisnimet"] == True:
         erisnimetKorpus(korpus)
+    if asetukset["Sanaston tiheys"] == True:
+        tiheys(korpus)
         

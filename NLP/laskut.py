@@ -1,7 +1,6 @@
 import spacy
 import tokenisointi
-import regex as re
-import fetch
+import hae
 import uralic
 import statistics
 import nltk
@@ -11,6 +10,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 from itertools import groupby
+import main
 # import numpy as np
 
 # Tässä tiedostossa lasketaan kaikki perustilastot ilman kielen
@@ -23,31 +23,28 @@ kolmas_taso = "      "
 
 # Kokonaissanamäärä blogiteksteittäin ja blogeittain
 def sanamaara(korpus):
-    print("Kokonaissanamäärät:")
-    
-    for blogi in korpus:
-        sanoja = 0
-        print(eka_taso, blogi)
-        for teksti in korpus[blogi]:
-            tekstiPituus = len(tokenisointi.tokenisoi_sanat(korpus[blogi][teksti]))
-            print(toka_taso, teksti, ": ", tekstiPituus)
-            sanoja += tekstiPituus
-        print(toka_taso, "Sanoja yhteensä blogissa: ", sanoja)
+    for kirjoittaja in korpus:
+        sanojaKirjoittaja = 0
+        for teksti in korpus[kirjoittaja]:
+            sanojaTekstissa = len(tokenisointi.tokenisoi_sanat(korpus[kirjoittaja][teksti]))
+            main.lisaaTaulukkoon("Teksteittäin", sanojaTekstissa, "Sanamäärä", teksti)
+            sanojaKirjoittaja += sanojaTekstissa
+        main.lisaaTaulukkoon("Teksteittäin", sanojaKirjoittaja, "Sanamäärä", kirjoittaja)
     
 
 # Lasketaan sanojen pituuden keskiarvo ja keskihajonta
 def sanapituus(korpus):
     print("Sanojen keskimääräinen pituus:")
 
-    for blogi in korpus:
+    for kirjoittaja in korpus:
         sanojaBlogissa = 0
         merkkejaBlogissa = 0
         pituudetBlogissa = []
-        print(eka_taso, blogi)
-        for teksti in korpus[blogi]:
+        print(eka_taso, kirjoittaja)
+        for teksti in korpus[kirjoittaja]:
             print(toka_taso, teksti)
             pituudetTeksti = []
-            sanalista = tokenisointi.tokenisoi_sanat(korpus[blogi][teksti])
+            sanalista = tokenisointi.tokenisoi_sanat(korpus[kirjoittaja][teksti])
             sanojaTekstissa = len(sanalista)
             merkkejaTekstissa = 0
             sanojaBlogissa += sanojaTekstissa
@@ -69,7 +66,7 @@ def sanapituus(korpus):
 # ja varianssi lauseissa teksteittäin
 def lausetilastoja():
     print("Lausetilastoja: ")
-    korpus = fetch.hae_jasennetty()
+    korpus = hae.hae_jasennetty()
 
     for blogi in korpus:
         lauseita = 0
@@ -96,26 +93,24 @@ def lausetilastoja():
 
 # Virkkeiden määrä tekteittäin ja blogeittain
 def virkemaara(korpus):
-    print("Virkkeiden määrä:")
-    for blogi in korpus:
-        lauseita = 0
-        print(eka_taso, blogi)
-        for teksti in korpus[blogi]:
-            lausepituus = len(tokenisointi.tokenisoi_lauseet(korpus[blogi][teksti]))
-            print(toka_taso, teksti, ": ", lausepituus)
-            lauseita += lausepituus
-        print(toka_taso, "Virkkeitä yhteensä blogissa : ", lauseita)
+    for kirjoittaja in korpus:
+        lauseitaBlogissa = 0
+        for teksti in korpus[kirjoittaja]:
+            lauseitaTekstissa = len(tokenisointi.tokenisoi_virkkeet(korpus[kirjoittaja][teksti]))
+            main.lisaaTaulukkoon("Teksteittäin", lauseitaTekstissa, "Virkemäärä", teksti)
+            lauseitaBlogissa += lauseitaTekstissa
+        main.lisaaTaulukkoon("Teksteittäin", lauseitaBlogissa, "Virkemäärä", kirjoittaja)
 
 # Sanojen määrien keskiarvo ja keskihajonta teksteittäin ja blogeittain
 def sanojaVirkkeissa(korpus):
     print("Keskimääräinen virkkeiden pituus teksteissä:")
-    for blogi in korpus:
+    for kirjoittaja in korpus:
         sanatBlogissaLista = []
-        print(eka_taso, blogi)
-        for teksti in korpus[blogi]:
+        print(eka_taso, kirjoittaja)
+        for teksti in korpus[kirjoittaja]:
             print(toka_taso, teksti)
             
-            virkkeet = tokenisointi.tokenisoi_virkkeet(korpus[blogi][teksti])
+            virkkeet = tokenisointi.tokenisoi_virkkeet(korpus[kirjoittaja][teksti])
             sanojaVirkkeissa = []
             for virke in virkkeet:
                 virke = tokenisointi.tokenisoi_sanat(virke)
@@ -123,15 +118,19 @@ def sanojaVirkkeissa(korpus):
                 sanatBlogissaLista.append(len(virke))
 
             print(kolmas_taso, "Tekstissä keskimäärin sanoja virkkeissä: ", round(statistics.mean(sanojaVirkkeissa), 2))
+            main.lisaaTaulukkoon("Teksteittäin", round(statistics.mean(sanojaVirkkeissa), 2), "Virkepituus sanoina (avg)", teksti)
+            main.lisaaTaulukkoon("Teksteittäin", round(statistics.stdev(sanojaVirkkeissa), 2), "Virkepituus sanoina (keskihajonta)", teksti)
             print(kolmas_taso, "Keskihajonta: ", round(statistics.stdev(sanojaVirkkeissa), 2))
         print(toka_taso, "Blogissa keskimäärin sanoja virkkeissä: ", round(statistics.mean(sanatBlogissaLista), 2))
+        main.lisaaTaulukkoon("Teksteittäin", round(statistics.mean(sanatBlogissaLista), 2), "Virkepituus sanoina (avg)", kirjoittaja)
+        main.lisaaTaulukkoon("Teksteittäin", round(statistics.stdev(sanatBlogissaLista), 2), "Virkepituus sanoina (keskihajonta)", kirjoittaja)
         print(toka_taso, "Keskihajonta: ", round(statistics.stdev(sanatBlogissaLista), 2))
 
 # Lauseiden määrien keskiarvo, mediaani, moodi, minimi, maksimi,
 # vaihteluväli, keskihajonta ja varianssi teksteittäin
 def lauseitaVirkkeissa():
     print("Lauseita virkkeissä:")
-    korpus = fetch.hae_jasennetty()
+    korpus = hae.hae_jasennetty()
     for blogi in korpus:
         print(eka_taso, blogi)
         for teksti in korpus[blogi]:
@@ -153,53 +152,49 @@ def lauseitaVirkkeissa():
             print(kolmas_taso, "varianssi: ", statistics.variance(lausemaarat))
 
 def grafeemeina(korpus):
-    print("Keskimäärin grafeemeja sanoissa:")
     # Käydään korpus blogi kerrallaan läpi
 
-    for blogi in korpus:
+    for kirjoittaja in korpus:
         # Alustetaan muuttujat koko blogia koskeville muuttujille.
-        sanojaBlogissa = 0
-        merkkejaBlogissa = 0
-        print(eka_taso, blogi)
+        sanojaKirjoittaja = 0
+        merkkejaKirjoittaja = 0
 
         # Käydään blogin tekstit kerrallaan läpi
-        for teksti in korpus[blogi]:
+        for teksti in korpus[kirjoittaja]:
             merkkejaTekstissa = 0
 
             # Keskiarvoa varten lasketaan sanojen määrä tekstissä
-            sanalista = tokenisointi.tokenisoi_sanat(korpus[blogi][teksti])
+            sanalista = tokenisointi.tokenisoi_sanat(korpus[kirjoittaja][teksti])
             sanojaTekstissa = len(sanalista)
 
             # Kasvatetaan samalla koko blogin sanamäärää laskevaa muuttujaa
-            sanojaBlogissa += len(sanalista)
+            sanojaKirjoittaja += len(sanalista)
 
             # Lasketaan, kuinka pitkiä sanat ovat teksteittäin
             for sana in sanalista:
                 merkkejaTekstissa += len(sana)
-                merkkejaBlogissa += len(sana)
+                merkkejaKirjoittaja += len(sana)
 
-            print(toka_taso, teksti, round(merkkejaTekstissa/sanojaTekstissa, 2))
-        print(toka_taso, blogi, "yleensä: ", round(merkkejaBlogissa/sanojaBlogissa, 2))
+            main.lisaaTaulukkoon("Teksteittäin", round(merkkejaTekstissa/sanojaTekstissa, 2), "Grafeemeja sanoissa", teksti)
+        main.lisaaTaulukkoon("Teksteittäin", round(merkkejaKirjoittaja/sanojaKirjoittaja, 2), "Grafeemeja sanoissa", kirjoittaja)
 
-    print("Keskimäärin grafeemeja virkkeissä:")
+    #print("Keskimäärin grafeemeja virkkeissä:")
     
-    
-    for blogi in korpus:
+    for kirjoittaja in korpus:
         # Alustetaan muuttujat keskiarvon laskua varten
-        virkkeitaBlogissa = 0
-        merkkejaBlogissa = 0
+        virkkeetKirjoittaja = 0
+        merkkejaKirjoittaja = 0
 
-        print(eka_taso, blogi)
 
-        for teksti in korpus[blogi]:
+        for teksti in korpus[kirjoittaja]:
             # Grafeemeja ovat myös välimerkit, joten niitä ei tarvitse poistaa
-            merkkejaTekstissa = len(korpus[blogi][teksti])
-            merkkejaBlogissa += merkkejaTekstissa
+            merkkejaTekstissa = len(korpus[kirjoittaja][teksti])
+            merkkejaKirjoittaja += merkkejaTekstissa
 
-            virkkeitaTekstissa = len(tokenisointi.tokenisoi_lauseet(korpus[blogi][teksti]))
-            virkkeitaBlogissa += virkkeitaTekstissa
-            print(toka_taso, teksti, round(merkkejaTekstissa/virkkeitaTekstissa, 2))
-        print(toka_taso, blogi, "yleensä: ", round(merkkejaBlogissa/virkkeitaBlogissa, 2))  
+            virkkeitaTekstissa = len(tokenisointi.tokenisoi_lauseet(korpus[kirjoittaja][teksti]))
+            virkkeetKirjoittaja += virkkeitaTekstissa
+            main.lisaaTaulukkoon("Teksteittäin", round(merkkejaTekstissa/virkkeitaTekstissa, 2), "Grafeemeja virkkeissä", teksti)
+        main.lisaaTaulukkoon("Teksteittäin", round(merkkejaKirjoittaja/virkkeetKirjoittaja, 2), "Grafeemeja virkkeissä", kirjoittaja)  
 
 # Funktio erikoismerkkien määrän laskemiseen teksteittäin
 def erikoismerkit(korpus):
@@ -222,18 +217,22 @@ def hfl(korpus, maara):
         print(eka_taso, blogi)
         hfl[blogi] = {}
         for teksti in korpus[blogi]:
-            print(toka_taso, teksti)
+            rivi = 2
             tokenit = tokenisointi.tokenisoi_sanat(korpus[blogi][teksti])
             dist = nltk.FreqDist(sana.lower() for sana in tokenit)
             yleisimmat = dist.most_common(maara)
-            hfl[blogi][teksti] = yleisimmat
-            print(kolmas_taso, yleisimmat)
-    
-    return hfl
+
+            # Muutetaan tuple merkkijonoksi
+            for tup in yleisimmat:
+                arvo = " : "
+                arvo = arvo.join(map(str, tup))
+
+                main.lisaaHFL(arvo, rivi, teksti)
+                rivi += 1
 
 # Yule K'n funktio kertoo kielen rikkaudesta. Mitä suurempi luku, sitä vähemmän
 # kompleksisuutta. Yule I:ssä käänteinen: korkeampi luku, enemmän rikkautta.
-def yulelaskut(teksti, valinta):
+def yulelaskut(teksti, otsikko,valinta):
     # M1: kaikkien saneiden määrä
     # M2: summa kaikkien lemmojen tuloista, (lemma * esiintymät^2)
     esiintymat = {}
@@ -256,12 +255,15 @@ def yulelaskut(teksti, valinta):
 
     if (valinta == "k"):
         try:
+            main.lisaaTaulukkoon("Teksteittäin", 10000*(M2-M1)/(M1*M1), "Yule K", otsikko)
             print(kolmas_taso, "Yule K: ", 10000*(M2-M1)/(M1*M1))
         except ZeroDivisionError:
             print("Virhe Yule K:n laskennassa.")
     else:
         try:
             print(kolmas_taso, "Yule I: ", (M1*M1)/(M2-M1))
+            main.lisaaTaulukkoon("Teksteittäin", (M1*M1)/(M2-M1), "Yule I", otsikko)
+
         except ZeroDivisionError:
             print("Virhe Yule I:n laskennassa.")
 
@@ -275,9 +277,9 @@ def yule(korpus, kirjain):
             print(toka_taso, teksti)
 
             if kirjain == "K":
-                yulelaskut(korpus[blogi][teksti], "k")
+                yulelaskut(korpus[blogi][teksti], teksti, "k")
             else:
-                yulelaskut(korpus[blogi][teksti], "i")
+                yulelaskut(korpus[blogi][teksti], teksti,"i")
 
 
 # Funktio, jossa mistä tahansa listasta A voidaan poistaa lista B
@@ -323,35 +325,30 @@ def kosinisimilaarisuus(korpus, nlp):
     kosinimatriisi = cosine_similarity(vektorimatriisi)
     df = pd.DataFrame(data=kosinimatriisi, index= nimet, columns = nimet)
     print(df)
+    main.dataframeTaulukkoon("Kosinisimilaarisuus", df)
 
 def tilastoja(asetukset, korpus):
     tulos = ""
     nlp = spacy.load("fi_core_news_sm")
 
-    asetuslista = ["Sanamäärä", "Virkemäärä", "Grafeemeja sanoissa", 
-                   "Virkepituus sanoina", "Virkepituus lauseina",
-                   "Kosinisimilaarisuus"]
-    
-
     if asetukset["Sanamäärä"] == True:
         sanamaara(korpus)
     if asetukset["Virkemäärä"] == True:
         virkemaara(korpus)
-    if asetukset["Grafeemeja sanoissa"] == True:
+    if asetukset["Grafeemeja sanoissa ja virkkeissä"] == True:
         grafeemeina(korpus)
     if asetukset["Virkepituus sanoina"] == True:
         sanojaVirkkeissa(korpus)
     # if asetukset["lausetilastot"] == True:
     #     lausetilastoja()
-    if asetukset["Virkepituus lauseina"] == True:
-        lauseitaVirkkeissa()
+    # if asetukset["Virkepituus lauseina"] == True:
+    #     lauseitaVirkkeissa()
     # if asetukset["erikoismerkit"] == True:
     #     erikoismerkit(korpus)
-    # if asetukset["hfl"] == True:
-    #     if asetukset["50"] == True:
-    #         hfl(korpus, 50)
-    #     else:
-    #         hfl(korpus, 100)
+    if asetukset["HFL 50"] == True:
+        hfl(korpus, 50)
+    if asetukset["HFL 100"] == True:
+        hfl(korpus, 100)
     if asetukset["Yule K"] == True:
         yule(korpus, "K")
     if asetukset["Yule I"] == True:
