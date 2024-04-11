@@ -1,25 +1,32 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 import main
-from enum import Enum, auto
 from functools import partial
-from threading import Thread, Event
+from threading import Thread
 from tkinter import Menu
 from ttkbootstrap.dialogs import Messagebox
 from ttkbootstrap.constants import *
-
-
-# -----------
 
 # ----------- GLOBAALIT MUUTTUJAT JA FUNKTIOT-----------
 
 # Asetussanakirjan alustus
 asetukset = {}
 
+# Edistymispalkin muuttujat
+prog_yht = 0
+prog_valmiita = 0
+
 # Asetusten päivittämisfunktio
 def valitse(arvo, asetus):
     global asetukset
     asetukset[asetus] = arvo.get()
+
+# Edistymispalkin muuttujien laskenta
+
+def laske_prog_yht():
+    print("")
+
+# ----------- GUI-----------
 
 class Vasen():
     def __init__(self, master, vasen_grid):
@@ -37,7 +44,10 @@ class Vasen():
                             text=vaihtoehto, command=partial(valitse, checkbox_var, vaihtoehto)).pack(anchor="w")
         
         def kaynnista():
+            # Ohjelman suorituksen ajaksi otetaan käynnistysnappi pois käytöstä
+            kaynnista_nappi.config(state="disabled")
             main.logiikka(asetukset)
+            kaynnista_nappi.config(state="normal")
 
         ttk.Label(vasen_grid, text="Asetukset", font=("Garamond", 28)).grid(row=0, columnspan=2)
 
@@ -177,6 +187,7 @@ Tekijät: Ella Elomaa ja Helmi Siiroinen (2024)
         # Molemmat puoliskojen paino on sama, eli molemmat saavat 50 % ikkunan leveydestä
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
+
 
 if __name__ == "__main__":
     sovellus = Sovellus()

@@ -6,9 +6,11 @@ from re import split
 # Tarvitaan sent_tokenizen toimimiseen. Lataa vain kerran, sitten voi poistaa :)
 #nltk.download("punkt")
 
-# Funktio tokenisoimaan sanat, eli erottelemaan ne listaksi.
-# Poistetaan samalla välimerkit, paitsi - ja '. 
 def tokenisoi_sanat(teksti):
+    """
+    Tokenisoi tekstin sanoiksi ja poistaa välimerkit, lukuun ottamatta - ja '.
+    Palauttaa listan.
+    """
     valimerkiton = re.sub(r"[^\P{P}-'&]+", "", teksti)
     valimerkiton.replace("&", "ja")
 
@@ -23,7 +25,11 @@ def tokenisoi_sanat(teksti):
 # Lauseiden tokenisointifunktio, eli lauseet erikoismerkistä erikoismerkkiin
 # : , . ; ajatusviiva ! ?s
 def tokenisoi_lauseet(teksti):
-
+    """
+    Tokenisoi tekstin lauseiksi, eli erokoismerkistä erikoismerkkiin,
+    lukuun ottamatta - ja '. 
+    Palauttaa listan.
+    """
     # Poistetaan ensin rivinvaihdot.
     teksti = teksti.replace("\n", "")
     valimerkiton = re.sub(r"[^\P{P}-'&|]+", "", teksti)
@@ -33,9 +39,11 @@ def tokenisoi_lauseet(teksti):
     
     return lauseet
 
-# Virkkeiden tokenisointifunktio, eli isosta alkukirjaimesta pisteeseen, 
-# huutomerkkiin tai kysymyksmerkkiin.
+
 def tokenisoi_virkkeet(teksti):
+    """
+    Tokenisoi tekstin virkkeiksi. Palauttaa listan.
+    """
     virkkeet= sent_tokenize(teksti, language="finnish")
     return virkkeet
 

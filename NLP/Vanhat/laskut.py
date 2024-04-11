@@ -30,36 +30,6 @@ def sanamaara(korpus):
             main.lisaaTaulukkoon("Teksteittäin", sanojaTekstissa, "Sanamäärä", teksti)
             sanojaKirjoittaja += sanojaTekstissa
         main.lisaaTaulukkoon("Teksteittäin", sanojaKirjoittaja, "Sanamäärä", kirjoittaja)
-    
-
-# Lasketaan sanojen pituuden keskiarvo ja keskihajonta
-def sanapituus(korpus):
-    print("Sanojen keskimääräinen pituus:")
-
-    for kirjoittaja in korpus:
-        sanojaBlogissa = 0
-        merkkejaBlogissa = 0
-        pituudetBlogissa = []
-        print(eka_taso, kirjoittaja)
-        for teksti in korpus[kirjoittaja]:
-            print(toka_taso, teksti)
-            pituudetTeksti = []
-            sanalista = tokenisointi.tokenisoi_sanat(korpus[kirjoittaja][teksti])
-            sanojaTekstissa = len(sanalista)
-            merkkejaTekstissa = 0
-            sanojaBlogissa += sanojaTekstissa
-
-            for sana in sanalista:
-                merkkejaTekstissa += len(sana)
-                merkkejaBlogissa += len(sana)
-                pituudetTeksti.append(len(sana))
-                pituudetBlogissa.append(len(sana))
-            print(kolmas_taso, "Keskiarvo: ", round(merkkejaTekstissa/sanojaTekstissa, 2))
-            print(kolmas_taso, "Keskihajonta: ", statistics.stdev(pituudetTeksti))
-
-        if (sanojaBlogissa > 0 and merkkejaBlogissa > 0):
-            print(toka_taso, "Keskiarvo: ", round(merkkejaBlogissa/sanojaBlogissa, 2))
-            print(toka_taso, "keskihajonta: ", statistics.stdev(pituudetBlogissa))
 
 # Lasketaan lauseiden määrä ja sanojen määrän keskiarvo,
 # mediaani, moodi, minimi, maksimi, vaihteluväli, keskihajonta
