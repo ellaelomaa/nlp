@@ -51,7 +51,8 @@ class Korpus:
     def hae_kasiteltavat_yht(dct, yht=0):
         """
         Funktio, jossa lasketaan kaikkien käsiteltävien entiteettien määrä,
-        eli kansiot ja niissä olevat tiedostot rekursiivisesti
+        eli kansiot ja niissä olevat tiedostot rekursiivisesti. Palauttaa
+        integerin.
         """
         yht = yht + len(dct)
         if isinstance(dct, dict):
@@ -63,19 +64,14 @@ class Korpus:
     def hae_laskut_yht():
         """
         Funktio, jossa lasketaan asetusten perusteella, montako laskua/vaihetta
-        ohjelmassa on. Esimerkiksi käyttäjä on valinnut kohdat Sanamäärä,
-        Virkemäärä ja kosinisimilaarisuus jolloin laskuja on hae_kasiteltavat_yht() x 2 +
-        len(korpus), koska viimeisessä laskuissa käsitellään koko kirjoittajaa,
-        ei yksittäisiä tekstejä.
+        ohjelmassa on. Palauttaa integerin.
         """
         yht = 0
         kasiteltavia = Korpus.hae_kasiteltavat_yht(Korpus.korpus)
         kirjoittajia = len(Korpus.korpus)
         for asetus in Korpus.asetukset:
             if Korpus.asetukset[asetus] == True:
-                if (
-                    asetus == "Kosinisimilaarisuus"
-                ):
+                if asetus == "Kosinisimilaarisuus":
                     yht += kirjoittajia
                 elif (
                     asetus == "Sanaston tiheys"
@@ -150,40 +146,6 @@ class Paaikkuna(ttk.Window):  # Super class
         """
         tyyli = ttk.Style()
         tyyli.theme_use(vari)
-
-    def create_frame_buttons(self) -> ttk.Frame:
-        """
-        Create and return a frame that contains buttons
-        """
-
-        self.frame_buttons = ttk.Frame(self)
-
-        self.btn_download = ttk.Button(
-            self.frame_buttons, text="Download", command=self.on_download_button_clicked
-        )
-
-        self.btn_test = ttk.Button(
-            self.frame_buttons, text="Test", command=self.on_test_button_clicked
-        )
-
-        self.lbl_status = ttk.Label(self.frame_buttons)
-
-        self.btn_download.pack()
-        self.btn_test.pack()
-        self.lbl_status.pack()
-
-        return self.frame_buttons
-
-    def on_test_button_clicked(self):
-        print("Test")
-
-    def on_download_button_clicked(self):
-        new_thread = Thread(
-            target=self.suorita,
-            args=("sky.jpg",),
-            daemon=True,  # Kun pääohjelma suljetaan, myös tämä säie sulkeutuu
-        )
-        new_thread.start()
 
     def suorita(self, file_name: str):
         """
@@ -292,7 +254,6 @@ class Asetusikkuna(ttk.Frame):
         tarkistus = Asetusikkuna.tarkista_onko_auki()
         if tarkistus == True:
             Asetusikkuna.luo_varoitus(self, "Aloitus")
-            print("Sulje Excel-tiedosto")
         else:
             self.nayta_edistymispalkki
             saie = Thread(target=self.aja_ohjelma, daemon=True)
@@ -311,60 +272,86 @@ class Asetusikkuna(ttk.Frame):
         self.kasiteltava.pack()
 
     def tarkista_onko_auki():
+        """
+        Tarkistetaan, onko tulokset.xlsx jo avattu. Mikäli tiedosto ei ole
+        auki ja ohjelman suoritusta voidaan jatkaa, palautetaan False.
+        Muuten palautetaan True.
+        """
         try:
+
             tiedosto = open("tulokset.xlsx", "r")
             return False
 
         except:
             return True
 
-
     def aja_ohjelma(self):
         """
         Ajetaan ohjelma erillisessä säikeessä, jotta GUI ei jäädy.
         """
+        # Otetaan käynnistysnappi pois käytöstä ajon ajaksi.
         self.kaynnistys_nappi.config(state="disabled")
+
+        # Haetaan edistymispalkin maksimiarvo.
         self.vaiheita = Korpus.hae_laskut_yht()
+
+        # Nollataan edistymispalkki.
         self.prog_yht = 0
         self.nayta_edistymispalkki(self.vaiheita)
         Openpyxl.luo_workbook()
 
         aloitus_lippu = Lippu(
-                lippu_tyyppi=LippuTarkoitus.PAIVITA_EDISTYMIS_LUKU,
-                lippu_arvo=f"Valmiina 0 / {self.vaiheita}",
+            lippu_tyyppi=LippuTarkoitus.PAIVITA_EDISTYMIS_LUKU,
+            lippu_arvo=f"Valmiina 0 / {self.vaiheita}",
         )
         self.jono_viesti.put(aloitus_lippu)
         self.event_generate("<<CheckQueue>>")
 
+        # Kutsutaan laskufunktiota
         Laskut.tilastoja(Korpus.asetukset, self)
 
-        self.merkitse_aloitetuksi("")
-
-        self.kaynnistys_nappi.config(state="normal")
-
+        # Kun kaikki on laskettu, kutsutaan ohjelman lopetusfunktiota.
         self.lopeta_ohjelma()
 
+        # Piilotetaan Label, joka kertoo parhaillaan suoritettavan funktion.
+        self.merkitse_aloitetuksi("")
+
+        # Palautetaan käynnistysnapin tila normaaliksi, jotta ohjelma voidaan
+        # ajaa uudelleen.
+        self.kaynnistys_nappi.config(state="normal")
+
     def lopeta_ohjelma(self):
-        print("Lopeta ohjelma")
+        """
+        Funktio, joka tarkistaa onko tulokset.xlsx-tiedosto avattu ohjelman
+        suorituksen aikana. Avaa varoitusikkunan, mikäli tiedosto on auki eikä
+        tallennusta voi siis suorittaa.
+        """
         tarkistus = Asetusikkuna.tarkista_onko_auki()
         if tarkistus == True:
-            print("Lopetus: Tiedosto auki")
+
+            # Koska tarkistus tapahtuu ohjelman ajon aikana, ei GUI:ta voi
+            # suoraan päivittää. Luodaan siis säieturvallinen lippu.
             tarkistus_lippu = Lippu(
-                    lippu_tyyppi=LippuTarkoitus.TIEDOSTO_AUKI_LOPETUS,
-                    lippu_arvo=""
+                lippu_tyyppi=LippuTarkoitus.TIEDOSTO_AUKI_LOPETUS, lippu_arvo=""
             )
             self.jono_viesti.put(tarkistus_lippu)
             self.event_generate("<<CheckQueue>>")
         else:
-            print("Lopetus: tiedosto kiinni")
-            Openpyxl.tallenna_tulokset()       
+            Openpyxl.tallenna_tulokset()
 
     def merkitse_aloitetuksi(self, viesti):
+        """
+        Funktio, joka päivittää nyt käsiteltävän laskun nimeä GUI:ssa
+        laskusäikeestä.
+        """
         lippu = Lippu(LippuTarkoitus.PAIVITA_EDISTYMIS_TEKSTI, lippu_arvo=viesti)
         self.jono_viesti.put(lippu)
         self.event_generate("<<CheckQueue>>")
 
     def merkitse_tehdyksi(self):
+        """
+        Funktio, joka päivittää valmiiden laskujen määrää GUI:ssa laskusäikeestä.
+        """
         self.prog_yht += 1
         lippu = Lippu(
             lippu_tyyppi=LippuTarkoitus.PAIVITA_EDISTYMIS_LUKU,
@@ -373,10 +360,10 @@ class Asetusikkuna(ttk.Frame):
         self.jono_viesti.put(lippu)
         self.event_generate("<<CheckQueue>>")
 
-    def tarkista_jono(self, event):  # Pääsäikeessä
+    def tarkista_jono(self, event):
         """
         Luetaan jono, jonka avulla päivitetään käyttöliittymän
-        latauspalkkia.
+        latauspalkkia pääsäikeessä.
         """
         viesti: Lippu  # Type hint
         viesti = self.jono_viesti.get()
@@ -389,18 +376,23 @@ class Asetusikkuna(ttk.Frame):
         if viesti.lippu_tyyppi == LippuTarkoitus.TIEDOSTO_AUKI_LOPETUS:
             Asetusikkuna.luo_varoitus(self, "Lopetus")
 
-
     def luo_varoitus(self, vaihe):
-        nappi_arvo = Messagebox.retrycancel(message="Sulje tulokset.xlsx-tiedosto jaksaaksesi",
-                                title="Virhe!",
-                                alert=True)
+        """
+        Luo käyttöliittymässä ikkunan, joka varoittaa tulokset.xlsx-tiedoston
+        olevan auki. Vaihtoehdot retry ja cancel.
+        """
+        nappi_arvo = Messagebox.retrycancel(
+            message="Sulje tulokset.xlsx-tiedosto jaksaaksesi",
+            title="Virhe!",
+            alert=True,
+        )
 
         if nappi_arvo == "Retry":
             if vaihe == "Lopetus":
                 Asetusikkuna.lopeta_ohjelma(self)
             else:
                 Asetusikkuna.kaynnista(self)
-        
+
 
 class Asetusosio(ttk.Frame):
     """
@@ -426,7 +418,7 @@ class Asetusosio(ttk.Frame):
 
     def luo_valintaruudut(self, vaihtoehdot):
         """
-        Funktio kaikkien valintaruutujen luomiseen.
+        Funktio kaikkien valintaruutujen luomiseen. Palauttaa Framen.
         """
         global asetukset
         frame = ttk.Frame(master=self)
@@ -805,14 +797,15 @@ class Laskut:
 
     def poista_lista(tokenit, poistettavat):
         """
-        Funktio, jossa mistä tahansa listasta A voidaan poistaa lista B
+        Funktio, jossa mistä tahansa listasta A voidaan poistaa lista B.
+        Palauttaa listan.
         """
         lista = [sana for sana in tokenit if sana not in poistettavat]
         return lista
 
     def kosini_pipeline(nlp, teksti):
         """
-        Apufunktio kosinisimilaarisuuden laskentaan
+        Apufunktio kosinisimilaarisuuden laskentaan. Palauttaa listan.
         """
         erisnimet = Laskut.hae_erisnimet_teksti(teksti, nlp)
         tokenit = tokenisointi.tokenisoi_sanat(teksti)
@@ -1404,16 +1397,17 @@ class Openpyxl:
     def luo_workbook():
         """
         Funktio, joka hakee olemassa olevan xlsx-tiedoston, tai sen puuttuessa
-        luo sen.
+        luo sen. Palauttaa Openpyxl Workbookin.
         """
-        # Tarkistetaan, onko tiedosto jo olemassa.
-        polku = "./tulokset.xlsx"
         global workbook
         global rivisanakirja
         global sarakesanakirja
 
         rivisanakirja = Openpyxl.luo_rivinimet()
         sarakesanakirja = Openpyxl.luo_sarakenimet()
+
+        # Tarkistetaan, onko tiedosto jo olemassa.
+        polku = "./tulokset.xlsx"
 
         if os.path.isfile(polku) == True:
             workbook = xl.load_workbook("tulokset.xlsx")
@@ -1469,7 +1463,7 @@ class Openpyxl:
     def hae_tekstinimet():
         """
         Tulostaulukon sarakkeita varten haetaan corpus-kansiosta kaikki
-        tekstien ja kirjoittajien nimet.
+        tekstien ja kirjoittajien nimet. Palauttaa listan.
         """
         nimet = []
         for kirjoittaja in Korpus.korpus:
@@ -1482,6 +1476,7 @@ class Openpyxl:
         """
         Sivuilla, joissa käsitellään vain kirjoittajia kokonaisuutena,
         sarakkeiden niminä on vain kirjoittajien (eli kansioiden) nimet.
+        Palauttaa sanakirjan.
         """
         sarakkeet = {}
         nykyinen = 2
@@ -1495,6 +1490,10 @@ class Openpyxl:
         return sarakkeet
 
     def luo_rivinimet():
+        """
+        Luo Tilastoja-sivulle sanakirjan rivien nimistä ja niiden indekseistä.
+        Palauttaa sanakirjan.
+        """
         rivit = {}
         nykyinen = 2
 
@@ -1506,7 +1505,7 @@ class Openpyxl:
 
     def alusta_taulukko():
         """
-        Tulostaulukon ensimmäisen sivun luonti.
+        Tulostaulukon ensimmäisen sivun luonti. Palauttaa Openpyxl Workbookin.
         """
         global workbook
         workbook.active = workbook["Teksteittäin"]
@@ -1531,7 +1530,7 @@ class Openpyxl:
 
     def alusta_hfl_sivu():
         """
-        Taulukon toisen sivun (HFL) luonti.
+        Taulukon toisen sivun (HFL) luonti. Palauttaa Openpyxl Workbookin.
         """
         global workbook
         workbook.active = workbook["HFL"]
